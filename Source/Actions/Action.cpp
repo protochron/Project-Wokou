@@ -18,35 +18,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *****************************************************************************/
- 
-#ifndef _PIRATE_COMMON_H_
-#define _PIRATE_COMMON_H_
+
+#include "Action.h"
 
 
-//! Every player is assigned a unique integer ID ranging from 0 to 9999999
-typedef unsigned int player_id;
+Action::Action(const handler_t& handler)
+  : handler_ (handler)
+{ 
 
-//! Some actions in the game occur without a target. In this case, the target
-//! should be specified as NO_PLAYER.
-const player_id NO_PLAYER = 1000000;
-
+}
 
 
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Smart pointers
-///////////////////////////////////////////////////////////////////////////////
-
-//! The OgreSDK does not ship Boost with the ptr_container library, so we will
-//! use regular STL containers of Boost's ptr_containers. Unfortunately, the 
-//! syntax of this can be kludgy, so these macros are supposed to save a bit of 
-//! typing and improve readability. They should be used to declare new 
-//! smart pointers in method invocations.
-
-//! This is used to create a smart pointer to an Action
-#define SPA(x) (boost::shared_ptr<Action>(x))
-
-
-#endif
+inline 
+bool Action::handle()
+{
+    return handler_(*this);
+}

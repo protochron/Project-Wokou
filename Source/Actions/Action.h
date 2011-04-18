@@ -18,35 +18,56 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *****************************************************************************/
- 
-#ifndef _PIRATE_COMMON_H_
-#define _PIRATE_COMMON_H_
+
+#ifndef _PIRATES_ACTION_H_
+#define _PIRATES_ACTION_H_
+
+#include <boost/function.hpp>
+#include <OGRE/OgreVector3.h>
+
+#include "Common/Common.h"
+
+class Action;
+
+ //! Actions are handled by methods called "handlers". A pointer to a handler
+ //! function is captured in the handler_t type.
+typedef boost::function<bool (const Action& a)> handler_t;
 
 
-//! Every player is assigned a unique integer ID ranging from 0 to 9999999
-typedef unsigned int player_id;
+/** This is an abstraction of game mechanics. Instead of directly handling
+ * things like keypresses, the system generates an Action object that 
+ * contains data about the event. This object is bound to a method that knows
+ * how to handle that specific message. These are then handled at the game's
+ * discretion.
+ *
+ * Currently, this class just contains all the possible parameters that could
+ * be necessary for actions instead of only having the ones that are relevant 
+ * to a specific action. This may be changed later.
+ */
 
-//! Some actions in the game occur without a target. In this case, the target
-//! should be specified as NO_PLAYER.
-const player_id NO_PLAYER = 1000000;
+class Action {
+public:
+  
+  Action(const handler_t& handler);
+
+  /** Calls the handler function with the current action as a parameter.
+   */
+  inline bool handle();
+
+public:
+
+  //! The id of the player who generated the action
+  player_id id;
+  
+  //! The location to move the player to, if they are moving
+  Ogre::Vector3 to;
 
 
+private:
+  handler_t handler_;
+  
+};
 
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Smart pointers
-///////////////////////////////////////////////////////////////////////////////
-
-//! The OgreSDK does not ship Boost with the ptr_container library, so we will
-//! use regular STL containers of Boost's ptr_containers. Unfortunately, the 
-//! syntax of this can be kludgy, so these macros are supposed to save a bit of 
-//! typing and improve readability. They should be used to declare new 
-//! smart pointers in method invocations.
-
-//! This is used to create a smart pointer to an Action
-#define SPA(x) (boost::shared_ptr<Action>(x))
 
 
 #endif

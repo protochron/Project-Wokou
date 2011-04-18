@@ -133,7 +133,7 @@ set(HDRS
  
 set(SRCS
   Source/main.cpp
-  Source/Actions/Action.cpp
+  #Source/Actions/Action.cpp
 )
  
 include_directories( ${OIS_INCLUDE_DIRS}

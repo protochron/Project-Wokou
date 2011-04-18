@@ -24,11 +24,26 @@ private:
 };
 
 
+bool func(const Action& a)
+{
+  return false;
+}
+
+
 
 int main(int argc, char **argv)
 {
+  /* 
+  Action a(func);
+  
+  if (a.handle()) {
+    return 0;
+  }*/
+  
   Example app;
   app.go();
+
+  
   
   return 0;
 }
