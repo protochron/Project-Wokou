@@ -6,7 +6,7 @@
 #include <iostream>
 #include <queue>
 #include <boost/shared_ptr.hpp>
-
+#include <asio.hpp>
 using namespace std;
 
 class Example : public ExampleApplication {

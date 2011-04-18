@@ -23,7 +23,7 @@
 #define _PIRATE_NETWORK_H_
 
 #include <boost/shared_ptr.hpp>
-//#include <boost/asio.hpp>
+#include <asio.hpp>
 
 
 /** This serves as the interface to all network-related actions in the game. It

@@ -25,7 +25,7 @@ project(${APP_NAME})
 set(CMAKE_OSX_ARCHITECTURES "i386")
 
 # Set 10.6 as the base SDK by default
-set(XCODE_ATTRIBUTE_SDKROOT macosx10.6)
+set(XCODE_ATTRIBUTE_SDKROOT macosx10.5)
 
 
 if ("$ENV{OGRE_SDK}" STREQUAL "")
@@ -55,6 +55,9 @@ if (APPLE)
   include_directories("$ENV{OGRE_SDK}/include/OIS")
   include_directories("$ENV{OGRE_SD}/boost_1_42")
 endif(APPLE)
+ 
+include_directories("${CMAKE_SOURCE_DIR}/Include")
+ 
  
 if(UNIX AND NOT APPLE)
 	set(CMAKE_MODULE_PATH "CMake/")
@@ -108,7 +111,7 @@ if (NOT OGRE_BUILD_PLATFORM_IPHONE)
 	endif ()
 	set(Boost_ADDITIONAL_VERSIONS "1.44" "1.44.0" "1.42" "1.42.0" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37" )
 	# Components that need linking (NB does not include header-only components like bind)
-	set(OGRE_BOOST_COMPONENTS thread date_time)
+	set(OGRE_BOOST_COMPONENTS thread date_time system)
 	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
 	if (NOT Boost_FOUND)
 		# Try again with the other type of libs
