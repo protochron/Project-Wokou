@@ -22,6 +22,7 @@
 #ifndef _PIRATES_ACTION_H_
 #define _PIRATES_ACTION_H_
 
+#include <string>
 #include <boost/function.hpp>
 #include <OGRE/OgreVector3.h>
 
@@ -48,24 +49,34 @@ typedef boost::function<bool (const Action& a)> handler_t;
 class Action {
 public:
   
-  Action(const handler_t& handler);
+  Action(const handler_t& handler, const std::string& msg = "");
 
-  /** Calls the handler function with the current action as a parameter.
-   */
+  //! Calls the handler function with the current action as a parameter.
   inline bool handle();
+
+  //! Outputs the associated log message to the log if there is a message
+  inline void log();
 
 public:
 
   //! The id of the player who generated the action
   player_id id;
   
+  //! The target of the player if they are attacking somebody
+  player_id target;
+  
+  //! The name of the player (if a new player is being added)
+  std::string name;
+  
   //! The location to move the player to, if they are moving
   Ogre::Vector3 to;
-
+  
+  //! The text that will be shown to the player (through chat or dialog)
+  std::string text;
 
 private:
   handler_t handler_;
-  
+  std::string logger_;
 };
 
 

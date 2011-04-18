@@ -22,8 +22,8 @@
 #include "Action.h"
 
 
-Action::Action(const handler_t& handler)
-  : handler_ (handler)
+Action::Action(const handler_t& handler, const std::string& msg = "")
+  : handler_ (handler), logger_ (msg)
 { 
 
 }
@@ -33,4 +33,11 @@ inline
 bool Action::handle()
 {
     return handler_(*this);
+}
+
+inline
+void Action::log()
+{
+  if (logger_ != "")
+    std::cerr << "Action::log() : " << logger_ << std::endl;
 }
