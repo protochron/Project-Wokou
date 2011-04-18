@@ -129,10 +129,13 @@ endif()
 set(HDRS
 	Source/Actions/Action.h
 	Source/Common/Common.h
+	Source/Networking/Network.h
 )
  
 set(SRCS
   Source/main.cpp
+  Source/Actions/Action.cpp
+  Source/Networking/Network.cpp
   #Source/Actions/Action.cpp
 )
  
