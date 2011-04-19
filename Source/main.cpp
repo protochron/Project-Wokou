@@ -12,8 +12,21 @@ public:
 	
   void createScene()
   {
-    Ogre::Entity *ent = mSceneMgr->createEntity("MyEntity", "penguin.mesh");
-    mSceneMgr->getRootSceneNode()->attachObject(ent);
+    Ogre::Entity* peng = mSceneMgr->createEntity("Peng", "penguin.mesh");
+    Ogre::Entity* ogre = mSceneMgr->createEntity("Ogre", "ogrehead.mesh");
+    
+    mSceneMgr->getRootSceneNode()->attachObject(peng);
+    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    headNode->attachObject(ogre);
+    
+    // Set ambient light
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    
+    // Create a light
+    Ogre::Light* l = mSceneMgr->createLight("MainLight");
+    l->setPosition(20,80,50);
+    
+
   }
   
 private:
@@ -32,10 +45,16 @@ int main(int argc, char **argv)
     return 0;
   }*/
   
-//  Example app;
-//  app.go();
+  Example app;
+  try {
+    app.go();
+  } 
+  catch( Ogre::Exception& e ){
+    std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
 
-    while (1) { }
+  }
+  
+  //while (1) { }
   
   
   return 0;
