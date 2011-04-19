@@ -25,7 +25,7 @@ project(${APP_NAME})
 set(CMAKE_OSX_ARCHITECTURES "i386")
 
 # Set 10.6 as the base SDK by default
-set(XCODE_ATTRIBUTE_SDKROOT macosx10.6)
+set(XCODE_ATTRIBUTE_SDKROOT macosx10.5)
 
 
 if ("$ENV{OGRE_SDK}" STREQUAL "")
@@ -55,6 +55,9 @@ if (APPLE)
   include_directories("$ENV{OGRE_SDK}/include/OIS")
   include_directories("$ENV{OGRE_SD}/boost_1_42")
 endif(APPLE)
+ 
+include_directories("${CMAKE_SOURCE_DIR}/Include")
+ 
  
 if(UNIX AND NOT APPLE)
 	set(CMAKE_MODULE_PATH "CMake/")
@@ -129,10 +132,13 @@ endif()
 set(HDRS
 	Source/Actions/Action.h
 	Source/Common/Common.h
+	Source/Networking/Network.h
 )
  
 set(SRCS
   Source/main.cpp
+  Source/Actions/Action.cpp
+  Source/Networking/Network.cpp
   #Source/Actions/Action.cpp
 )
  

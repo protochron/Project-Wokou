@@ -3,9 +3,7 @@
 #include <OGRE/OgreLogManager.h>
 #include "Actions/Action.h"
 #include "Common/Common.h"
-#include <iostream>
-#include <queue>
-#include <boost/shared_ptr.hpp>
+#include "Networking/Network.h"
 
 using namespace std;
 
@@ -23,16 +21,10 @@ private:
   
 };
 
-
-bool func(const Action& a)
-{
-  return false;
-}
-
-
-
 int main(int argc, char **argv)
 {
+  //Network* x = Network::instance();
+  //x->connect("64.90.182.55");
   /* 
   Action a(func);
   
@@ -40,9 +32,10 @@ int main(int argc, char **argv)
     return 0;
   }*/
   
-  Example app;
-  app.go();
+//  Example app;
+//  app.go();
 
+    while (1) { }
   
   
   return 0;

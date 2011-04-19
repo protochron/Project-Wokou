@@ -22,10 +22,9 @@
 #include "Action.h"
 
 
-Action::Action(const handler_t& handler, const std::string& msg = "")
+Action::Action(const handler_t& handler, const std::string& msg)
   : handler_ (handler), logger_ (msg)
 { 
-
 }
 
 
@@ -34,6 +33,7 @@ bool Action::handle()
 {
     return handler_(*this);
 }
+
 
 inline
 void Action::log()
