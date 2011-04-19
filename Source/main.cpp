@@ -23,8 +23,8 @@ private:
 
 int main(int argc, char **argv)
 {
-  //Network* x = Network::instance();
-  //x->connect("64.90.182.55");
+  Network* x = Network::instance();
+  x->connect("64.90.182.55");
   /* 
   Action a(func);
   

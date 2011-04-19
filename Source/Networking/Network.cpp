@@ -44,7 +44,7 @@ Network* Network::instance()
 bool Network::connect(const std::string& addr)
 {
   tcp::resolver resolver(io_);
-  tcp::resolver::query query(addr.c_str(), "daytime");
+  tcp::resolver::query query(addr.c_str(), "6789");
   tcp::resolver::iterator endpoints = resolver.resolve(query);
   asio::async_connect(socket_, endpoints, 
     boost::bind(&Network::handle_connect, this, 
