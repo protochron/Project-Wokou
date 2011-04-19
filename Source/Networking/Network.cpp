@@ -20,8 +20,13 @@
  *****************************************************************************/
 
 #include "Network.h"
+#include <iostream>
+ using namespace std;
+ 
+boost::shared_ptr<Network> Network::instance_;
 
 Network::Network()
+  : socket_(io_)
 {
   
 }
@@ -35,3 +40,22 @@ Network* Network::instance()
     return instance_.get();
   }
 }
+
+bool Network::connect(const std::string& addr)
+{
+  tcp::resolver resolver(io_);
+  tcp::resolver::query query(addr.c_str(), "daytime");
+  tcp::resolver::iterator endpoints = resolver.resolve(query);
+  asio::async_connect(socket_, endpoints, 
+    boost::bind(&Network::handle_connect, this, 
+      asio::placeholders::error));
+  //asio::connect(socket_, endpoint_iterator);
+}
+
+
+void Network::handle_connect(const asio::error_code& error)
+{
+  cout << "Yaaaaaay!" << endl;
+}
+
+

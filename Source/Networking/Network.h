@@ -23,8 +23,10 @@
 #define _PIRATE_NETWORK_H_
 
 #include <boost/shared_ptr.hpp>
+#include <boost/bind.hpp>
 #include <asio.hpp>
 
+using asio::ip::tcp;
 
 /** This serves as the interface to all network-related actions in the game. It
  * is a Singleton, so only one instance can be created in the game. This means
@@ -38,7 +40,8 @@ public:
   //! Retrieves the networking instance or creates it if it hasn't been.
   static Network* instance();
   
-  
+  //! Connect to a remote server, given by an IP or address.
+  bool connect(const std::string& addr);
   
   
 protected:
@@ -46,14 +49,18 @@ protected:
   // Do not allow creation of this class. It's a Singleton, baby!
   Network();
   
+  //! Called when the socket makes a connection
+  void handle_connect(const asio::error_code& error);
+  
+  
+  
+  
 private:
   
   static boost::shared_ptr<Network> instance_;
-  
+  asio::io_service io_;
+  tcp::socket socket_;
 };
-
-
-boost::shared_ptr<Network> Network::instance_;
 
 
 
