@@ -57,7 +57,7 @@ if (APPLE)
 endif(APPLE)
  
 include_directories("${CMAKE_SOURCE_DIR}/Include")
- 
+include_directories("${CMAKE_SOURCE_DIR}/Include/bullet")
  
 if(UNIX AND NOT APPLE)
 	set(CMAKE_MODULE_PATH "CMake/")

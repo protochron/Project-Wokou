@@ -1,13 +1,14 @@
 
-#include <OGRE/ExampleApplication.h>
-#include <OGRE/OgreLogManager.h>
+//#include <OGRE/ExampleApplication.h>
+//#include <OGRE/OgreLogManager.h>
 #include "Actions/Action.h"
 #include "Common/Common.h"
 #include "Networking/Network.h"
-
+#include <fstream>
+//#include <bullet/btBulletDynamicsCommon.h>
 using namespace std;
 
-class Example : public ExampleApplication {
+/*class Example : public ExampleApplication {
 public:
 	
   void createScene()
@@ -32,12 +33,16 @@ public:
 private:
   
   
-};
+};*/
 
 int main(int argc, char **argv)
 {
   Network* x = Network::instance();
-  x->connect("64.90.182.55");
+  x->connect("127.0.0.1");
+  
+  Action a;
+  Network::instance()->send(a, UNKNOWN);
+  
   /* 
   Action a(func);
   
@@ -45,16 +50,16 @@ int main(int argc, char **argv)
     return 0;
   }*/
   
-  Example app;
-  try {
-    app.go();
-  } 
-  catch( Ogre::Exception& e ){
-    std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
+  //Example app;
+  //try {
+  //  app.go();
+  //} 
+  //catch( Ogre::Exception& e ){
+  //  std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
 
-  }
+  //}
   
-  //while (1) { }
+  while (1) { }
   
   
   return 0;

@@ -23,13 +23,12 @@
 #define _PIRATE_COMMON_H_
 
 
-//! Every player is assigned a unique integer ID ranging from 0 to 9999999
+//! Every player is assigned a unique integer ID ranging from 1 to 9999999
 typedef unsigned int player_id;
 
 //! Some actions in the game occur without a target. In this case, the target
 //! should be specified as NO_PLAYER.
 const player_id NO_PLAYER = 1000000;
-
 
 
 
@@ -47,6 +46,34 @@ const player_id NO_PLAYER = 1000000;
 
 //! This is used to create a smart pointer to an Action
 #define SPA(x) (boost::shared_ptr<Action>(x))
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Actions
+///////////////////////////////////////////////////////////////////////////////
+
+/** Although a single Action class represents all possible actions, it order to
+ * transfer an action across the network, the code needs to know what type
+ * of action it is transferring. This enum is used only in the case of 
+ * transporting an action across the network.
+ */
+
+enum action_t {
+  UNKNOWN,
+  MOVE_PLAYER,
+  WARP_PLAYER,
+  ATTACK_PLAYER
+};
+
+
+
+
 
 
 #endif
