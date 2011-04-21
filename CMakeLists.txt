@@ -202,6 +202,9 @@ if(UNIX AND NOT APPLE)
   # Copy all the media files into the app bundle
   file(COPY "$ENV{OGRE_SDK}/Samples/Media" DESTINATION "${BUNDLE_CONTENTS}")
 
+  # Copy all the local media files into the app bundle
+  file(COPY "${CMAKE_SOURCE_DIR}/Media" DESTINATION "${BUNDLE_CONTENTS}")
+
   # Copy the local game resources to the bundle
   file(GLOB configs "$ENV{CMAKE_CURRENT_BINARY_DIR}UnixResources/*.cfg")
   
