@@ -2,6 +2,7 @@
 //#include <OGRE/ExampleApplication.h>
 //#include <OGRE/OgreLogManager.h>
 #include "Actions/Action.h"
+#include "Actions/ActionPump.h"
 #include "Common/Common.h"
 #include "Networking/Network.h"
 #include "Graphics/Graphics.h"

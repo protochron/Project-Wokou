@@ -131,6 +131,7 @@ endif()
  
 set(HDRS
 	Source/Actions/Action.h
+	Source/Actions/ActionPump.h
 	Source/Common/Common.h
 	Source/Networking/Network.h
 )
@@ -138,9 +139,10 @@ set(HDRS
 set(SRCS
   Source/main.cpp
   Source/Actions/Action.cpp
+  Source/Actions/ActionPump.cpp
   Source/Networking/Network.cpp
   Source/Graphics/Graphics.cpp
-  #Source/Actions/Action.cpp
+  
 )
  
 include_directories( ${OIS_INCLUDE_DIRS}
