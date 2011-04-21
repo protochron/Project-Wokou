@@ -57,7 +57,7 @@ if (APPLE)
 endif(APPLE)
  
 include_directories("${CMAKE_SOURCE_DIR}/Include")
- 
+include_directories("${CMAKE_SOURCE_DIR}/Include/bullet")
  
 if(UNIX AND NOT APPLE)
 	set(CMAKE_MODULE_PATH "CMake/")
@@ -243,8 +243,11 @@ if(APPLE)
 		CONFIGURATIONS All
   )
 
-  # Copy all the media files into the app bundle
-  file(COPY "$ENV{OGRE_SDK}/media" DESTINATION "${BUNDLE_CONTENTS}")
+  # Copy all the media files into the app bundle from the SDK
+  file(COPY "$ENV{OGRE_SDK}/Media" DESTINATION "${BUNDLE_CONTENTS}")
+
+  # Copy all the local media files into the app bundle
+  file(COPY "$ENV{CMAKE_CURRENT_BINARY_DIR}Media" DESTINATION "${BUNDLE_CONTENTS}")
 
   # Copy the local game resources to the bundle
   file(COPY "$ENV{CMAKE_CURRENT_BINARY_DIR}Resources" DESTINATION "${BUNDLE_CONTENTS}")

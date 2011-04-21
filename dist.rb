@@ -10,5 +10,5 @@
 `rm CMakeCache.txt`
 `rm Makefile`
 `rm cmake_install.cmake`
-`rm *.xcodeproj`
+`rm -rf *.xcodeproj`
 

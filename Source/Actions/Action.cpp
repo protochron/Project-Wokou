@@ -20,12 +20,11 @@
  *****************************************************************************/
 
 #include "Action.h"
-
+#include <sstream>
 
 Action::Action(const handler_t& handler, const std::string& msg)
-  : handler_ (handler), logger_ (msg)
-{ 
-}
+  : handler_ (handler), logger_ (msg), target (NO_PLAYER), id(NO_PLAYER)
+{ }
 
 
 inline 
@@ -40,4 +39,33 @@ void Action::log()
 {
   if (logger_ != "")
     std::cerr << "Action::log() : " << logger_ << std::endl;
+}
+
+std::string Action::toNetworkFormat() const
+{
+  std::string object;
+  std::stringstream stream(object);
+  
+  stream << "{ \"id\": ";
+  stream << id;
+  
+  if (target != NO_PLAYER) {
+    stream << ", \"target\": ";
+    stream << target;
+  }
+  
+  if (name != "") {
+    stream << ", \"name\": ";
+    stream << name;
+  }
+  
+  // Need to translate Vector3 to
+  
+  if (text != "") {
+    stream << ", \"text\": ";
+    stream << text;
+  }
+  
+  stream << " }";
+  return stream.str();
 }

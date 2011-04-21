@@ -30,8 +30,8 @@
 
 class Action;
 
- //! Actions are handled by methods called "handlers". A pointer to a handler
- //! function is captured in the handler_t type.
+//! Actions are handled by methods called "handlers". A pointer to a handler
+//! function is captured in the handler_t type.
 typedef boost::function<bool (const Action& a)> handler_t;
 
 
@@ -44,18 +44,26 @@ typedef boost::function<bool (const Action& a)> handler_t;
  * Currently, this class just contains all the possible parameters that could
  * be necessary for actions instead of only having the ones that are relevant 
  * to a specific action. This may be changed later.
+ *
+ * If more fields are added, the toNetworkFormat method needs to be changed
+ * to include the field in the translated object format.
  */
 
 class Action {
 public:
   
-  Action(const handler_t& handler, const std::string& msg = "");
+  Action(const handler_t& handler=NULL, const std::string& msg = "");
 
   //! Calls the handler function with the current action as a parameter.
   inline bool handle();
 
   //! Outputs the associated log message to the log if there is a message
   inline void log();
+
+  //! Translates the Action object into a network-friendly format
+  std::string toNetworkFormat() const;
+  
+ 
 
 public:
 
