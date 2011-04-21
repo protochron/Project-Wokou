@@ -4,6 +4,7 @@
 #include "Actions/Action.h"
 #include "Common/Common.h"
 #include "Networking/Network.h"
+#include "Graphics/Graphics.h"
 
 using namespace std;
 
@@ -16,7 +17,8 @@ public:
     Ogre::Entity* ogre = mSceneMgr->createEntity("Ogre", "ogrehead.mesh");
     
     mSceneMgr->getRootSceneNode()->attachObject(peng);
-    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->
+      createChildSceneNode("Test", Ogre::Vector3( 50, 0, 0 ));
     headNode->attachObject(ogre);
     
     // Set ambient light
