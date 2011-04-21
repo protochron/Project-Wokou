@@ -4,10 +4,8 @@
 #include "Actions/Action.h"
 #include "Common/Common.h"
 #include "Networking/Network.h"
-<<<<<<< HEAD
 #include "Graphics/Graphics.h"
 
-=======
 #include <fstream>
 #include <OGRE/ExampleApplication.h>
 using namespace std;
