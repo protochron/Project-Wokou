@@ -30,7 +30,7 @@ asio::io_service Network::io_;
 
 
 Network::Network()
-  : socket_(io_), MAX_ACTION_LENGTH (2048)
+  : socket_(io_)
 { }
 
 

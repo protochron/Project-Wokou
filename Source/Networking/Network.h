@@ -53,9 +53,6 @@ public:
   //! Every action is paired with a specific action type.
   typedef std::pair<const Action, action_t> action_pair_t;
   
-  //! The maximum length of an action sent across the network
-  const size_t MAX_ACTION_LENGTH;
-  
 public:
   
   //! Retrieves the network instance or creates it if it hasn't been.
