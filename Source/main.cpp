@@ -15,12 +15,11 @@ public:
 	
   void createScene()
   {
-    Ogre::Entity* peng = mSceneMgr->createEntity("Peng", "Default.mesh");
+    Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "Default.mesh");
     
-    mSceneMgr->getRootSceneNode()->attachObject(peng);
+    mSceneMgr->getRootSceneNode()->attachObject(cube);
     Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-    headNode->attachObject(ogre);
-    
+        
     // Set ambient light
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
     
