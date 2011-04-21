@@ -99,12 +99,12 @@ void Network::handle_write(const asio::error_code& error)
     const action_t type = out_queue_.front().second;
     
     if (!out_queue_.empty()) {
-      std::string msg = action.toNetworkFormat();
+      /*std::string msg = action.toNetworkFormat();
   
       asio::async_write(socket_, 
         asio::buffer(msg, msg.length()),
         boost::bind(&Network::handle_write, this,
-          asio::placeholders::error));
+          asio::placeholders::error));*/
     }
   }
 }
@@ -127,10 +127,10 @@ void Network::write(const Action& action, const action_t& type)
   out_queue_.push_back(make_pair(action, type));
 
   if (!write_in_progress) {
-    std::string msg = action.toNetworkFormat();
+    /*std::string msg = action.toNetworkFormat();
   
     asio::async_write(socket_, asio::buffer(msg, msg.length()),
       boost::bind(&Network::handle_write, this,
-        asio::placeholders::error));
+        asio::placeholders::error));*/
   }
 }

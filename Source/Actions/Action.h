@@ -24,15 +24,43 @@
 
 #include <string>
 #include <boost/function.hpp>
+#include <boost/variant.hpp>
 #include <OGRE/OgreVector3.h>
 
 #include "Common/Common.h"
 
-class Action;
+
+//! Represents the possible values that can be stored in an Action.
+typedef boost::variant< unsigned int,                   // player IDs
+                        std::string                 // player names
+                      > value_t;
+
+
+/** This is an abstraction of game mechanics. Instead of directly handling
+ * things like keypresses, the system generates an Action object that 
+ * contains data about the event. This object is bound to a method that knows
+ * how to handle that specific message. These are then handled at the game's
+ * discretion.
+ *
+ * An Action is just an associative array of values. It is easy to add 
+ * new fields -- simply put them in. Make certain that value_t's definition
+ * is changed to include any new types that can be stored.
+ *
+ */
+ 
+typedef std::map<std::string, value_t> Action;
+
 
 //! Actions are handled by methods called "handlers". A pointer to a handler
 //! function is captured in the handler_t type.
 typedef boost::function<bool (const Action& a)> handler_t;
+
+
+
+
+std::string toNetworkFormat(const Action& a);
+
+
 
 
 /** This is an abstraction of game mechanics. Instead of directly handling
@@ -48,7 +76,7 @@ typedef boost::function<bool (const Action& a)> handler_t;
  * If more fields are added, the toNetworkFormat method needs to be changed
  * to include the field in the translated object format.
  */
-
+/*
 class Action {
 public:
   
@@ -87,6 +115,6 @@ private:
   std::string logger_;
 };
 
-
+*/
 
 #endif

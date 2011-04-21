@@ -22,15 +22,13 @@
 #ifndef _PIRATE_NETWORK_H_
 #define _PIRATE_NETWORK_H_
 
-class Action;
-
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 #include <deque>
 #include <utility>
 #include <string.h>
 #include <asio.hpp>
-
+#include "Actions/Action.h"
 #include "Common/Common.h"
 
 using asio::ip::tcp;
