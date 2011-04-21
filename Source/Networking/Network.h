@@ -50,7 +50,11 @@ using std::pair;
 class Network {
 public:
   
+  //! Every action is paired with a specific action type.
   typedef std::pair<const Action, action_t> action_pair_t;
+  
+  //! The maximum length of an action sent across the network
+  const size_t MAX_ACTION_LENGTH;
   
 public:
   
@@ -63,6 +67,9 @@ public:
   //! Sends an Action across the network.
   void send(const Action& action, const action_t& type);
   
+  //! Provides a means of accessing the IO service that powers networking
+  //! This is used to spawn threads off for the networking component of the code.
+  static asio::io_service& service();
   
 protected:
   
@@ -70,17 +77,23 @@ protected:
   Network();
   
   //! Called when the socket makes a connection
-  void handle_connect(const asio::error_code& error);
+  void handle_connect(const asio::error_code&, tcp::resolver::iterator);
   
   //! Called after data has been written to the server
   void handle_write(const asio::error_code& error);
 
+  //! Called after data has been read from the server
+  void handle_read(const asio::error_code& error, std::size_t size);
+
+  //! Places the send request on the queue
+  void write(const Action& action, const action_t& type);
   
 private:  
   static boost::shared_ptr<Network> instance_;
-  asio::io_service io_;
+  static asio::io_service io_;
   tcp::socket socket_;
   std::deque<action_pair_t> out_queue_;
+  asio::streambuf input_buffer_;
 };
 
 

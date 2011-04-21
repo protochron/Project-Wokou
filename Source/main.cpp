@@ -5,6 +5,8 @@
 #include "Common/Common.h"
 #include "Networking/Network.h"
 #include <fstream>
+#include <OGRE/OgreLogManager.h>
+#include <OGRE/OgreRoot.h>
 //#include <bullet/btBulletDynamicsCommon.h>
 using namespace std;
 
@@ -39,10 +41,17 @@ int main(int argc, char **argv)
 {
   Network* x = Network::instance();
   x->connect("127.0.0.1");
-  
+
+  // This is necessary to have the networking branch off on its own thread.
+  asio::thread t(boost::bind(&asio::io_service::run, &Network::service()));
+
   Action a;
   Network::instance()->send(a, UNKNOWN);
-  
+  Network::instance()->send(a, UNKNOWN);
+  Network::instance()->send(a, UNKNOWN);
+
+
+
   /* 
   Action a(func);
   

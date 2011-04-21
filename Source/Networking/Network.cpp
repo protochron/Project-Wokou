@@ -20,22 +20,19 @@
  *****************************************************************************/
 
 #include "Network.h"
-#include <iostream>
 #include "Actions/Action.h"
+
+#include <iostream>
 using namespace std;
  
 boost::shared_ptr<Network> Network::instance_;
-
-
-bool func(const Action& a)
-{
-  return true;
-}
+asio::io_service Network::io_;
 
 
 Network::Network()
-  : socket_(io_)
+  : socket_(io_), MAX_ACTION_LENGTH (2048)
 { }
+
 
 Network* Network::instance()
 {
@@ -47,6 +44,12 @@ Network* Network::instance()
   }
 }
 
+
+asio::io_service& Network::service()
+{
+  return io_;
+}
+
 bool Network::connect(const std::string& addr)
 {
   tcp::resolver resolver(io_);
@@ -55,46 +58,78 @@ bool Network::connect(const std::string& addr)
   
   asio::async_connect(socket_, endpoints,
     boost::bind(&Network::handle_connect, this, 
-      asio::placeholders::error));
+      asio::placeholders::error,
+      endpoints));
 
-  io_.run();
 }
 
-void Network::handle_connect(const asio::error_code& error)
+void Network::handle_connect( const asio::error_code& error,
+                              tcp::resolver::iterator endpoint_iterator)
 {
-/*  if (!error) {
-    asio::async_read(socket_,
-      asio::buffer(read_msg_.data(), chat_message::header_length),
-        boost::bind(&chat_client::handle_read_header, this,
-        asio::placeholders::error));
-  }*/
+  if (!error) {
 
+    asio::async_read_until(socket_, input_buffer_, '\n',
+        boost::bind(&Network::handle_read, this,
+        asio::placeholders::error, 35));
+     
+  } else if (endpoint_iterator != tcp::resolver::iterator()) {
+
+    socket_.close();
+    tcp::endpoint endpoint = *endpoint_iterator;
+    socket_.async_connect(endpoint,
+        boost::bind(&Network::handle_connect, this,
+          asio::placeholders::error, ++endpoint_iterator));
+
+  } else {
+    throw "Could not connect to remote server. :(";
+  }
 }
 
 void Network::send(const Action& action, const action_t& type)
 {
-  out_queue_.push_back(make_pair(action, type));
-
-  if (out_queue_.empty()) {
-    std::string msg = action.toNetworkFormat();
-  
-    asio::async_write(socket_, asio::buffer(msg, msg.length()),
-      boost::bind(&Network::handle_write, this,
-        asio::placeholders::error));
-  }
-  
+  io_.post(boost::bind(&Network::write, this, action, type));
 }
 
 
 void Network::handle_write(const asio::error_code& error)
 {
   if (!error) {
+    out_queue_.pop_front();
     const Action& action(out_queue_.front().first);
     const action_t type = out_queue_.front().second;
+    
+    if (!out_queue_.empty()) {
+      std::string msg = action.toNetworkFormat();
+  
+      asio::async_write(socket_, 
+        asio::buffer(msg, msg.length()),
+        boost::bind(&Network::handle_write, this,
+          asio::placeholders::error));
+    }
+  }
+}
+
+void Network::handle_read(const asio::error_code& error, const std::size_t bytes)
+{
+  std::string str;
+  std::istream is(&input_buffer_);
+  std::getline(is, str);
+  
+  asio::async_read_until(socket_, input_buffer_, '\n',
+      boost::bind(&Network::handle_read, this,
+      asio::placeholders::error, 35));  
+}
+
+
+void Network::write(const Action& action, const action_t& type)
+{
+  bool write_in_progress = !out_queue_.empty();
+  out_queue_.push_back(make_pair(action, type));
+
+  if (!write_in_progress) {
     std::string msg = action.toNetworkFormat();
   
-    asio::async_write(socket_, 
-      asio::buffer(msg, msg.length()),
+    asio::async_write(socket_, asio::buffer(msg, msg.length()),
       boost::bind(&Network::handle_write, this,
         asio::placeholders::error));
   }

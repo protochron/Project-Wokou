@@ -23,7 +23,7 @@
 #include <sstream>
 
 Action::Action(const handler_t& handler, const std::string& msg)
-  : handler_ (handler), logger_ (msg), target (NO_PLAYER)
+  : handler_ (handler), logger_ (msg), target (NO_PLAYER), id(NO_PLAYER)
 { }
 
 
