@@ -28,15 +28,16 @@
 #include <OGRE/OgreVector3.h>
 
 #include "Common/Common.h"
+#include "Actions/Action.h"
 
-
-//! Represents the possible values that can be stored in an Action.
-typedef boost::variant< unsigned int,                   // player IDs
+/** Represents the possible values that can be stored in an Action. */
+typedef boost::variant< player_id,                  // player IDs
                         std::string                 // player names
                       > value_t;
 
 
-/** This is an abstraction of game mechanics. Instead of directly handling
+/** 
+ * This is an abstraction of game mechanics. Instead of directly handling
  * things like keypresses, the system generates an Action object that 
  * contains data about the event. This object is bound to a method that knows
  * how to handle that specific message. These are then handled at the game's
@@ -45,76 +46,25 @@ typedef boost::variant< unsigned int,                   // player IDs
  * An Action is just an associative array of values. It is easy to add 
  * new fields -- simply put them in. Make certain that value_t's definition
  * is changed to include any new types that can be stored.
- *
  */
- 
+
 typedef std::map<std::string, value_t> Action;
 
 
-//! Actions are handled by methods called "handlers". A pointer to a handler
-//! function is captured in the handler_t type.
+/**
+ * Actions are handled by methods called "handlers". A pointer to a handler
+ * function is captured in the handler_t type.
+ */
 typedef boost::function<bool (const Action& a)> handler_t;
 
 
-
-
+/**
+ * Converts an Action to a network-friendly format.
+ * @param[in] a The action to convert
+ * @return A string containing the formatted action
+ */
+ 
 std::string toNetworkFormat(const Action& a);
 
-
-
-
-/** This is an abstraction of game mechanics. Instead of directly handling
- * things like keypresses, the system generates an Action object that 
- * contains data about the event. This object is bound to a method that knows
- * how to handle that specific message. These are then handled at the game's
- * discretion.
- *
- * Currently, this class just contains all the possible parameters that could
- * be necessary for actions instead of only having the ones that are relevant 
- * to a specific action. This may be changed later.
- *
- * If more fields are added, the toNetworkFormat method needs to be changed
- * to include the field in the translated object format.
- */
-/*
-class Action {
-public:
-  
-  Action(const handler_t& handler=NULL, const std::string& msg = "");
-
-  //! Calls the handler function with the current action as a parameter.
-  inline bool handle();
-
-  //! Outputs the associated log message to the log if there is a message
-  inline void log();
-
-  //! Translates the Action object into a network-friendly format
-  std::string toNetworkFormat() const;
-  
- 
-
-public:
-
-  //! The id of the player who generated the action
-  player_id id;
-  
-  //! The target of the player if they are attacking somebody
-  player_id target;
-  
-  //! The name of the player (if a new player is being added)
-  std::string name;
-  
-  //! The location to move the player to, if they are moving
-  Ogre::Vector3 to;
-  
-  //! The text that will be shown to the player (through chat or dialog)
-  std::string text;
-
-private:
-  handler_t handler_;
-  std::string logger_;
-};
-
-*/
 
 #endif

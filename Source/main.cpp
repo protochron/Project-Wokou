@@ -43,10 +43,12 @@ int main(int argc, char **argv)
   asio::thread t(boost::bind(&asio::io_service::run, &Network::service()));
 
   Action a;
+  a["id"] = 4;
+  a["target"] = 300;
   Network::instance()->send(a, UNKNOWN);
 
+  t.join();
   */
-  
   Example app;
   try {
     app.go();

@@ -21,53 +21,28 @@
 
 #include "Action.h"
 #include <sstream>
+#include <string>
+#include <boost/foreach.hpp>
 
-/*
-Action::Action(const handler_t& handler, const std::string& msg)
-  : handler_ (handler), logger_ (msg), target (NO_PLAYER), id(NO_PLAYER)
-{ }
-
-
-inline 
-bool Action::handle()
+std::string toNetworkFormat(const Action& a)
 {
-    return handler_(*this);
-}
+  std::string converted;
+  std::stringstream stream(converted);
+  stream << "{";
 
-
-inline
-void Action::log()
-{
-  if (logger_ != "")
-    std::cerr << "Action::log() : " << logger_ << std::endl;
-}
-
-std::string Action::toNetworkFormat() const
-{
-  std::string object;
-  std::stringstream stream(object);
+  std::pair <std::string, value_t> kv;
   
-  stream << "{ \"id\": ";
-  stream << id;
-  
-  if (target != NO_PLAYER) {
-    stream << ", \"target\": ";
-    stream << target;
+  BOOST_FOREACH(kv, a) {
+    
+    // Surround a string in quotes if we're translating a string.
+    if (std::string* pStr = boost::get<std::string>(&kv.second))
+      stream << kv.first << ": \"" << *pStr << "\", ";
+    else
+      stream << kv.first << ": " << kv.second << ", ";
   }
   
-  if (name != "") {
-    stream << ", \"name\": ";
-    stream << name;
-  }
+  converted = stream.str();
   
-  // Need to translate Vector3 to
-  
-  if (text != "") {
-    stream << ", \"text\": ";
-    stream << text;
-  }
-  
-  stream << " }";
-  return stream.str();
+  // Remove the trailing ", " on the string and add a closing brace
+  return converted.substr(0, converted.length()-2) + "}";
 }
-*/

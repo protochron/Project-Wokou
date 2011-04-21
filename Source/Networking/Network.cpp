@@ -99,12 +99,12 @@ void Network::handle_write(const asio::error_code& error)
     const action_t type = out_queue_.front().second;
     
     if (!out_queue_.empty()) {
-      /*std::string msg = action.toNetworkFormat();
+      std::string msg = toNetworkFormat(action);
   
       asio::async_write(socket_, 
         asio::buffer(msg, msg.length()),
         boost::bind(&Network::handle_write, this,
-          asio::placeholders::error));*/
+          asio::placeholders::error));
     }
   }
 }
@@ -115,6 +115,8 @@ void Network::handle_read(const asio::error_code& error, const std::size_t bytes
   std::istream is(&input_buffer_);
   std::getline(is, str);
   
+  // Need to parse is into an object
+  cout << str << endl;
   asio::async_read_until(socket_, input_buffer_, '\n',
       boost::bind(&Network::handle_read, this,
       asio::placeholders::error, 35));  
@@ -127,10 +129,10 @@ void Network::write(const Action& action, const action_t& type)
   out_queue_.push_back(make_pair(action, type));
 
   if (!write_in_progress) {
-    /*std::string msg = action.toNetworkFormat();
+    std::string msg = toNetworkFormat(action);
   
     asio::async_write(socket_, asio::buffer(msg, msg.length()),
       boost::bind(&Network::handle_write, this,
-        asio::placeholders::error));*/
+        asio::placeholders::error));
   }
 }
