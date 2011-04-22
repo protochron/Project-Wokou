@@ -138,6 +138,7 @@ set(HDRS
 set(SRCS
   Source/main.cpp
   Source/Actions/Action.cpp
+  Source/Application/Application.cpp
   Source/Networking/Network.cpp
   Source/Graphics/Graphics.cpp
   #Source/Actions/Action.cpp

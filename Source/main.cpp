@@ -2,12 +2,15 @@
 //#include <OGRE/ExampleApplication.h>
 //#include <OGRE/OgreLogManager.h>
 #include "Actions/Action.h"
+#include "Application/Application.h"
 #include "Common/Common.h"
 #include "Networking/Network.h"
 #include "Graphics/Graphics.h"
 
+#include <iostream>
 #include <fstream>
 #include <OGRE/ExampleApplication.h>
+#include <OGRE/ExampleFrameListener.h>
 using namespace std;
 
 class Example : public ExampleApplication {
@@ -26,12 +29,9 @@ public:
     // Create a light
     Ogre::Light* l = mSceneMgr->createLight("MainLight");
     l->setPosition(20,80,50);
-
   }
-  
+protected:
 private:
-  
-  
 };
 
 int main(int argc, char **argv)
@@ -50,8 +50,10 @@ int main(int argc, char **argv)
   t.join();
   */
   Example app;
+  Application app2;
   try {
-    app.go();
+    //app.go();
+    app2.go();
   } 
   catch( Ogre::Exception& e ) {
     std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
