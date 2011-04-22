@@ -27,6 +27,15 @@
 #include "Actions/Action.h"
 
 
+/**
+ * ActionPump is a thin Singleton wrapper over the STL's deque class. It is
+ * used as a central location for all Actions to be stored. Actions are placed
+ * on the queue when they are generated, but they are removed at the program's
+ * best discretion.
+ *
+ * ActionPump is not thread-safe.
+ */
+
 class ActionPump {
 public:
   
