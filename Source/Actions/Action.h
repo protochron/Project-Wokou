@@ -31,8 +31,9 @@
 #include "Actions/Action.h"
 
 /** Represents the possible values that can be stored in an Action. */
-typedef boost::variant< player_id,                  // player IDs
-                        std::string                 // player names
+typedef boost::variant< float,
+                        std::string,
+                        bool
                       > value_t;
 
 
