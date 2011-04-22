@@ -21,17 +21,19 @@
 
 #include "Graphics.h"
 
+boost::shared_ptr<Graphics> Graphics::instance_;
+
 Graphics::Graphics(){
   
 }
 
 //Blatantly stolen from Cody's Network code.
 Graphics* Graphics::instance(){
-  /* if (instance_)
+  if (instance_)
     return instance_.get();
   else {
     instance_.reset(new Graphics);
     return instance_.get();
-    }*/
+    }
 }
 
