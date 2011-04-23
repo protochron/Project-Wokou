@@ -111,22 +111,13 @@ void Application::chooseSceneManager(){
   mSceneMgr = mRoot->createSceneManager(ST_GENERIC, "ExampleSMInstance");
 }
 
-void Application::createCamera(){
-  // Create the camera
-  mCamera = mSceneMgr->createCamera("PlayerCam");
-  // Position it at 500 in Z direction
-  mCamera->setPosition(Vector3(0,0,500));
-  // Look back along -Z
-  mCamera->lookAt(Vector3(0,0,-300));
-  mCamera->setNearClipDistance(5);
+void Application::createCamera()
+{
+  Graphics::instance()->createCamera(mSceneMgr);
 }
 
 void Application::createFrameListener(){
-  //#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-  //mFrameListener= new Input(mWindow, mCamera, true, true, true);
-  //#else
-  mFrameListener= new Input(mWindow, mCamera); //Risk of screw-uppage here.
-  //#endif
+  mFrameListener= new Input(mWindow); //Risk of screw-uppage here.
   mFrameListener->showDebugOverlay(true);
   mRoot->addFrameListener(mFrameListener);
 }
@@ -151,11 +142,11 @@ void Application::destroyScene(){
 
 void Application::createViewports(){
   // Create one viewport, entire window
-  Viewport* vp = mWindow->addViewport(mCamera);
+  Viewport* vp = mWindow->addViewport(Graphics::instance()->camera());
   vp->setBackgroundColour(ColourValue(0,0,0));
 
   // Alter the camera aspect ratio to match the viewport
-  mCamera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+  Graphics::instance()->camera()->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 }
 
 void Application::setupResources(){

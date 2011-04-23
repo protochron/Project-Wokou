@@ -25,16 +25,62 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 
+#include <OgreCamera.h>
+
+#include "ExampleFrameListener.h"
+
 class Graphics {
- public:
+public:
   //Only allow one instance of the class.
   static Graphics* instance();
   
   //Custom graphics functions go here.
   
- protected:
+  /**
+   * Constructs a new camera with the given SceneManager.
+   */
+  
+  void createCamera(Ogre::SceneManager* sceneMgr);
+  
+  /**
+   * Moves the camera according to the amounts specified. 
+   * 
+   * The parameters represent deltas or how much the object should move in each
+   * direction.
+   */
+   
+   void moveCamera(double dx, double dy, double dz);
+  
+  /**
+   * Warps the camera to the given location.
+   *
+   * The parameters indicate a location, not deltas.
+   */
+  
+   void warpCamera(double x, double y, double z);
+   
+   /**
+    * Rotates the camera according to the amounts specified.
+    *
+    * The parameters represent deltas for the x and y directions.
+    */
+
+    void rotateCamera(double dx, double dy);
+
+    //! Should have a zoom function
+    
+    
+    //! This is used within the Application class to set up a scene.
+    Ogre::Camera* camera() const
+    { return camera_; }
+    
+    
+protected:
   Graphics();
+  
+private:
   static boost::shared_ptr<Graphics> instance_;
+  Ogre::Camera* camera_;
 };
 
 #endif

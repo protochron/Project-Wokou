@@ -1,3 +1,24 @@
+/* Copyright (c) 2011 Cody Miller, Daniel Norris, Brett Hitchcock.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *****************************************************************************/
+
 #include "Input.h"
 
 //This is the only function that is Protected, not Public.
@@ -36,8 +57,10 @@ void Input::updateStats(){
   catch(...) { /* ignore */ }
 }
 
-Input::Input( RenderWindow* win, Camera* cam, bool bufferedKeys, bool bufferedMouse, bool bufferedJoy){
-  mCamera              = cam;
+Input::Input( RenderWindow* win, bool bufferedKeys, bool bufferedMouse, bool bufferedJoy)
+//: mCamera (Graphics::instance()->camera_)
+{
+  std::cout << "INITIALIZING THE INPUT OBJECT" << std::endl;
   mTranslateVector     = Vector3::ZERO;
   mCurrentSpeed        = 0;
   mWindow              = win;
@@ -121,6 +144,8 @@ void Input::windowClosed( RenderWindow* rw ){
 
 //CODY. THIS BEAST IS YOURS TO TAME.
 bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
+  std::cout << "PROCESSING UNBUFFEREDKEYINPUT" << std::endl;
+  
   Real moveScale = mMoveScale;
   if(mKeyboard->isKeyDown(OIS::KC_LSHIFT))
     moveScale *= 10;
@@ -136,10 +161,10 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
     mTranslateVector.y = moveScale;	// Move camera up
   if(mKeyboard->isKeyDown(OIS::KC_PGDOWN))
     mTranslateVector.y = -moveScale;	// Move camera down
-  if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
-    mCamera->yaw(-mRotScale);
-  if(mKeyboard->isKeyDown(OIS::KC_LEFT))
-    mCamera->yaw(mRotScale);
+  //if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
+    //mCamera->yaw(-mRotScale);
+  //if(mKeyboard->isKeyDown(OIS::KC_LEFT))
+    //mCamera->yaw(mRotScale);
   if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) || mKeyboard->isKeyDown(OIS::KC_Q) )
     return false;
   if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 ){
@@ -175,7 +200,7 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
     mTimeUntilNextToggle = 0.5;
     mDebugText = "Saved: " + ss.str();
   }
-  if(mKeyboard->isKeyDown(OIS::KC_R) && mTimeUntilNextToggle <=0){
+  /*if(mKeyboard->isKeyDown(OIS::KC_R) && mTimeUntilNextToggle <=0){
     mSceneDetailIndex = (mSceneDetailIndex+1)%3 ;
     switch(mSceneDetailIndex) {
     case 0 : mCamera->setPolygonMode(PM_SOLID); break;
@@ -183,7 +208,7 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
     case 2 : mCamera->setPolygonMode(PM_POINTS); break;
     }
     mTimeUntilNextToggle = 0.5;
-  }
+  }*/
   static bool displayCameraDetails = false;
   if(mKeyboard->isKeyDown(OIS::KC_P) && mTimeUntilNextToggle <= 0){
     displayCameraDetails = !displayCameraDetails;
@@ -192,9 +217,9 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
       mDebugText = "";
   }
   // Print camera details
-  if(displayCameraDetails)
+  /*if(displayCameraDetails)
     mDebugText = "P: " + StringConverter::toString(mCamera->getDerivedPosition()) +
-      " " + "O: " + StringConverter::toString(mCamera->getDerivedOrientation());
+      " " + "O: " + StringConverter::toString(mCamera->getDerivedOrientation());*/
   // Return true to continue rendering
   return true;
 }
@@ -214,13 +239,19 @@ bool Input::processUnbufferedMouseInput( const FrameEvent& evt ){
   return true;
 }
 
-void Input::moveCamera(){
+void Input::moveCamera()
+{
+//  Graphics::instance()->moveCamera(_, _, _);
+//  Graphics::instance()->rotateCamera(_, _);
+
+
+
   // Make all the changes to the camera
   // Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW
   //(e.g. airplane)
-  mCamera->yaw(mRotX);
+  /*mCamera->yaw(mRotX);
   mCamera->pitch(mRotY);
-  mCamera->moveRelative(mTranslateVector);
+  mCamera->moveRelative(mTranslateVector);*/
 }
 
 void Input::showDebugOverlay( bool show ){

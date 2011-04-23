@@ -23,17 +23,29 @@
 
 boost::shared_ptr<Graphics> Graphics::instance_;
 
-Graphics::Graphics(){
-  
+Graphics::Graphics()
+{
+
 }
 
 //Blatantly stolen from Cody's Network code.
-Graphics* Graphics::instance(){
+Graphics* Graphics::instance()
+{
   if (instance_)
     return instance_.get();
   else {
     instance_.reset(new Graphics);
     return instance_.get();
     }
+}
+
+
+
+void Graphics::createCamera(Ogre::SceneManager* sceneMgr)
+{
+  camera_ = sceneMgr->createCamera("PlayerCam");
+  camera_->setPosition(Vector3(0,0,500));
+  camera_->lookAt(Vector3(0,0,-300));
+  camera_->setNearClipDistance(5);
 }
 
