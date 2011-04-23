@@ -52,7 +52,7 @@ void ActionPump::push_back(Action& a)
   boost::mutex::scoped_lock lock(m);
   
   // Push the latest action onto it
-  queue_.push_back(obj);
+  queue_.push_back(a);
   
   // Unlock the ActionPump deque
   lock.unlock();
@@ -65,7 +65,7 @@ void ActionPump::pop()
   boost::mutex::scoped_lock lock(m);
   
   // Push the latest action onto it
-  queue_.pop();
+  queue_.pop_front();
   
   // Unlock the ActionPump deque
   lock.unlock();
