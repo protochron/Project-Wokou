@@ -27,6 +27,7 @@ set(CMAKE_OSX_ARCHITECTURES "i386")
 # Set 10.6 as the base SDK by default
 set(XCODE_ATTRIBUTE_SDKROOT macosx10.6)
 
+set(CMAKE_OSX_SYSROOT "/")
 
 if ("$ENV{OGRE_SDK}" STREQUAL "")
   message(FATAL_ERROR "The path variable $OGRE_SDK needs to be pointed to the toplevel of the OGRE SDK.")
@@ -99,48 +100,13 @@ set(Boost_USE_STATIC_LIBS        ON)
 set(Boost_USE_MULTITHREADED      ON)
 set(Boost_USE_STATIC_RUNTIME    OFF)
 
-find_package( Boost 1.42.0 COMPONENTS date_time filesystem system thread )
+find_package( Boost 1.42.0 COMPONENTS system date_time filesystem thread )
 
 if (Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
-  link_directories( ${Boost_LIBRARY_DIRS} )
+  #link_directories( ${Boost_LIBRARY_DIRS} )
+  #link_libraries(${Boost_LIBRARIES})
 endif(Boost_FOUND)
- 
-#if (NOT OGRE_BUILD_PLATFORM_IPHONE)
-#  set(Boost_INCLUDE_DIR "$ENV{OGRE_SDK}/boost_1_42")
-
-#	if (WIN32 OR APPLE)
-#		set(Boost_USE_STATIC_LIBS TRUE)
-#	else ()
-		# Statically linking boost to a dynamic Ogre build doesn't work on Linux 64bit
-#		set(Boost_USE_STATIC_LIBS ${OGRE_STATIC})
-#	endif ()
-#	if (MINGW)
-#		# this is probably a bug in CMake: the boost find module tries to look for
-#		# boost libraries with name libboost_*, but CMake already prefixes library
-#		# search names with "lib". This is the workaround.
-#		set(CMAKE_FIND_LIBRARY_PREFIXES ${CMAKE_FIND_LIBRARY_PREFIXES} "")
-#	endif ()
-#	set(Boost_ADDITIONAL_VERSIONS "1.44" "1.44.0" "1.42" "1.42.0" "1.41.0" "1.41" "1.40.0" "1.40" "1.39.0" "1.39" "1.38.0" "1.38" "1.37.0" "1.37" )
-#	# Components that need linking (NB does not include header-only components like bind)
-#	set(OGRE_BOOST_COMPONENTS thread date_time regex)
-#	find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} VERBOSE)
-#	if (NOT Boost_FOUND)
-#		# Try again with the other type of libs
-#		set(Boost_USE_STATIC_LIBS NOT ${Boost_USE_STATIC_LIBS})
-#		find_package(Boost COMPONENTS ${OGRE_BOOST_COMPONENTS} QUIET)
-#	endif()
-	
-#	find_package(Boost QUIET)
-#  
-#	# Set up referencing of Boost
-#	include_directories(${Boost_INCLUDE_DIR})
-#	add_definitions(-DBOOST_ALL_NO_LIB)
-#	set(OGRE_LIBRARIES ${OGRE_LIBRARIES} ${Boost_LIBRARIES})
-#	link_directories( ${Boost_LIBRARY_DIRS} )
-#endif()
-
-
  
 set(HDRS
 	Source/Actions/Action.h
@@ -167,19 +133,17 @@ include_directories( ${OIS_INCLUDE_DIRS}
 )
  
 
-add_executable(${APP_NAME} WIN32 ${HDRS} ${SRCS})
+
+add_executable(${APP_NAME} ${HDRS} ${SRCS})
 
 #set_target_properties(${APP_NAME} PROPERTIES DEBUG_POSTFIX _d)
  
 target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES})
 
-# post-build copy for win32
-#if(WIN32 AND NOT MINGW)
-#	add_custom_command( TARGET ${APP_NAME} PRE_BUILD
-#		COMMAND if not exist .\\dist\\bin mkdir .\\dist\\bin )
-#	add_custom_command( TARGET ${APP_NAME} POST_BUILD
-#		COMMAND copy \"$(TargetPath)\" .\\dist\\bin )
-#endif(WIN32 AND NOT MINGW)
+if (Boost_FOUND)
+#  link_directories( ${Boost_LIBRARY_DIRS} )
+  target_link_libraries(${APP_NAME} ${Boost_LIBRARIES})
+endif(Boost_FOUND)
 
 if(UNIX AND NOT APPLE)
 	set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/${CONFIGURATION})
