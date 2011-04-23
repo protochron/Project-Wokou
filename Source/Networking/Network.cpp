@@ -21,9 +21,11 @@
 
 #include "Network.h"
 #include "Actions/Action.h"
+#include "Actions/ActionPump.h"
 
-#include <iostream>
-using namespace std;
+#include "Common/Parsers/JsonParser.h"
+#include <boost/thread.hpp>
+
  
 boost::shared_ptr<Network> Network::instance_;
 asio::io_service Network::io_;
@@ -99,7 +101,13 @@ void Network::send(const Action& action, const action_t& type)
 void Network::handle_write(const boost::system::error_code& error)
 {
   if (!error) {
+    static boost::mutex m;
+    boost::mutex::scoped_lock lock(m);
+    
     out_queue_.pop_front();
+    
+    lock.unlock();
+    
     const Action& action(out_queue_.front().first);
     const action_t type = out_queue_.front().second;
     
@@ -120,8 +128,18 @@ void Network::handle_read(const boost::system::error_code& error, const std::siz
   std::istream is(&input_buffer_);
   std::getline(is, str);
   
-  // Need to parse is into an object
-  cout << str << endl;
+  Action obj = JsonParser::parse(str);
+  
+  // Lock the ActionPump deque
+  static boost::mutex m;
+  boost::mutex::scoped_lock lock(m);
+  
+  // Push the latest action onto it
+  ActionPump::instance()->queue().push_back(obj);
+  
+  // Unlock the ActionPump deque
+  lock.unlock();
+  
   asio::async_read_until(socket_, input_buffer_, '\n',
       boost::bind(&Network::handle_read, this,
       asio::placeholders::error, 35));  

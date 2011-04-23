@@ -36,9 +36,9 @@ std::string toNetworkFormat(const Action& a)
     
     // Surround a string in quotes if we're translating a string.
     if (std::string* pStr = boost::get<std::string>(&kv.second))
-      stream << kv.first << ": \"" << *pStr << "\", ";
+      stream << '"' << kv.first << "\": \"" << *pStr << "\", ";
     else
-      stream << kv.first << ": " << kv.second << ", ";
+      stream << '"' << kv.first << "\": " << kv.second << ", ";
   }
   
   converted = stream.str();
