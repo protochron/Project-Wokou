@@ -5,6 +5,7 @@
 #include "Actions/ActionPump.h"
 #include "Application/Application.h"
 #include "Common/Common.h"
+#include "Input/Input.h"
 #include "Networking/Network.h"
 #include "Graphics/Graphics.h"
 

@@ -121,11 +121,11 @@ void Application::createCamera(){
 }
 
 void Application::createFrameListener(){
-#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-  mFrameListener= new ExampleFrameListener(mWindow, mCamera, true, true, true);
-#else
-  mFrameListener= new ExampleFrameListener(mWindow, mCamera);
-#endif
+  //#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
+  //mFrameListener= new Input(mWindow, mCamera, true, true, true);
+  //#else
+  mFrameListener= new Input(mWindow, mCamera, true, true, true); //Risk of screw-uppage here.
+  //#endif
   mFrameListener->showDebugOverlay(true);
   mRoot->addFrameListener(mFrameListener);
 }

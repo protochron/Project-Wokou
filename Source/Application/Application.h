@@ -7,6 +7,7 @@
 #include "Actions/Action.h"
 #include "Application/Application.h"
 #include "Common/Common.h"
+#include "Input/Input.h"
 #include "Networking/Network.h"
 #include "Graphics/Graphics.h"
 
@@ -97,7 +98,8 @@ class Application {
 #endif
   Camera* mCamera;
   SceneManager* mSceneMgr;
-  ExampleFrameListener* mFrameListener;   //!**************************************
+  //ExampleFrameListener* mFrameListener;   //!**************************************
+  Input* mFrameListener;
   RenderWindow* mWindow;
   Ogre::String mResourcePath;
   Ogre::String mConfigPath;

@@ -141,8 +141,10 @@ set(SRCS
   Source/Actions/Action.cpp
   Source/Actions/ActionPump.cpp
   Source/Application/Application.cpp
+  Source/Input/Input.cpp
+  Source/Graphics/Graphics.cpp  
   Source/Networking/Network.cpp
-  Source/Graphics/Graphics.cpp
+  
   
 )
  
