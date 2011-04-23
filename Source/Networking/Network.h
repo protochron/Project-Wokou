@@ -27,10 +27,11 @@
 #include <deque>
 #include <utility>
 #include <string.h>
-#include <asio.hpp>
+#include <boost/asio.hpp>
 #include "Actions/Action.h"
 #include "Common/Common.h"
 
+using namespace boost;
 using asio::ip::tcp;
 using std::string;
 using std::pair;
@@ -57,7 +58,10 @@ public:
   static Network* instance();
   
   //! Connect to a remote server, given by an IP or address.
-  bool connect(const std::string& addr);
+  void connect(const std::string& addr);
+  
+  //! Disconnects from the remote server
+  void disconnect();
   
   //! Sends an Action across the network.
   void send(const Action& action, const action_t& type);
@@ -72,13 +76,13 @@ protected:
   Network();
   
   //! Called when the socket makes a connection
-  void handle_connect(const asio::error_code&, tcp::resolver::iterator);
+  void handle_connect(const boost::system::error_code&, tcp::resolver::iterator);
   
   //! Called after data has been written to the server
-  void handle_write(const asio::error_code& error);
+  void handle_write(const boost::system::error_code& error);
 
   //! Called after data has been read from the server
-  void handle_read(const asio::error_code& error, std::size_t size);
+  void handle_read(const boost::system::error_code& error, std::size_t size);
 
   //! Places the send request on the queue
   void write(const Action& action, const action_t& type);

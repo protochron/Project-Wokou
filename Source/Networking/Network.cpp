@@ -50,20 +50,25 @@ asio::io_service& Network::service()
   return io_;
 }
 
-bool Network::connect(const std::string& addr)
+void Network::connect(const std::string& addr)
 {
   tcp::resolver resolver(io_);
   tcp::resolver::query query(addr.c_str(), "8080");
   tcp::resolver::iterator endpoints = resolver.resolve(query);
   
-  asio::async_connect(socket_, endpoints,
-    boost::bind(&Network::handle_connect, this, 
-      asio::placeholders::error,
-      endpoints));
+  tcp::endpoint endpoint = *endpoints;
 
+  socket_.async_connect(endpoint,
+    boost::bind(&Network::handle_connect, this, 
+      boost::asio::placeholders::error, ++endpoints));
 }
 
-void Network::handle_connect( const asio::error_code& error,
+void Network::disconnect()
+{
+  socket_.close();
+}
+
+void Network::handle_connect( const boost::system::error_code& error,
                               tcp::resolver::iterator endpoint_iterator)
 {
   if (!error) {
@@ -91,7 +96,7 @@ void Network::send(const Action& action, const action_t& type)
 }
 
 
-void Network::handle_write(const asio::error_code& error)
+void Network::handle_write(const boost::system::error_code& error)
 {
   if (!error) {
     out_queue_.pop_front();
@@ -109,7 +114,7 @@ void Network::handle_write(const asio::error_code& error)
   }
 }
 
-void Network::handle_read(const asio::error_code& error, const std::size_t bytes)
+void Network::handle_read(const boost::system::error_code& error, const std::size_t bytes)
 {
   std::string str;
   std::istream is(&input_buffer_);
