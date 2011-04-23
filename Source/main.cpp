@@ -20,7 +20,7 @@ public:
 	
   void createScene()
   {
-    Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "Default.mesh");
+    Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "penguin.mesh");
     
     mSceneMgr->getRootSceneNode()->attachObject(cube);
     Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
   t.join();
   */
-  Example app;
+  //Example app;
   Application app2;
   try {
     //app.go();
