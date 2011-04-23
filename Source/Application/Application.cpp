@@ -1,6 +1,10 @@
 #include "Application.h"
 
 Application::Application(){
+  network = Network::instance();
+  graphics = Graphics::instance();
+  actions = ActionPump::instance();
+  
   mFrameListener = 0;
   mRoot = 0;
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE

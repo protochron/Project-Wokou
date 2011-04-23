@@ -5,6 +5,7 @@
 #include "OgreConfigFile.h"
 
 #include "Actions/Action.h"
+#include "Actions/ActionPump.h"
 #include "Application/Application.h"
 #include "Common/Common.h"
 #include "Input/Input.h"
@@ -129,8 +130,10 @@ class Application {
 #endif
 
  private:
-  //Network
-  //Graphics
+  //These may be canned later if not needed.
+  Network* network;
+  Graphics* graphics;
+  ActionPump* actions;
 };
 
 #endif
