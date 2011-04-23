@@ -91,17 +91,15 @@ bool Application::setup(){
 }
 
 bool Application::configure(){
-  if(mRoot->showConfigDialog())
-    {
-      // If returned true, user clicked OK so initialise
-      // Here we choose to let the system create a default rendering window by passing 'true'
-      mWindow = mRoot->initialise(true);
-      return true;
-    }
-  else
-    {
-      return false;
-    }
+  if(mRoot->showConfigDialog()){
+    // If returned true, user clicked OK so initialise
+    // Here we choose to let the system create a default rendering window by passing 'true'
+    mWindow = mRoot->initialise(true);
+    return true;
+  }
+  else{
+    return false;
+  }
 }
 
 void Application::chooseSceneManager(){
@@ -112,7 +110,6 @@ void Application::chooseSceneManager(){
 void Application::createCamera(){
   // Create the camera
   mCamera = mSceneMgr->createCamera("PlayerCam");
-
   // Position it at 500 in Z direction
   mCamera->setPosition(Vector3(0,0,500));
   // Look back along -Z
@@ -124,14 +121,14 @@ void Application::createFrameListener(){
   //#if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
   //mFrameListener= new Input(mWindow, mCamera, true, true, true);
   //#else
-  mFrameListener= new Input(mWindow, mCamera, true, true, true); //Risk of screw-uppage here.
+  mFrameListener= new Input(mWindow, mCamera); //Risk of screw-uppage here.
   //#endif
   mFrameListener->showDebugOverlay(true);
   mRoot->addFrameListener(mFrameListener);
 }
 
 void Application::createScene(){
-  Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "Default.mesh");
+  Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "penguin.mesh");
     
   mSceneMgr->getRootSceneNode()->attachObject(cube);
   Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
@@ -194,14 +191,66 @@ void Application::createResourceListener(){
 }
 
 void Application::loadResources(){
-  
+  // Initialise, parse scripts etc
+  ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 }
 
+
+
+
+//!*********************************HERE BE DRAGONS****************************************
+//!****************************************************************************************
+//!****************************************************************************************
+//!****************************************************************************************
 #ifdef USE_RTSHADER_SYSTEM
 bool Application::initializeShaderGenerator(SceneManager* sceneMgr){
+  if (RTShader::ShaderGenerator::initialize()){
+    mShaderGenerator = RTShader::ShaderGenerator::getSingletonPtr();
+
+    // Set the scene manager.
+    mShaderGenerator->setSceneManager(sceneMgr);
+
+    // Setup core libraries and shader cache path.
+    ResourceGroupManager::LocationList resLocationsList = ResourceGroupManager::getSingleton().getResourceLocationList(ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+    ResourceGroupManager::LocationList::iterator it = resLocationsList.begin();
+    ResourceGroupManager::LocationList::iterator itEnd = resLocationsList.end();
+    String shaderCoreLibsPath;
+    String shaderCachePath;
+
+    // Default cache path is current directory;
+    shaderCachePath = "./";
+
+    // Try to find the location of the core shader lib functions and use it
+    // as shader cache path as well - this will reduce the number of generated files
+    // when running from different directories.
+    for (; it != itEnd; ++it){
+      if ((*it)->archive->getName().find("RTShaderLib") != String::npos){
+	shaderCoreLibsPath = (*it)->archive->getName() + "/";
+	shaderCachePath    = shaderCoreLibsPath;
+	break;
+      }
+    }
+    // Core shader libs not found -> shader generating will fail.
+    if (shaderCoreLibsPath.empty())			
+      return false;			
+    // Add resource location for the core shader libs. 
+    ResourceGroupManager::getSingleton().addResourceLocation(shaderCoreLibsPath , "FileSystem");
+    // Set shader cache path.
+    mShaderGenerator->setShaderCachePath(shaderCachePath);		
+  }
   
-}
-void Application::finalizeShaderGenerator(){
-  
-}
+  void Application::finalizeShaderGenerator(){
+    // Unregister the material manager listener.
+    if (mMaterialMgrListener != NULL){			
+      MaterialManager::getSingleton().removeListener(mMaterialMgrListener);
+      delete mMaterialMgrListener;
+      mMaterialMgrListener = NULL;
+    }
+
+    // Finalize CRTShader system.
+    if (mShaderGenerator != NULL){
+      RTShader::ShaderGenerator::finalize();
+      mShaderGenerator = NULL;
+    }
+  }
 #endif

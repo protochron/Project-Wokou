@@ -49,6 +49,8 @@
 #   include "macUtils.h"
 #endif
 
+//!*************************************HERE BE DRAGONS*******************************************
+//!***********************************************************************************************
 #ifdef USE_RTSHADER_SYSTEM
 class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listener {
  public:
@@ -81,6 +83,8 @@ class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listene
   RTShader::ShaderGenerator*	mShaderGenerator;// The shader generator instance.
   };
 #endif
+//!***********************************************************************************************
+//!***********************************************************************************************
 
 using namespace Ogre;
 
@@ -93,9 +97,6 @@ class Application {
 
  protected:
   Root *mRoot;
-#ifdef OGRE_STATIC_LIB
-  StaticPluginLoader mStaticPluginLoader;
-#endif
   Camera* mCamera;
   SceneManager* mSceneMgr;
   //ExampleFrameListener* mFrameListener;   //!**************************************
@@ -103,30 +104,33 @@ class Application {
   RenderWindow* mWindow;
   Ogre::String mResourcePath;
   Ogre::String mConfigPath;
-#ifdef USE_RTSHADER_SYSTEM
-  RTShader::ShaderGenerator* mShaderGenerator; // The Shader generator instance.
-  ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener; // Material manager listener.	
-#endif
 
   virtual bool setup();
   virtual bool configure();
   virtual void chooseSceneManager();
   virtual void createCamera();
   virtual void createFrameListener();
-  virtual void createScene();
+  virtual void createScene();           //Graphics go here!
   virtual void destroyScene();
   virtual void createViewports();
   virtual void setupResources();
   virtual void createResourceListener();
   virtual void loadResources();
+  
+#ifdef OGRE_STATIC_LIB
+  StaticPluginLoader mStaticPluginLoader;
+#endif
+  
 #ifdef USE_RTSHADER_SYSTEM
+  RTShader::ShaderGenerator* mShaderGenerator; // The Shader generator instance.
+  ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener; // Material manager listener.	
   virtual bool initializeShaderGenerator(SceneManager* sceneMgr);
   virtual void finalizeShaderGenerator();
 #endif
 
  private:
-  //Graphics graphics;
-  //Network network;
+  //Network
+  //Graphics
 };
 
 #endif

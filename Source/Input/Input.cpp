@@ -1,92 +1,6 @@
 #include "Input.h"
 
-Input::Input( RenderWindow* win, Camera* cam, bool bufferedKeys = false, bool bufferedMouse = false, bool bufferedJoy = false ){
-  mCamera = cam;
-  mTranslateVector = Vector3::ZERO;
-  mCurrentSpeed = 0;
-  mWindow = win;
-  mStatsOn = true;
-  mNumScreenShots = 0;
-  mMoveScale = 0.0f;
-  mRotScale = 0.0f;
-  mTimeUntilNextToggle = 0;
-  mFiltering = TFO_BILINEAR;
-  mAniso = 1;
-  mSceneDetailIndex = 0;
-  mMoveSpeed = 100;
-  mRotateSpeed = 36;
-  mDebugOverlay = 0;
-  mInputManager = 0;
-  mMouse = 0;
-  mKeyboard = 0;
-  mJoy = 0;
-  
-  mDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
-
-  LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
-  OIS::ParamList pl;
-  size_t windowHnd = 0;
-  std::ostringstream windowHndStr;
-
-  win->getCustomAttribute("WINDOW", &windowHnd);
-  windowHndStr << windowHnd;
-  pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
-
-  mInputManager = OIS::InputManager::createInputSystem( pl );
-
-  //Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)
-  mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, bufferedKeys ));
-  mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, bufferedMouse ));
-  try {
-    mJoy = static_cast<OIS::JoyStick*>(mInputManager->createInputObject( OIS::OISJoyStick, bufferedJoy ));
-  }
-  catch(...) {
-    mJoy = 0;
-  }
-
-  //Set initial mouse clipping size
-  windowResized(mWindow);
-
-  showDebugOverlay(true);
-
-  //Register as a Window listener
-  WindowEventUtilities::addWindowEventListener(mWindow, this);	
-}
-
-Input::~Input(){
-  //Remove ourself as a Window listener
-  WindowEventUtilities::removeWindowEventListener(mWindow, this);
-  windowClosed(mWindow);
-}
-
-void Input::windowResized( RenderWindow* rw ){
-  //Only close for window that created OIS (the main window in these demos)
-  if( rw == mWindow ){
-    if( mInputManager ){
-      mInputManager->destroyInputObject( mMouse );
-      mInputManager->destroyInputObject( mKeyboard );
-      mInputManager->destroyInputObject( mJoy );
-
-      OIS::InputManager::destroyInputSystem(mInputManager);
-      mInputManager = 0;
-    }
-  }
-}
-
-void Input::windowClosed( RenderWindow* rw ){
-  //Only close for window that created OIS (the main window in these demos)
-  if( rw == mWindow ){
-    if( mInputManager ){
-      mInputManager->destroyInputObject( mMouse );
-      mInputManager->destroyInputObject( mKeyboard );
-      mInputManager->destroyInputObject( mJoy );
-
-      OIS::InputManager::destroyInputSystem(mInputManager);
-      mInputManager = 0;
-    }
-  }
-}
-
+//This is the only function that is Protected, not Public.
 void Input::updateStats(){
   static String currFps = "Current FPS: ";
   static String avgFps = "Average FPS: ";
@@ -122,7 +36,90 @@ void Input::updateStats(){
   catch(...) { /* ignore */ }
 }
 
-//CODY. DESTROY THIS BEAST.
+Input::Input( RenderWindow* win, Camera* cam, bool bufferedKeys, bool bufferedMouse, bool bufferedJoy){
+  mCamera              = cam;
+  mTranslateVector     = Vector3::ZERO;
+  mCurrentSpeed        = 0;
+  mWindow              = win;
+  mStatsOn             = true;
+  mNumScreenShots      = 0;
+  mMoveScale           = 0.0f; 
+  mRotScale            = 0.0f;
+  mTimeUntilNextToggle = 0;
+  mFiltering           = TFO_BILINEAR;
+  mAniso               = 1;
+  mSceneDetailIndex    = 0;
+  mMoveSpeed           = 100;
+  mRotateSpeed         = 36;
+  mDebugOverlay        = 0;
+  mInputManager        = 0;
+  mMouse               = 0;
+  mKeyboard            = 0;
+  mJoy                 = 0;
+    
+  mDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
+
+  LogManager::getSingletonPtr()->logMessage("*** Initializing OIS ***");
+  OIS::ParamList pl;
+  size_t windowHnd = 0;
+  std::ostringstream windowHndStr;
+
+  win->getCustomAttribute("WINDOW", &windowHnd);
+  windowHndStr << windowHnd;
+  pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+
+  mInputManager = OIS::InputManager::createInputSystem( pl );
+
+  //Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)
+  mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, bufferedKeys ));
+  mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, bufferedMouse ));
+  try {
+    mJoy = static_cast<OIS::JoyStick*>(mInputManager->createInputObject( OIS::OISJoyStick, bufferedJoy ));
+  }
+  catch(...) {
+    mJoy = 0;
+  }
+
+  //Set initial mouse clipping size
+  windowResized(mWindow);
+
+  showDebugOverlay(true);
+
+  //Register as a Window listener
+  WindowEventUtilities::addWindowEventListener(mWindow, this);
+}
+
+Input::~Input(){
+  //Remove ourself as a Window listener
+  WindowEventUtilities::removeWindowEventListener(mWindow, this);
+  windowClosed(mWindow);
+}
+
+void Input::windowResized( RenderWindow* rw ){
+  unsigned int width, height, depth;
+  int left, top;
+  rw->getMetrics(width, height, depth, left, top);
+
+  const OIS::MouseState &ms = mMouse->getMouseState();
+  ms.width = width;
+  ms.height = height;
+}
+
+void Input::windowClosed( RenderWindow* rw ){
+  //Only close for window that created OIS (the main window in these demos)
+  if( rw == mWindow ){
+    if( mInputManager ){
+      mInputManager->destroyInputObject( mMouse );
+      mInputManager->destroyInputObject( mKeyboard );
+      mInputManager->destroyInputObject( mJoy );
+
+      OIS::InputManager::destroyInputSystem(mInputManager);
+      mInputManager = 0;
+    }
+  }
+}
+
+//CODY. THIS BEAST IS YOURS TO TAME.
 bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
   Real moveScale = mMoveScale;
   if(mKeyboard->isKeyDown(OIS::KC_LSHIFT))
@@ -238,9 +235,9 @@ void Input::showDebugOverlay( bool show ){
 bool Input::frameRenderingQueued( const FrameEvent& evt ){
   if(mWindow->isClosed())
     return false;
-
+  
   mSpeedLimit = mMoveScale * evt.timeSinceLastFrame;
-
+  
   //Need to capture/update each device
   mKeyboard->capture();
   mMouse->capture();
@@ -255,30 +252,31 @@ bool Input::frameRenderingQueued( const FrameEvent& evt ){
     // one of the input modes is immediate, so setup what is needed for immediate movement
     if (mTimeUntilNextToggle >= 0)
       mTimeUntilNextToggle -= evt.timeSinceLastFrame;
-
+    
     // Move about 100 units per second
     mMoveScale = mMoveSpeed * evt.timeSinceLastFrame;
     // Take about 10 seconds for full rotation
     mRotScale = mRotateSpeed * evt.timeSinceLastFrame;
-
+    
     mRotX = 0;
     mRotY = 0;
-    mTranslateVector = Ogre::Vector3::ZERO;
+    mTranslateVector = Ogre::Vector3::ZERO;  
   }
-
   //Check to see which device is not buffered, and handle it
+#if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
   if( !mKeyboard->buffered() )
     if( processUnbufferedKeyInput(evt) == false )
       return false;
-
+  
 #ifdef USE_RTSHADER_SYSTEM
   processShaderGeneratorInput();
 #endif
-
+  
+#endif
   if( !mMouse->buffered() )
     if( processUnbufferedMouseInput(evt) == false )
       return false;
-
+  
   // ramp up / ramp down speed
   if (mTranslateVector == Ogre::Vector3::ZERO){
     // decay (one third speed)
@@ -288,22 +286,22 @@ bool Input::frameRenderingQueued( const FrameEvent& evt ){
   else{
     // ramp up
     mCurrentSpeed += evt.timeSinceLastFrame;
-
   }
   // Limit motion speed
   if (mCurrentSpeed > 1.0)
     mCurrentSpeed = 1.0;
   if (mCurrentSpeed < 0.0)
     mCurrentSpeed = 0.0;
+  
   mTranslateVector *= mCurrentSpeed;
-
+  
   if( !mMouse->buffered() || !mKeyboard->buffered() || !buffJ )
     moveCamera();
-
+  
   return true;
 }
 
-bool Input::frameEnded( const FrameEvent& evt ){
+bool Input::frameEnded(const FrameEvent& evt){
   updateStats();
   return true;
 }
@@ -311,53 +309,45 @@ bool Input::frameEnded( const FrameEvent& evt ){
 
 
 
-
-
+//!*********************************HERE BE DRAGONS****************************************
+//!****************************************************************************************
+//!****************************************************************************************
+//!****************************************************************************************
 #ifdef USE_RTSHADER_SYSTEM
-void Input::processShaderGeneratorInput(){		
+void Input::processShaderGeneratorInput(){
   // Switch to default scheme.
   if (mKeyboard->isKeyDown(OIS::KC_F2)){	
     mCamera->getViewport()->setMaterialScheme(MaterialManager::DEFAULT_SCHEME_NAME);			
     mDebugText = "Active Viewport Scheme: ";
     mDebugText += MaterialManager::DEFAULT_SCHEME_NAME;						
   }
-
   // Switch to shader generator scheme.
   if (mKeyboard->isKeyDown(OIS::KC_F3)){
     mCamera->getViewport()->setMaterialScheme(RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
     mDebugText = "Active Viewport Scheme: ";
     mDebugText += RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME;
   }	
-
   // Toggles per pixel per light model.
   if (mKeyboard->isKeyDown(OIS::KC_F4) && mTimeUntilNextToggle <= 0){	
     mTimeUntilNextToggle = 1.0;
-
     static bool userPerPixelLightModel = true;
-    RTShader::ShaderGenerator* shaderGenerator = RTShader::ShaderGenerator::getSingletonPtr();			
+    RTShader::ShaderGenerator* shaderGenerator = RTShader::ShaderGenerator::getSingletonPtr();		    
     RTShader::RenderState* renderState = shaderGenerator->getRenderState(RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-
     // Remove all global sub render states.
     renderState->reset();
-
     // Add per pixel lighting sub render state to the global scheme render state.
     // It will override the default FFP lighting sub render state.
     if (userPerPixelLightModel){
       RTShader::SubRenderState* perPixelLightModel = shaderGenerator->createSubRenderState(RTShader::PerPixelLighting::Type);
       renderState->addSubRenderState(perPixelLightModel);
-
       mDebugText = "Per pixel lighting model applied to shader generator default scheme";
     }
     else{
       mDebugText = "Per vertex lighting model applied to shader generator default scheme";
     }
-
     // Invalidate the scheme in order to re-generate all shaders based technique related to this scheme.
     shaderGenerator->invalidateScheme(RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
-
     userPerPixelLightModel = !userPerPixelLightModel;
   }	
-		
 }
-
 #endif
