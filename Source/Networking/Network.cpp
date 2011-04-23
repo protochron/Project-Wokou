@@ -129,17 +129,9 @@ void Network::handle_read(const boost::system::error_code& error, const std::siz
   std::getline(is, str);
   
   Action obj = JsonParser::parse(str);
-  
-  // Lock the ActionPump deque
-  static boost::mutex m;
-  boost::mutex::scoped_lock lock(m);
-  
-  // Push the latest action onto it
-  ActionPump::instance()->queue().push_back(obj);
-  
-  // Unlock the ActionPump deque
-  lock.unlock();
-  
+
+  ActionPump::instance()->push_back(obj);
+
   asio::async_read_until(socket_, input_buffer_, '\n',
       boost::bind(&Network::handle_read, this,
       asio::placeholders::error, 35));  

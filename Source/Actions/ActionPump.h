@@ -45,6 +45,15 @@ public:
   //! Provides a reference to the internal ActionPump queue.
   std::deque<Action>& queue();
   
+  //! Adds an Action to the end of the queue
+  void push_back(Action& a);
+  
+  //! Pops an Action from the front of the queue
+  void pop();
+  
+  //! Retrieves the first action from the queue (without effect)
+  Action front() const;
+  
 protected:
   
   // Disallow creation of this object. It's a Singleton, baby!

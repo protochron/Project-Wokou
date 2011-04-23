@@ -20,6 +20,7 @@
  *****************************************************************************/
 
 #include "ActionPump.h"
+#include <boost/thread.hpp>
 
 boost::shared_ptr<ActionPump> ActionPump::instance_;
 
@@ -42,4 +43,42 @@ ActionPump* ActionPump::instance()
 std::deque<Action>& ActionPump::queue()
 {
   return queue_;
+}
+
+void ActionPump::push_back(Action& a)
+{
+  // Lock the ActionPump deque
+  static boost::mutex m;
+  boost::mutex::scoped_lock lock(m);
+  
+  // Push the latest action onto it
+  queue_.push_back(obj);
+  
+  // Unlock the ActionPump deque
+  lock.unlock();
+}
+  
+void ActionPump::pop()
+{
+  // Lock the ActionPump deque
+  static boost::mutex m;
+  boost::mutex::scoped_lock lock(m);
+  
+  // Push the latest action onto it
+  queue_.pop();
+  
+  // Unlock the ActionPump deque
+  lock.unlock();
+}
+
+Action ActionPump::front() const
+{
+  // Lock the ActionPump deque
+  static boost::mutex m;
+  boost::mutex::scoped_lock lock(m);
+  
+  // Push the latest action onto it
+  return queue_.front();
+
+  // The mutex is automatically unlocked at the end of scope.
 }
