@@ -30,57 +30,81 @@
 #include "ExampleFrameListener.h"
 
 class Graphics {
-public:
+ public:
   //Only allow one instance of the class.
   static Graphics* instance();
   
   //Custom graphics functions go here.
+
+  /**
+   * Takes the SceneManager from Application so we know what to draw to.
+   */
+  void setSceneManager( Ogre::SceneManager* mSceneMgr );
   
   /**
-   * Constructs a new camera with the given SceneManager.
-   */
-  
-  void createCamera(Ogre::SceneManager* sceneMgr);
+   * Constructs a new camera.
+   * NOTE: Must be called after setSceneManager();
+   */ 
+  void constructCamera(  );
   
   /**
    * Moves the camera according to the amounts specified. 
    * 
    * The parameters represent deltas or how much the object should move in each
    * direction.
-   */
-   
-   void moveCamera(double dx, double dy, double dz);
+   */ 
+  void moveCamera(double dx, double dy, double dz);
   
   /**
    * Warps the camera to the given location.
    *
    * The parameters indicate a location, not deltas.
    */
-  
-   void warpCamera(double x, double y, double z);
+  void warpCamera(double x, double y, double z);
    
-   /**
-    * Rotates the camera according to the amounts specified.
-    *
-    * The parameters represent deltas for the x and y directions.
-    */
+  /**
+   * Rotates the camera according to the amounts specified.
+   *
+   * The parameters represent deltas for the x and y directions.
+   */
+  void rotateCamera(double dx, double dy);
 
-    void rotateCamera(double dx, double dy);
-
-    //! Should have a zoom function
+  /**
+   * Zooms the camera a total distance in the direction of the camera normal.
+   *
+   * Positive distance indicates zoom in the direction of the normal; negative opposite.
+   */
+  void zoomCamera(double distance);
+  
+  /**
+   * Renders everything to the screen.
+   */
+  void render();
+  
+  //! This is used within the Application class to set up a scene.
+  Ogre::Camera* camera() const
+    { return mCamera_; }
     
     
-    //! This is used within the Application class to set up a scene.
-    Ogre::Camera* camera() const
-    { return camera_; }
-    
-    
-protected:
+ protected:
   Graphics();
   
-private:
+ private:
   static boost::shared_ptr<Graphics> instance_;
-  Ogre::Camera* camera_;
+
+  Ogre::SceneManager* mSceneMgr_;
+  Ogre::Camera* mCamera_;
+  
+  double camerax;
+  double cameray;
+  double cameraz;
+  
+  double rotx; //Horizontal angle in radians. ( 0 ... 2PI )
+  double roty; //Vertical angle in radians ( -PI/2 ... PI/2 )
+  
+  double normalx;
+  double normaly;
+  double normalz;
 };
 
 #endif
