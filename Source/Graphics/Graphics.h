@@ -84,16 +84,26 @@ class Graphics {
    * Creates a light named str at coordinates (x, y, z).
    * If there is another light of the same name, this will fail and return 1.
    */
-  bool createLight( String str, double x, double y, double z );
+  bool createLight( String name, double x, double y, double z );
   
   /**
-   * Destroys the light named str.
+   * Destroys the light named name.
    * There should not be duplicates, but if there is, this will only destroy the first.
    */
-  void destroyLight( String str );
+  void destroyLight( String name );
 
-
-
+  /**
+   * Creates an entity with name and mesh location at coordinates (x y z). 
+   * Each entity will have its own SceneNode.
+   */
+  bool createEntity( String name, String mesh, double x, double y, double z );
+  
+  /**
+   * The entity with the appropriate name will be deleted.
+   *
+   * Its SceneNode will also be deleted from sceneMgr_.
+   */
+  void destroyEntity( String name );
 
   /**
    * Renders everything to the screen.
