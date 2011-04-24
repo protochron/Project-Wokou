@@ -22,14 +22,15 @@
 #ifndef _PIRATE_INPUT_H_
 #define _PIRATE_INPUT_H_
 
-#include "Ogre.h"
+#include <OGRE.h>
+#include <OGRE/OgreRenderWindow.h>
+#include <OGRE/OgreFrameListener.h>
 #include "OgreStringConverter.h"
 #include "OgreException.h"
 
-#include "Graphics/Graphics.h"
 
 #define OIS_DYNAMIC_LIB
-#include <OIS/OIS.h>
+#include <OIS.h>
 
 using namespace Ogre;
 
@@ -46,17 +47,80 @@ using namespace Ogre;
  * The game's engine should be responsible for doing all the actual updates 
  * when it gets to handling the ActionPump.
  */
+ 
+class Input : public FrameListener, 
+              public WindowEventListener, 
+              public OIS::KeyListener, 
+              public OIS::MouseListener {
+public:
+  
+  //! Attaches an input listener to the specified window
+  Input(Ogre::RenderWindow* window);
+  
+  
+  virtual ~Input();
+  
+  //! Called when a frame is about to begin rendering
+  virtual bool frameStarted(const Ogre::FrameEvent& event);
+  
+  //! Called after all render targets have had their rendering commands issued,
+  //! but before render windows have been asked to flip their buffers.
+  virtual bool frameRenderingQueued(const Ogre::FrameEvent& event);
+  
+  //! Called just after a frame has been rendered
+  virtual bool frameEnded(const Ogre::FrameEvent& event);
+  
+  //! Called when the window has been resized
+  void windowResized(Ogre::RenderWindow* window);
+  
+  //! Called when a window has been closed
+  void windowClosed(Ogre::RenderWindow* window);
 
+
+  bool keyPressed(const OIS::KeyEvent& event);
+  
+  bool keyReleased(const OIS::KeyEvent& event);
+  
+  bool mouseMoved(const OIS::MouseEvent& event);
+  
+  bool mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id);
+  
+  bool mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id);
+
+
+
+private:
+  
+  //! Does the "dirty work" for initializing the OIS system
+  void initializeInputSystem();
+
+  //! Creates buffered inputs for the keyboard and mouse
+  void createBufferedInputDevices();
+
+private:
+  Ogre::RenderWindow* window_;
+  OIS::InputManager* input_manager_;
+  OIS::Keyboard* keyboard_;
+  OIS::Mouse* mouse_;
+  bool continue_;
+  
+  // This is a simple hack until we decide on controls
+  bool keys_[256];
+  
+};
+ 
+ 
+/*
 class Input : public FrameListener, public WindowEventListener {
 public:
   
   // Constructor takes a RenderWindow because it uses that to determine input context
-  Input(RenderWindow* win, bool bufferedKeys = false, 
-	bool bufferedMouse = false, bool bufferedJoy = false );
-  virtual ~Input();
+  Input(RenderWindow* win, bool keys = false, bool mouse = false, bool joy = false );
+  virtual ~Input(); 
 
   //Adjust mouse clipping area
   virtual void windowResized(RenderWindow* rw);
+
 
   //Unattach OIS before window shutdown (very important under Linux)
   virtual void windowClosed(RenderWindow* rw);
@@ -77,14 +141,8 @@ public:
 #ifdef USE_RTSHADER_SYSTEM
   virtual void processShaderGeneratorInput();
 #endif
-  
-protected:
-  virtual void updateStats();
 
-  
 protected:
-  //Camera*& mCamera;
-
   Vector3 mTranslateVector;
   Real mCurrentSpeed;
   RenderWindow* mWindow;
@@ -113,5 +171,5 @@ protected:
   OIS::Keyboard* mKeyboard;
   OIS::JoyStick* mJoy;
 };
-
+*/
 #endif

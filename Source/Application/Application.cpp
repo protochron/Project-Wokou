@@ -119,7 +119,7 @@ void Application::createCamera()
 
 void Application::createFrameListener(){
   mFrameListener= new Input(mWindow); //Risk of screw-uppage here.
-  mFrameListener->showDebugOverlay(true);
+  //mFrameListener->showDebugOverlay(true);
   mRoot->addFrameListener(mFrameListener);
 }
 

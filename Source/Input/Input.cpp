@@ -21,52 +21,172 @@
 
 #include "Input.h"
 
-//This is the only function that is Protected, not Public.
-void Input::updateStats(){
-  static String currFps = "Current FPS: ";
-  static String avgFps = "Average FPS: ";
-  static String bestFps = "Best FPS: ";
-  static String worstFps = "Worst FPS: ";
-  static String tris = "Triangle Count: ";
-  static String batches = "Batch Count: ";
+#include <utility>
+#include <sstream>
 
-  // update stats when necessary
-  try {
-    OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
-    OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
-    OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
-    OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
+#include "Graphics/Graphics.h"
 
-    const RenderTarget::FrameStats& stats = mWindow->getStatistics();
-    guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS));
-    guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS));
-    guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS)
-			+" "+StringConverter::toString(stats.bestFrameTime)+" ms");
-    guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
-			 +" "+StringConverter::toString(stats.worstFrameTime)+" ms");
 
-    OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-    guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount));
-
-    OverlayElement* guiBatches = OverlayManager::getSingleton().getOverlayElement("Core/NumBatches");
-    guiBatches->setCaption(batches + StringConverter::toString(stats.batchCount));
-
-    OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-    guiDbg->setCaption(mDebugText);
-  }
-  catch(...) { /* ignore */ }
+Input::Input(Ogre::RenderWindow* window)
+  : window_ (window), continue_ (true)
+{
+  initializeInputSystem();
+  createBufferedInputDevices();
+  
+  // Initialize the keypress array
+  for (int i = 0; i < 256; ++i)
+    keys_[i] = false;
 }
 
-Input::Input( RenderWindow* win, bool bufferedKeys, bool bufferedMouse, bool bufferedJoy)
-//: mCamera (Graphics::instance()->camera_)
+
+Input::~Input()
 {
-  std::cout << "INITIALIZING THE INPUT OBJECT" << std::endl;
+  input_manager_->destroyInputObject(mouse_);
+  input_manager_->destroyInputObject(keyboard_);
+  OIS::InputManager::destroyInputSystem(input_manager_);
+  
+  
+}
+
+void Input::initializeInputSystem()
+{
+  // Retrieve the window handle
+  OIS::ParamList param_list;
+  size_t window_handle = 0;
+  std::ostringstream stream;
+  
+  window_->getCustomAttribute("WINDOW", &window_handle);
+  stream << window_handle;
+  
+  param_list.insert(std::make_pair("WINDOW", stream.str()));
+  
+  input_manager_ = OIS::InputManager::createInputSystem(param_list);
+}
+
+
+void Input::createBufferedInputDevices()
+{
+  if (input_manager_->getNumberOfDevices(OIS::OISKeyboard) > 0) {
+    keyboard_ = (OIS::Keyboard*)input_manager_->createInputObject(OIS::OISKeyboard, true);
+    keyboard_->setEventCallback(this);
+  }
+  
+  if (input_manager_->getNumberOfDevices(OIS::OISMouse) > 0) {
+    mouse_ = (OIS::Mouse*)input_manager_->createInputObject(OIS::OISMouse, true);
+    mouse_->setEventCallback(this);
+  
+    // Set the mouse boundaries
+    windowResized(window_);
+  }
+  
+}
+
+
+void Input::windowResized(Ogre::RenderWindow* window)
+{
+  unsigned int width, height, depth;
+  int left, top;
+  
+  window_->getMetrics(width, height, depth, left, top);
+  
+  const OIS::MouseState &mouse = mouse_->getMouseState();
+  mouse.width = width;
+  mouse.height = height;
+}
+
+void Input::windowClosed(Ogre::RenderWindow* window)
+{}
+
+
+bool Input::frameStarted(const Ogre::FrameEvent& event)
+{
+  return true;
+}
+
+bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
+{
+  // Capture the mouse and keyboard with each rendered frame
+  keyboard_->capture();
+  mouse_->capture();
+  
+  if (keys_[OIS::KC_W])
+    Graphics::instance()->moveCamera(0, 0, -0.2);
+  
+  if (keys_[OIS::KC_S])
+    Graphics::instance()->moveCamera(0, 0, 0.2);
+  
+  if (keys_[OIS::KC_D])
+    Graphics::instance()->moveCamera(-0.2, 0, 0);
+    
+  if (keys_[OIS::KC_A])
+    Graphics::instance()->moveCamera(0.2, 0, 0);
+  
+  return continue_;
+}
+
+bool Input::frameEnded(const Ogre::FrameEvent& event)
+{
+  return true;
+}
+
+
+
+
+bool Input::keyPressed(const OIS::KeyEvent& event)
+{
+  if (keyboard_->isKeyDown(OIS::KC_ESCAPE))
+      return (continue_ = false);  
+  
+  keys_[event.key] = true;
+  
+  return true;
+}
+
+
+
+bool Input::keyReleased(const OIS::KeyEvent& event)
+{
+  keys_[event.key] = false;
+  
+  return true;
+}
+
+
+
+bool Input::mouseMoved(const OIS::MouseEvent& event)
+{
+  const OIS::MouseState& state = event.state;
+  
+  if (state.Z.abs != 0)
+    Graphics::instance()->zoomCamera(state.Z.abs / 500.0);
+
+  Graphics::instance()->rotateCamera(-state.X.rel * 0.013, -state.Y.rel * 0.013);
+  
+  return true;
+}
+
+bool Input::mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id)
+{
+  return true;
+}
+
+bool Input::mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id)
+{
+  return true;
+}
+
+
+
+
+/*
+Input::Input( RenderWindow* win, bool bufferedKeys, bool bufferedMouse, bool bufferedJoy)
+{
   mTranslateVector     = Vector3::ZERO;
   mCurrentSpeed        = 0;
   mWindow              = win;
   mStatsOn             = true;
   mNumScreenShots      = 0;
-  mMoveScale           = 0.0f; 
+  mMoveScale           = 10.0f; 
   mRotScale            = 0.0f;
   mTimeUntilNextToggle = 0;
   mFiltering           = TFO_BILINEAR;
@@ -149,8 +269,9 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
   Real moveScale = mMoveScale;
   if(mKeyboard->isKeyDown(OIS::KC_LSHIFT))
     moveScale *= 10;
-  if(mKeyboard->isKeyDown(OIS::KC_A))
+  if(mKeyboard->isKeyDown(OIS::KC_A)) {
     mTranslateVector.x = -moveScale;	// Move camera left
+  }
   if(mKeyboard->isKeyDown(OIS::KC_D))
     mTranslateVector.x = moveScale;	// Move camera RIGHT
   if(mKeyboard->isKeyDown(OIS::KC_UP) || mKeyboard->isKeyDown(OIS::KC_W) )
@@ -161,10 +282,11 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
     mTranslateVector.y = moveScale;	// Move camera up
   if(mKeyboard->isKeyDown(OIS::KC_PGDOWN))
     mTranslateVector.y = -moveScale;	// Move camera down
-  //if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
+  /*if(mKeyboard->isKeyDown(OIS::KC_RIGHT))
     //mCamera->yaw(-mRotScale);
-  //if(mKeyboard->isKeyDown(OIS::KC_LEFT))
+  if(mKeyboard->isKeyDown(OIS::KC_LEFT))
     //mCamera->yaw(mRotScale);
+    
   if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) || mKeyboard->isKeyDown(OIS::KC_Q) )
     return false;
   if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 ){
@@ -208,7 +330,7 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
     case 2 : mCamera->setPolygonMode(PM_POINTS); break;
     }
     mTimeUntilNextToggle = 0.5;
-  }*/
+  }
   static bool displayCameraDetails = false;
   if(mKeyboard->isKeyDown(OIS::KC_P) && mTimeUntilNextToggle <= 0){
     displayCameraDetails = !displayCameraDetails;
@@ -219,7 +341,7 @@ bool Input::processUnbufferedKeyInput( const FrameEvent& evt ){
   // Print camera details
   /*if(displayCameraDetails)
     mDebugText = "P: " + StringConverter::toString(mCamera->getDerivedPosition()) +
-      " " + "O: " + StringConverter::toString(mCamera->getDerivedOrientation());*/
+      " " + "O: " + StringConverter::toString(mCamera->getDerivedOrientation());
   // Return true to continue rendering
   return true;
 }
@@ -242,17 +364,6 @@ bool Input::processUnbufferedMouseInput( const FrameEvent& evt ){
 void Input::moveCamera()
 {
   Graphics::instance()->moveCamera(mTranslateVector.x, mTranslateVector.y, mTranslateVector.z);
-//  Graphics::instance()->moveCamera(_, _, _);
-//  Graphics::instance()->rotateCamera(_, _);
-
-
-
-  // Make all the changes to the camera
-  // Note that YAW direction is around a fixed axis (freelook style) rather than a natural YAW
-  //(e.g. airplane)
-  /*mCamera->yaw(mRotX);
-  mCamera->pitch(mRotY);
-  mCamera->moveRelative(mTranslateVector);*/
 }
 
 void Input::showDebugOverlay( bool show ){
@@ -294,8 +405,8 @@ bool Input::frameRenderingQueued( const FrameEvent& evt ){
     mRotY = 0;
     mTranslateVector = Ogre::Vector3::ZERO;  
   }
+  
   //Check to see which device is not buffered, and handle it
-#if OGRE_PLATFORM != OGRE_PLATFORM_IPHONE
   if( !mKeyboard->buffered() )
     if( processUnbufferedKeyInput(evt) == false )
       return false;
@@ -303,8 +414,7 @@ bool Input::frameRenderingQueued( const FrameEvent& evt ){
 #ifdef USE_RTSHADER_SYSTEM
   processShaderGeneratorInput();
 #endif
-  
-#endif
+
   if( !mMouse->buffered() )
     if( processUnbufferedMouseInput(evt) == false )
       return false;
@@ -333,10 +443,10 @@ bool Input::frameRenderingQueued( const FrameEvent& evt ){
   return true;
 }
 
-bool Input::frameEnded(const FrameEvent& evt){
-  updateStats();
+bool Input::frameEnded(const FrameEvent& evt)
+{
   return true;
-}
+}*/
 
 
 
@@ -345,6 +455,7 @@ bool Input::frameEnded(const FrameEvent& evt){
 //!****************************************************************************************
 //!****************************************************************************************
 //!****************************************************************************************
+/*
 #ifdef USE_RTSHADER_SYSTEM
 void Input::processShaderGeneratorInput(){
   // Switch to default scheme.
@@ -381,5 +492,5 @@ void Input::processShaderGeneratorInput(){
     shaderGenerator->invalidateScheme(RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
     userPerPixelLightModel = !userPerPixelLightModel;
   }	
-}
-#endif
+}*/
+
