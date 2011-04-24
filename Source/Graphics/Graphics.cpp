@@ -54,18 +54,18 @@ void Graphics::constructCamera()
   normaly = 0;
   normalz = -1;
 
-  camera_->setPosition(Vector3(camerax,cameray,cameraz));
-  camera_->lookAt(Vector3(normalx,normaly,normalz));
+  camera_->setPosition( Vector3(camerax,cameray,cameraz) );
+  camera_->lookAt( Vector3(normalx,normaly,normalz) );
 
   camera_->setNearClipDistance(5);
 }
 
 void Graphics::moveCamera( double dx, double dy, double dz ){
-  camera_->moveRelative(Vector3(dx, dy, dz));
+  camera_->moveRelative( Vector3(dx, dy, dz) );
 }
 
 void Graphics::warpCamera( double x, double y, double z ){
-  
+  camera_->moveRelative( Vector3(x-camerax, y-cameray, z-cameraz) );
 }
 
 void Graphics::rotateCamera( double dx, double dy ){
@@ -88,12 +88,12 @@ void Graphics::rotateCamera( double dx, double dy ){
   if(roty <= -PI/2)
     roty = -PI/2;
 
-  camera_->lookAt( camerax+normalx, cameray+normaly, cameraz+normalz );
+  camera_->lookAt( Vector3(camerax+normalx, cameray+normaly, cameraz+normalz) );
 }
 
 
 void Graphics::zoomCamera( double distance ){
-  
+  camera_->moveRelative( Vector3(distance*normalx, distance*normaly, distance*normalz) );
 }
 
 void Graphics::render(){
