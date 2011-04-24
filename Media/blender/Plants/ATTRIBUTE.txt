@@ -1,0 +1,9 @@
+
+All of the tree and plant Blender models have been taken from one of the 
+following sites:
+
+http://yorik.uncreated.net/greenhouse.html
+http://blender-archi.tuxfamily.org/Models#Trees
+
+They have been released under the Creative Commons license and were 
+created by Yorik van Havre.
