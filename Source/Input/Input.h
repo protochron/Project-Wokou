@@ -22,7 +22,7 @@
 #ifndef _PIRATE_INPUT_H_
 #define _PIRATE_INPUT_H_
 
-#include <OGRE.h>
+#include <Ogre.h>
 #include <OGRE/OgreRenderWindow.h>
 #include <OGRE/OgreFrameListener.h>
 #include "OgreStringConverter.h"
