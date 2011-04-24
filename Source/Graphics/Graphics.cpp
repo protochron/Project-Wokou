@@ -69,26 +69,8 @@ void Graphics::warpCamera( double x, double y, double z ){
 }
 
 void Graphics::rotateCamera( double dx, double dy ){
-  double PI = 3.14159265;
-  
-  rotx = rotx + dx;
-  roty = roty + dy;
-  
-  normalx = cos(rotx) * cos(roty);
-  normaly = sin(rotx) * cos(roty);
-  normalz = sin(roty); 
-  
-  //Handle rotational limits. rotx can go in a full circle. roty can go straight up to straight down.
-  if(rotx > 2*PI) //360
-    rotx = rotx - 2*PI;
-  if(rotx < -2*PI)
-    rotx = rotx + 2*PI;
-  if(roty >= PI/2) //90
-    roty = PI/2;
-  if(roty <= -PI/2)
-    roty = -PI/2;
-
-  camera_->lookAt( Vector3(camerax+normalx, cameray+normaly, cameraz+normalz) );
+  camera_->rotate(Ogre::Vector3(0,1,0), Ogre::Radian(dx));
+  camera_->rotate(Ogre::Vector3(1,0,0), Ogre::Radian(dy));
 }
 
 
@@ -96,17 +78,44 @@ void Graphics::zoomCamera( double distance ){
   camera_->moveRelative( Vector3(distance*normalx, distance*normaly, distance*normalz) );
 }
 
+bool Graphics::createLight( String str, double x, double y, double z ){
+  for( unsigned int i = 0; i < lights.size(); i++ ){
+    if( str == lights[i]->getName() )
+      return 1; //A light with the same name exists. Fail.
+  }
+  //No other light exists. Add it!
+  Ogre::Light* l = sceneMgr_->createLight( str );
+  l->setPosition( x, y, z );
+  lights.push_back( l );
+  return 0;
+}
+
+void Graphics::destroyLight( String str ){
+  for( unsigned int i = 0; i < lights.size(); i++ ){
+    if( str == lights[i]->getName() )
+      sceneMgr_->destroyLight( lights[i] );
+      lights.erase( lights.begin()+i );
+      i--;
+  }
+}
+
+
 void Graphics::render(){
+  createLight( "Hello", 1, 2, 3 );
+  createLight( "Hello2", -1, -2, -1 );
+  destroyLight( "Hello" );
+  
   camera_->setPosition(Vector3(camerax, cameray, cameraz));
   camera_->lookAt(Vector3(normalx, normaly, normalz));
   
   Ogre::Entity* cube = sceneMgr_->createEntity("Cube", "Ship.mesh");
-    
   sceneMgr_->getRootSceneNode()->attachObject(cube);
+
+  
   Ogre::SceneNode* headNode = sceneMgr_->getRootSceneNode()->createChildSceneNode();
         
   // Set ambient light
-  sceneMgr_->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+  sceneMgr_->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
     
   // Create a light
   Ogre::Light* l = sceneMgr_->createLight("MainLight");

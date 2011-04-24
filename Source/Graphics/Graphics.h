@@ -25,9 +25,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 
+#include <vector>
+
 #include <OgreCamera.h>
 
 #include "ExampleFrameListener.h"
+
+using std::vector;
 
 class Graphics {
  public:
@@ -77,6 +81,21 @@ class Graphics {
   void zoomCamera(double distance);
   
   /**
+   * Creates a light named str at coordinates (x, y, z).
+   * If there is another light of the same name, this will fail and return 1.
+   */
+  bool createLight( String str, double x, double y, double z );
+  
+  /**
+   * Destroys the light named str.
+   * There should not be duplicates, but if there is, this will only destroy the first.
+   */
+  void destroyLight( String str );
+
+
+
+
+  /**
    * Renders everything to the screen.
    */
   void render();
@@ -94,6 +113,8 @@ class Graphics {
 
   Ogre::SceneManager* sceneMgr_;
   Ogre::Camera* camera_;
+  
+  std::vector<Ogre::Light*> lights;
   
   double camerax;
   double cameray;
