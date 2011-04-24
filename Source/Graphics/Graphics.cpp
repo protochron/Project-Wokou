@@ -39,31 +39,29 @@ Graphics* Graphics::instance()
     }
 }
 
-void Graphics::setSceneManager( Ogre::SceneManager* mSceneMgr ){
-  mSceneMgr_ = mSceneMgr;
+void Graphics::setSceneManager( Ogre::SceneManager* sceneMgr ){
+  sceneMgr_ = sceneMgr;
 }
 
 void Graphics::constructCamera()
 {
-  mCamera_ = mSceneMgr_->createCamera("Camera");
+  camera_ = sceneMgr_->createCamera("Camera");
   
   camerax = 0;
   cameray = 0;
   cameraz = 500;
   normalx = 0;
   normaly = 0;
-  normalz = -300;
+  normalz = -1;
 
-  mCamera_->setPosition(Vector3(camerax,cameray,cameraz));
-  mCamera_->lookAt(Vector3(normalx,normaly,normalz));
+  camera_->setPosition(Vector3(camerax,cameray,cameraz));
+  camera_->lookAt(Vector3(normalx,normaly,normalz));
 
-  mCamera_->setNearClipDistance(5);
+  camera_->setNearClipDistance(5);
 }
 
 void Graphics::moveCamera( double dx, double dy, double dz ){
-  camerax = camerax + dx;
-  cameray = cameray + dy;
-  cameraz = cameraz + dz;
+  camera_->moveRelative(Vector3(dx, dy, dz));
 }
 
 void Graphics::warpCamera( double x, double y, double z ){
@@ -71,26 +69,46 @@ void Graphics::warpCamera( double x, double y, double z ){
 }
 
 void Graphics::rotateCamera( double dx, double dy ){
+  double PI = 3.14159265;
   
+  rotx = rotx + dx;
+  roty = roty + dy;
+  
+  normalx = cos(rotx) * cos(roty);
+  normaly = sin(rotx) * cos(roty);
+  normalz = sin(roty); 
+  
+  //Handle rotational limits. rotx can go in a full circle. roty can go straight up to straight down.
+  if(rotx > 2*PI) //360
+    rotx = rotx - 2*PI;
+  if(rotx < -2*PI)
+    rotx = rotx + 2*PI;
+  if(roty >= PI/2) //90
+    roty = PI/2;
+  if(roty <= -PI/2)
+    roty = -PI/2;
+
+  camera_->lookAt( camerax+normalx, cameray+normaly, cameraz+normalz );
 }
+
 
 void Graphics::zoomCamera( double distance ){
   
 }
 
 void Graphics::render(){
-  mCamera_->setPosition(Vector3(camerax, cameray, cameraz));
-  mCamera_->lookAt(Vector3(normalx, normaly, normalz));
+  camera_->setPosition(Vector3(camerax, cameray, cameraz));
+  camera_->lookAt(Vector3(normalx, normaly, normalz));
   
-  Ogre::Entity* cube = mSceneMgr_->createEntity("Cube", "penguin.mesh");
+  Ogre::Entity* cube = sceneMgr_->createEntity("Cube", "Ship.mesh");
     
-  mSceneMgr_->getRootSceneNode()->attachObject(cube);
-  Ogre::SceneNode* headNode = mSceneMgr_->getRootSceneNode()->createChildSceneNode();
+  sceneMgr_->getRootSceneNode()->attachObject(cube);
+  Ogre::SceneNode* headNode = sceneMgr_->getRootSceneNode()->createChildSceneNode();
         
   // Set ambient light
-  mSceneMgr_->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+  sceneMgr_->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
     
   // Create a light
-  Ogre::Light* l = mSceneMgr_->createLight("MainLight");
+  Ogre::Light* l = sceneMgr_->createLight("MainLight");
   l->setPosition(20,80,50);
 }

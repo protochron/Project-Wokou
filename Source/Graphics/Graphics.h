@@ -83,7 +83,7 @@ class Graphics {
   
   //! This is used within the Application class to set up a scene.
   Ogre::Camera* camera() const
-    { return mCamera_; }
+    { return camera_; }
     
     
  protected:
@@ -92,8 +92,8 @@ class Graphics {
  private:
   static boost::shared_ptr<Graphics> instance_;
 
-  Ogre::SceneManager* mSceneMgr_;
-  Ogre::Camera* mCamera_;
+  Ogre::SceneManager* sceneMgr_;
+  Ogre::Camera* camera_;
   
   double camerax;
   double cameray;
