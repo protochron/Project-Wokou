@@ -46,3 +46,11 @@ std::string toNetworkFormat(const Action& a)
   // Remove the trailing ", " on the string and add a closing brace
   return converted.substr(0, converted.length()-2) + "}";
 }
+
+
+
+handler_t handlerFunction(const Action& a)
+{
+  
+  
+}

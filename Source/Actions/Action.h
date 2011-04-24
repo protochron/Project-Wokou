@@ -59,12 +59,37 @@ typedef boost::function<bool (const Action& a)> handler_t;
 
 
 /**
+ * This is a mapping of handler functions to Action types. The keys of the
+ * mapping are strings that dictate the "type" of the action, while the 
+ * values are the functions that should be called to handle the action.
+ *
+ * The type of an Action is set in the Action object under the key of "type".
+ */
+
+std::map<std::string, handler_t> handler_mappings;
+//handler_mappings["MovePlayer"] = ;
+//handler_mappings["WarpPlayer"] = ;
+
+
+
+
+
+
+/**
  * Converts an Action to a network-friendly format.
  * @param[in] a The action to convert
  * @return A string containing the formatted action
  */
  
 std::string toNetworkFormat(const Action& a);
+
+
+/**
+ * Determines which handler function to call based on the type of the Action.
+ *
+ */
+
+handler_t handlerFunction(const Action& a);
 
 
 #endif
