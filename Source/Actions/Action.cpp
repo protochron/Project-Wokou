@@ -24,6 +24,10 @@
 #include <string>
 #include <boost/foreach.hpp>
 
+std::map<std::string, handler_t> handler_mappings;
+
+
+
 std::string toNetworkFormat(const Action& a)
 {
   std::string converted;

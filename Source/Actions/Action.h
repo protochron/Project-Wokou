@@ -66,7 +66,7 @@ typedef boost::function<bool (const Action& a)> handler_t;
  * The type of an Action is set in the Action object under the key of "type".
  */
 
-std::map<std::string, handler_t> handler_mappings;
+
 //handler_mappings["MovePlayer"] = ;
 //handler_mappings["WarpPlayer"] = ;
 

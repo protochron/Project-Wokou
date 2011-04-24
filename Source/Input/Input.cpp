@@ -241,6 +241,7 @@ bool Input::processUnbufferedMouseInput( const FrameEvent& evt ){
 
 void Input::moveCamera()
 {
+  Graphics::instance()->moveCamera(mTranslateVector.x, mTranslateVector.y, mTranslateVector.z);
 //  Graphics::instance()->moveCamera(_, _, _);
 //  Graphics::instance()->rotateCamera(_, _);
 
