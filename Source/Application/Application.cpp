@@ -109,11 +109,12 @@ bool Application::configure(){
 void Application::chooseSceneManager(){
   // Create the SceneManager, in this case a generic one
   mSceneMgr = mRoot->createSceneManager(ST_GENERIC, "ExampleSMInstance");
+  Graphics::instance()->setSceneManager( mSceneMgr );
 }
 
 void Application::createCamera()
 {
-  Graphics::instance()->createCamera(mSceneMgr);
+  Graphics::instance()->constructCamera();
 }
 
 void Application::createFrameListener(){
@@ -123,17 +124,7 @@ void Application::createFrameListener(){
 }
 
 void Application::createScene(){
-  Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "penguin.mesh");
-    
-  mSceneMgr->getRootSceneNode()->attachObject(cube);
-  Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-        
-  // Set ambient light
-  mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    
-  // Create a light
-  Ogre::Light* l = mSceneMgr->createLight("MainLight");
-  l->setPosition(20,80,50);
+  Graphics::instance()->render();
 }
 
 void Application::destroyScene(){

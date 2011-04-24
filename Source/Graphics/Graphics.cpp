@@ -39,13 +39,58 @@ Graphics* Graphics::instance()
     }
 }
 
-
-
-void Graphics::createCamera(Ogre::SceneManager* sceneMgr)
-{
-  camera_ = sceneMgr->createCamera("PlayerCam");
-  camera_->setPosition(Vector3(0,0,500));
-  camera_->lookAt(Vector3(0,0,-300));
-  camera_->setNearClipDistance(5);
+void Graphics::setSceneManager( Ogre::SceneManager* mSceneMgr ){
+  mSceneMgr_ = mSceneMgr;
 }
 
+void Graphics::constructCamera()
+{
+  mCamera_ = mSceneMgr_->createCamera("Camera");
+  
+  camerax = 0;
+  cameray = 0;
+  cameraz = 500;
+  normalx = 0;
+  normaly = 0;
+  normalz = -300;
+
+  mCamera_->setPosition(Vector3(camerax,cameray,cameraz));
+  mCamera_->lookAt(Vector3(normalx,normaly,normalz));
+
+  mCamera_->setNearClipDistance(5);
+}
+
+void Graphics::moveCamera( double dx, double dy, double dz ){
+  camerax = camerax + dx;
+  cameray = cameray + dy;
+  cameraz = cameraz + dz;
+}
+
+void Graphics::warpCamera( double x, double y, double z ){
+  
+}
+
+void Graphics::rotateCamera( double dx, double dy ){
+  
+}
+
+void Graphics::zoomCamera( double distance ){
+  
+}
+
+void Graphics::render(){
+  mCamera_->setPosition(Vector3(camerax, cameray, cameraz));
+  mCamera_->lookAt(Vector3(normalx, normaly, normalz));
+  
+  Ogre::Entity* cube = mSceneMgr_->createEntity("Cube", "penguin.mesh");
+    
+  mSceneMgr_->getRootSceneNode()->attachObject(cube);
+  Ogre::SceneNode* headNode = mSceneMgr_->getRootSceneNode()->createChildSceneNode();
+        
+  // Set ambient light
+  mSceneMgr_->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+    
+  // Create a light
+  Ogre::Light* l = mSceneMgr_->createLight("MainLight");
+  l->setPosition(20,80,50);
+}
