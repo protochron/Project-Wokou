@@ -171,6 +171,7 @@ if(APPLE)
 
   set(BUNDLE_LOCATION   "${CMAKE_CURRENT_BINARY_DIR}/bin/${CONFIGURATION}/${APP_NAME}.app")
   set(BUNDLE_CONTENTS   "${BUNDLE_LOCATION}/Contents")
+  set(BUNDLE_COMPONENTS "${BUNDLE_CONTENTS}/Components")
   set(BUNDLE_PLUGINS    "${BUNDLE_CONTENTS}/Plugins")
   set(BUNDLE_RESOURCES  "${BUNDLE_CONTENTS}/Resources")
   set(BUNDLE_MEDIA      "${BUNDLE_CONTENTS}/Media")
@@ -241,11 +242,22 @@ if(APPLE)
   file(COPY "$ENV{CMAKE_CURRENT_BINARY_DIR}Resources" DESTINATION "${BUNDLE_CONTENTS}")
 
   # Copy all the dynamic libraries to the Plugins folder in the app.
-  file(GLOB plugins "$ENV{OGRE_SDK}/lib/*.dylib")
+  file(GLOB plugins "$ENV{OGRE_SDK}/lib/Plugin_*.dylib")
   file(MAKE_DIRECTORY "${BUNDLE_PLUGINS}")
 
   foreach(plugin ${plugins})
     file(COPY ${plugin} DESTINATION "${BUNDLE_PLUGINS}")
   endforeach(plugin)
+
+  # Make sure to pick up RenderSystem_GL
+  file(COPY "$ENV{OGRE_SDK}/lib/RenderSystem_GL.dylib" DESTINATION "${BUNDLE_PLUGINS}")
+
+  # Copy all of the dynamic library components into the app
+  file(GLOB libs "$ENV{OGRE_SDK}/lib/lib*.dylib")
+  file(MAKE_DIRECTORY "${BUNDLE_COMPONENTS}")
+
+  foreach(lib ${libs})
+    file(COPY ${lib} DESTINATION "${BUNDLE_COMPONENTS}")
+  endforeach(lib)
 
 endif(APPLE)
