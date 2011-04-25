@@ -21,7 +21,7 @@
 #include <Terrain/OgreTerrain.h>
 #include <Terrain/OgreTerrainGroup.h>
 
-class Terrain
+class TerrainGen
 {
   private:
     Ogre::TerrainGlobalOptions *mTerrainGlobals;
@@ -30,21 +30,23 @@ class Terrain
     bool mTerrainsImported;
     //OgreBites::Label *mInfoLabel;
 
-    void defineTerrain(long x, long y);
     void getTerrainImage(bool flipX, bool FlipY, Ogre::Image &img);
-    void initBlendMaps(Ogre::Terrain *terrain);
-    void configureTerrainDefaults(Ogre::Light *light);
 
   public:
-    Terrain(Ogre::SceneManager *scene) : mSceneMgr(scene), mTerrainGlobals(0), mTerrainsImported(false)
+    TerrainGen(Ogre::SceneManager *scene) : mSceneMgr(scene), mTerrainGlobals(OGRE_NEW Ogre::TerrainGlobalOptions()), mTerrainsImported(false)
     {}
 
 
-    ~Terrain()
+    ~TerrainGen()
     {
-      OGRE_DELETE mTerrainGroup;
-      OGRE_DELETE mTerrainGlobals;
+      //OGRE_DELETE mTerrainGroup;
+      //OGRE_DELETE mTerrainGlobals;
+      mSceneMgr = NULL;
     }
+
+    void configureTerrainDefaults(Ogre::Light *light);
+    void initBlendMaps(Ogre::Terrain *terrain);
+    void defineTerrain(long x, long y);
 
     Ogre::TerrainGlobalOptions *getTerrainGlobals()
     { return mTerrainGlobals; }
@@ -54,6 +56,9 @@ class Terrain
 
     bool getTerrainsImported()
     { return mTerrainsImported; }
+
+    void setTerrainGroup(Ogre::TerrainGroup *t)
+    { mTerrainGroup = t; }
 };
 
 #endif

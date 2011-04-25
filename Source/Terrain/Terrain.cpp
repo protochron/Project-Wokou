@@ -18,7 +18,7 @@
 
 #include "Terrain.h"
 
-void Terrain::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
+void TerrainGen::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
 {
   img.load("terrain.png", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
   if (flipX)
@@ -27,7 +27,7 @@ void Terrain::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
     img.flipAroundX();
 }
 
-void Terrain::defineTerrain(long x, long y)
+void TerrainGen::defineTerrain(long x, long y)
 {
   Ogre::String filename = mTerrainGroup->generateFilename(x, y);
   if (Ogre::ResourceGroupManager::getSingleton().resourceExists(mTerrainGroup->getResourceGroup(), filename))
@@ -43,7 +43,7 @@ void Terrain::defineTerrain(long x, long y)
   }
 }
 
-void Terrain::initBlendMaps(Ogre::Terrain *terrain)
+void TerrainGen::initBlendMaps(Ogre::Terrain *terrain)
 {
   Ogre::TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
   Ogre::TerrainLayerBlendMap* blendMap1 = terrain->getLayerBlendMap(2);
@@ -74,7 +74,7 @@ void Terrain::initBlendMaps(Ogre::Terrain *terrain)
   blendMap1->update();
 }
 
-void Terrain::configureTerrainDefaults(Ogre::Light *light)
+void TerrainGen::configureTerrainDefaults(Ogre::Light *light)
 {
   // Configure global
   mTerrainGlobals->setMaxPixelError(8);
