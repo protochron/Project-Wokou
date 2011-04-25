@@ -26,16 +26,19 @@ class Terrain
   private:
     Ogre::TerrainGlobalOptions *mTerrainGlobals;
     Ogre::TerrainGroup *mTerrainGroup;
+    Ogre::SceneManager *mSceneMgr;
     bool mTerrainsImported;
     //OgreBites::Label *mInfoLabel;
 
     void defineTerrain(long x, long y);
-    void initBlendMaps(OgreTerrain::Terrain *terrain);
+    void getTerrainImage(bool flipX, bool FlipY, Ogre::Image &img);
+    void initBlendMaps(Ogre::Terrain *terrain);
     void configureTerrainDefaults(Ogre::Light *light);
 
   public:
-    Terrain() : mTerrainGlobals(0), mTerrainsImported(false), mInfoLabel(0)
+    Terrain(Ogre::SceneManager *scene) : mSceneMgr(scene), mTerrainGlobals(0), mTerrainsImported(false)
     {}
+
 
     ~Terrain()
     {

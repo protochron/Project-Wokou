@@ -16,7 +16,16 @@
  * =====================================================================================
  */
 
-#include "terrain.h"
+#include "Terrain.h"
+
+void Terrain::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
+{
+  img.load("terrain.png", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+  if (flipX)
+    img.flipAroundY();
+  if (flipY)
+    img.flipAroundX();
+}
 
 void Terrain::defineTerrain(long x, long y)
 {
