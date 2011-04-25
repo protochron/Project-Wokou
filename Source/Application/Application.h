@@ -15,6 +15,9 @@
 
 #include "ExampleFrameListener.h"
 
+#include <boost/shared_ptr.hpp>
+
+
 #ifdef OGRE_STATIC_LIB
 #  define OGRE_STATIC_GL
 #  if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
@@ -35,14 +38,6 @@
 #    define OGRE_STATIC_OctreeZone
 #  else
 #    define OGRE_STATIC_OctreeSceneManager
-#  endif
-#  if OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-#     undef OGRE_STATIC_CgProgramManager
-#     undef OGRE_STATIC_GL
-#     define OGRE_STATIC_GLES 1
-#     ifdef __OBJC__
-#       import <UIKit/UIKit.h>
-#     endif
 #  endif
 #  include "OgreStaticPluginLoader.h"
 #endif
@@ -91,6 +86,68 @@ class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listene
 using namespace Ogre;
 
 class Application {
+public:
+  
+  Application();
+  ~Application();
+  
+  //! Tells the Application to begin its event loop
+  void go();
+  
+private:
+  
+  //! Return the path to the application's resource files
+  Ogre::String getResourcePath();
+  
+  //! Return the path to the applicaton's configuration files
+  Ogre::String getConfigPath();
+  
+  //! Initializes the Root system
+  Ogre::Root* initializeRoot(const Ogre::String& plugin, 
+    const Ogre::String& config, 
+    const Ogre::String& log);
+  
+  //! Initializes the window by setting the configuration
+  Ogre::RenderWindow* initializeWindow();
+  
+  //! Uses the configuration file to load all the resources
+  void initializeResources();
+  
+  //! Constructs a new basic scene manager
+  Ogre::SceneManager* initializeSceneManager();
+  
+  //! Initializes the viewports
+  void initializeViewport();
+  
+  //! Initializes the input subsystem
+  Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
+  
+  /*
+  #ifdef USE_RTSHADER_SYSTEM
+    RTShader::ShaderGenerator* mShaderGenerator; // The Shader generator instance.
+    ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener; // Material manager listener.	
+    virtual bool initializeShaderGenerator(SceneManager* sceneMgr);
+    virtual void finalizeShaderGenerator();
+  #endif*/
+  
+  
+  
+private:
+  boost::shared_ptr<Ogre::Root> root_;
+  boost::shared_ptr<Input> input_system_;
+
+  Ogre::SceneManager* scene_manager_;
+  Ogre::RenderWindow* window_;
+  
+  Ogre::String resource_path_;
+  Ogre::String config_path_;
+  
+};
+
+
+
+/*
+class Application {
  public:
   Application();
   virtual ~Application();
@@ -136,5 +193,5 @@ class Application {
   Graphics* graphics;
   ActionPump* actions;
 };
-
+*/
 #endif

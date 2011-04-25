@@ -1,188 +1,174 @@
 #include "Application.h"
 
-Application::Application(){
-  network = Network::instance();
-  graphics = Graphics::instance();
-  actions = ActionPump::instance();
+Application::Application() 
+
+{
+  resource_path_ = getResourcePath();
+  config_path_ = getConfigPath();
   
-  mFrameListener = 0;
-  mRoot = 0;
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
-  mResourcePath = macBundlePath() + "/Contents/Resources/";
-  mConfigPath = mResourcePath;
-#elif OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-  mResourcePath = macBundlePath() + "/";
-  mConfigPath = mResourcePath;
-#else
-  mResourcePath = "";
-  mConfigPath = mResourcePath;
-#endif
-
-#ifdef USE_RTSHADER_SYSTEM
-  mShaderGenerator	 = NULL;		
-  mMaterialMgrListener = NULL;
-#endif
-}
-
-Application::~Application(){
-  if (mFrameListener)
-    delete mFrameListener;
-  if (mRoot)
-    OGRE_DELETE mRoot;
-
-#ifdef OGRE_STATIC_LIB
-  mStaticPluginLoader.unload();
-#endif
-}
-
-void Application::go(){
-  if (!setup())
-    return;
-
-  mRoot->startRendering();
-
-  // clean up
-  destroyScene();	
-
-#ifdef USE_RTSHADER_SYSTEM
-  // Finalize shader generator.
-  finalizeShaderGenerator();
-#endif
-}
-
-bool Application::setup(){
-  String pluginsPath;
-  // only use plugins.cfg if not static
-#ifndef OGRE_STATIC_LIB
-#if OGRE_DEBUG_MODE
-  pluginsPath = mResourcePath + "plugins_d.cfg";
-#else
-  pluginsPath = mResourcePath + "plugins.cfg";
-#endif
-#endif
-		
-  mRoot = OGRE_NEW Root(pluginsPath, 
-			mConfigPath + "ogre.cfg", mResourcePath + "Ogre.log");
-#ifdef OGRE_STATIC_LIB
-  mStaticPluginLoader.load();
-#endif
-  setupResources();
-
-  bool carryOn = configure();
-  if (!carryOn) 
-    return false;
-
-  chooseSceneManager();
-  createCamera();
-  createViewports();
-#ifdef USE_RTSHADER_SYSTEM
-  // Initialize shader generator.
-  carryOn = initializeShaderGenerator(mSceneMgr);
-  if (!carryOn) 
-    return false;
-#endif
-  // Set default mipmap level (NB some APIs ignore this)
+  // Initialize the root system
+  root_.reset(initializeRoot(resource_path_, config_path_, resource_path_));
+  
+  
+  // Initialize the window 
+  //window_.reset(initializeWindow());
+  window_ = initializeWindow();
+  
+  // Set up references to all the resources
+  initializeResources();
+  
+  // Set up the scene manager
+  //scene_manager_.reset(initializeSceneManager());
+  scene_manager_ = initializeSceneManager();
+  
+  // Create a new camera
+  Graphics::instance()->constructCamera();
+  
+  // Constructs the viewports
+  initializeViewport();
+  
+  // Initialize the input subsystem
+  //input_system_.reset(initializeInput(root_.get(), window_.get()));
+  input_system_.reset(initializeInput(root_.get(), window_));
+  
+  // Set default mipmap level
   TextureManager::getSingleton().setDefaultNumMipmaps(5);
+  
   // Create any resource listeners (for loading screens)
-  createResourceListener();
+  //createResourceListener();
+  
   // Load resources
-  loadResources();
+  ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
   // Create the scene
-  createScene();
-  createFrameListener();
-  return true;
+  Graphics::instance()->setup();
 }
 
-bool Application::configure(){
-  if(mRoot->showConfigDialog()){
-    // If returned true, user clicked OK so initialise
-    // Here we choose to let the system create a default rendering window by passing 'true'
-    mWindow = mRoot->initialise(true);
-    return true;
-  }
-  else{
-    return false;
-  }
-}
-
-void Application::chooseSceneManager(){
-  // Create the SceneManager, in this case a generic one
-  mSceneMgr = mRoot->createSceneManager(ST_GENERIC, "ExampleSMInstance");
-  Graphics::instance()->setSceneManager( mSceneMgr );
-}
-
-void Application::createCamera()
+Application::~Application()
 {
-  Graphics::instance()->constructCamera();
+  // The boost::shared_ptrs free what needs to be freed here.
 }
 
-void Application::createFrameListener(){
-  mFrameListener= new Input(mWindow); //Risk of screw-uppage here.
-  //mFrameListener->showDebugOverlay(true);
-  mRoot->addFrameListener(mFrameListener);
-}
 
-void Application::createScene(){
-  Graphics::instance()->render();
-}
+void Application::go()
+{
+  root_->startRendering();
 
-void Application::destroyScene(){
+  // clean up
+  //destroyScene();
   
+  /*#ifdef USE_RTSHADER_SYSTEM
+    // Finalize shader generator.
+    finalizeShaderGenerator();
+  #endif*/
 }
 
-void Application::createViewports(){
+Ogre::Root* Application::initializeRoot(const Ogre::String& plugin, 
+                                        const Ogre::String& config, 
+                                        const Ogre::String& log)
+{
+  Ogre::Root *r = OGRE_NEW Root( plugin + "plugins.cfg", config + "ogre.cfg", log + "Ogre.log");
+  
+  if (r == 0)
+    throw "Could not initialize Ogre::Root!";
+    
+  return r;
+}
+
+
+Ogre::RenderWindow* Application::initializeWindow()
+{
+  Ogre::RenderWindow* win = NULL;
+  
+  if (root_->showConfigDialog())
+    win = root_->initialise(true);
+
+  if (win == 0)
+    throw "Could not initialize the window!";
+
+  return win;
+}
+
+void Application::initializeResources()
+{
+  Ogre::ConfigFile config;
+  Ogre::String section, type, arch;
+  
+  config.load(resource_path_ + "resources.cfg");
+  
+  Ogre::ConfigFile::SectionIterator itr = config.getSectionIterator();
+  
+  while (itr.hasMoreElements()) {
+    section = itr.peekNextKey();
+    
+    Ogre::ConfigFile::SettingsMultiMap* settings = itr.getNext();
+    Ogre::ConfigFile::SettingsMultiMap::iterator i;
+    
+    for (i = settings->begin(); i != settings->end(); ++i) {
+      type = i->first; 
+      arch = i->second;
+      
+      #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+        
+        // OS X does not set the working directory relative to the app,
+        // In order to make things portable on OS X we need to provide
+        // the loading with it's own bundle path location
+        
+        if (!Ogre::StringUtil::startsWith(arch, "/", false))
+    	    arch = String(macBundlePath() + "/" + arch);      
+      #endif
+      
+      ResourceGroupManager::getSingleton().addResourceLocation(arch, type, section);
+    }
+  }
+}
+
+Input* Application::initializeInput(Ogre::Root* root, Ogre::RenderWindow* window)
+{
+  Input* i = new Input(window);
+  root->addFrameListener(i);
+  
+  return i;
+}
+
+Ogre::SceneManager* Application::initializeSceneManager()
+{
+  Ogre::SceneManager *mgr = root_->createSceneManager(ST_GENERIC, "ExampleSMInstance");
+  Graphics::instance()->setSceneManager(mgr);
+  
+  return mgr;
+}
+
+void Application::initializeViewport()
+{
   // Create one viewport, entire window
-  Viewport* vp = mWindow->addViewport(Graphics::instance()->camera());
+  Viewport* vp = window_->addViewport(Graphics::instance()->camera());
+  
   vp->setBackgroundColour(ColourValue(0,0,0));
 
   // Alter the camera aspect ratio to match the viewport
   Graphics::instance()->camera()->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 }
 
-void Application::setupResources(){
-  // Load resource paths from config file
-  ConfigFile cf;
-#if OGRE_DEBUG_MODE
-  cf.load(mResourcePath + "resources_d.cfg");
-#else
-  cf.load(mResourcePath + "resources.cfg");
-#endif
-
-  // Go through all sections & settings in the file
-  ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-  String secName, typeName, archName;
-  while (seci.hasMoreElements()){
-    secName = seci.peekNextKey();
-    ConfigFile::SettingsMultiMap *settings = seci.getNext();
-    ConfigFile::SettingsMultiMap::iterator i;
-    for (i = settings->begin(); i != settings->end(); ++i){
-      typeName = i->first;
-      archName = i->second;
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-      // OS X does not set the working directory relative to the app,
-      // In order to make things portable on OS X we need to provide
-      // the loading with it's own bundle path location
-      if (!StringUtil::startsWith(archName, "/", false)) // only adjust relative dirs
-	archName = String(macBundlePath() + "/" + archName);
-#endif
-      ResourceGroupManager::getSingleton().addResourceLocation(archName, typeName, secName);
-    }
-  }
+Ogre::String Application::getResourcePath()
+{
+  #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+    return macBundlePath() + "/Contents/Resources/";
+  #else
+    return "";
+  #endif
 }
 
-void Application::createResourceListener(){
-  
-}
 
-void Application::loadResources(){
-  // Initialise, parse scripts etc
-  ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+Ogre::String Application::getConfigPath()
+{
+  return getResourcePath();
 }
 
 
 
+
+/*
 
 //!*********************************HERE BE DRAGONS****************************************
 //!****************************************************************************************
@@ -239,4 +225,4 @@ bool Application::initializeShaderGenerator(SceneManager* sceneMgr){
       mShaderGenerator = NULL;
     }
   }
-#endif
+#endif*/

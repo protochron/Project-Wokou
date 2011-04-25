@@ -28,7 +28,7 @@
 
 
 Input::Input(Ogre::RenderWindow* window)
-  : window_ (window), continue_ (true)
+  : window_ (window), continue_ (true), mouse_ (0), keyboard_ (0)
 {
   initializeInputSystem();
   createBufferedInputDevices();
@@ -41,11 +41,13 @@ Input::Input(Ogre::RenderWindow* window)
 
 Input::~Input()
 {
-  input_manager_->destroyInputObject(mouse_);
-  input_manager_->destroyInputObject(keyboard_);
-  OIS::InputManager::destroyInputSystem(input_manager_);
-  
-  
+  if (mouse_)
+    input_manager_->destroyInputObject(mouse_);
+
+  if (keyboard_)
+    input_manager_->destroyInputObject(keyboard_);
+    
+  OIS::InputManager::destroyInputSystem(input_manager_); 
 }
 
 void Input::initializeInputSystem()
