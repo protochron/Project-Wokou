@@ -9,16 +9,13 @@ Application::Application()
   // Initialize the root system
   root_.reset(initializeRoot(resource_path_, config_path_, resource_path_));
   
-  
   // Initialize the window 
-  //window_.reset(initializeWindow());
   window_ = initializeWindow();
   
   // Set up references to all the resources
   initializeResources();
   
   // Set up the scene manager
-  //scene_manager_.reset(initializeSceneManager());
   scene_manager_ = initializeSceneManager();
   
   // Create a new camera
@@ -28,7 +25,6 @@ Application::Application()
   initializeViewport();
   
   // Initialize the input subsystem
-  //input_system_.reset(initializeInput(root_.get(), window_.get()));
   input_system_.reset(initializeInput(root_.get(), window_));
   
   // Set default mipmap level
@@ -41,7 +37,7 @@ Application::Application()
   ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
   // Create the scene
-  Graphics::instance()->setup();
+  Graphics::instance()->render();
 }
 
 Application::~Application()
@@ -127,7 +123,6 @@ Input* Application::initializeInput(Ogre::Root* root, Ogre::RenderWindow* window
 {
   Input* i = new Input(window);
   root->addFrameListener(i);
-  
   return i;
 }
 

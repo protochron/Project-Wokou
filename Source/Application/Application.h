@@ -1,24 +1,24 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "Ogre.h"
-#include "OgreConfigFile.h"
+#include <OGRE/Ogre.h>
+#include <OGRE/OgreConfigFile.h>
 
-#include "Actions/Action.h"
-#include "Actions/ActionPump.h"
-#include "Application/Application.h"
 #include "Common/Common.h"
 #include "Engine/Engine.h"
 #include "Input/Input.h"
 #include "Networking/Network.h"
 #include "Graphics/Graphics.h"
 
-#include "ExampleFrameListener.h"
-
 #include <boost/shared_ptr.hpp>
 
 
-#ifdef OGRE_STATIC_LIB
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
+#   include "macUtils.h"
+#endif
+
+
+/*#ifdef OGRE_STATIC_LIB
 #  define OGRE_STATIC_GL
 #  if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #    define OGRE_STATIC_Direct3D9
@@ -40,48 +40,10 @@
 #    define OGRE_STATIC_OctreeSceneManager
 #  endif
 #  include "OgreStaticPluginLoader.h"
-#endif
+#endif*/
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-#   include "macUtils.h"
-#endif
 
-//!*************************************HERE BE DRAGONS*******************************************
-//!***********************************************************************************************
-#ifdef USE_RTSHADER_SYSTEM
-class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listener {
- public:
-  ShaderGeneratorTechniqueResolverListener(RTShader::ShaderGenerator* pShaderGenerator) {
-    mShaderGenerator = pShaderGenerator;
-  }
-  virtual Technique* handleSchemeNotFound(unsigned short schemeIndex, const String& schemeName, 
-					  Material* originalMaterial, unsigned short lodIndex, 
-					  const Renderable* rend)	{		
-    // Case this is the default shader generator scheme.
-    if (schemeName == RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME){
-      MaterialRegisterIterator itFind = mRegisteredMaterials.find(originalMaterial);
-      bool techniqueCreated = false;
-      // This material was not registered before.
-      if (itFind == mRegisteredMaterials.end()){
-	techniqueCreated = mShaderGenerator->
-	  createShaderBasedTechnique(originalMaterial->getName(),
-				     MaterialManager::DEFAULT_SCHEME_NAME, 
-				     schemeName);				
-      }
-      mRegisteredMaterials[originalMaterial] = techniqueCreated;
-    }
-    return NULL;
-  }
- protected:
-  typedef std::map<Material*, bool>		MaterialRegisterMap;
-  typedef MaterialRegisterMap::iterator	MaterialRegisterIterator;
- protected:
-  MaterialRegisterMap	mRegisteredMaterials;	// Registered material map.
-  RTShader::ShaderGenerator*	mShaderGenerator;// The shader generator instance.
-  };
-#endif
-//!***********************************************************************************************
-//!***********************************************************************************************
+
 
 using namespace Ogre;
 
@@ -146,52 +108,51 @@ private:
 
 
 
-/*
-class Application {
+
+//!*************************************HERE BE DRAGONS*******************************************
+//!***********************************************************************************************
+/*#ifdef USE_RTSHADER_SYSTEM
+class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listener {
  public:
-  Application();
-  virtual ~Application();
-  
-  virtual void go();
-
+  ShaderGeneratorTechniqueResolverListener(RTShader::ShaderGenerator* pShaderGenerator) {
+    mShaderGenerator = pShaderGenerator;
+  }
+  virtual Technique* handleSchemeNotFound(unsigned short schemeIndex, const String& schemeName, 
+					  Material* originalMaterial, unsigned short lodIndex, 
+					  const Renderable* rend)	{		
+    // Case this is the default shader generator scheme.
+    if (schemeName == RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME){
+      MaterialRegisterIterator itFind = mRegisteredMaterials.find(originalMaterial);
+      bool techniqueCreated = false;
+      // This material was not registered before.
+      if (itFind == mRegisteredMaterials.end()){
+	techniqueCreated = mShaderGenerator->
+	  createShaderBasedTechnique(originalMaterial->getName(),
+				     MaterialManager::DEFAULT_SCHEME_NAME, 
+				     schemeName);				
+      }
+      mRegisteredMaterials[originalMaterial] = techniqueCreated;
+    }
+    return NULL;
+  }
  protected:
-  Root *mRoot;
-  Camera* mCamera;
-  SceneManager* mSceneMgr;
-  //ExampleFrameListener* mFrameListener;   //!**************************************
-  Input* mFrameListener;
-  RenderWindow* mWindow;
-  Ogre::String mResourcePath;
-  Ogre::String mConfigPath;
-
-  virtual bool setup();
-  virtual bool configure();
-  virtual void chooseSceneManager();
-  virtual void createCamera();
-  virtual void createFrameListener();
-  virtual void createScene();           //Graphics go here!
-  virtual void destroyScene();
-  virtual void createViewports();
-  virtual void setupResources();
-  virtual void createResourceListener();
-  virtual void loadResources();
-  
-#ifdef OGRE_STATIC_LIB
-  StaticPluginLoader mStaticPluginLoader;
+  typedef std::map<Material*, bool>		MaterialRegisterMap;
+  typedef MaterialRegisterMap::iterator	MaterialRegisterIterator;
+ protected:
+  MaterialRegisterMap	mRegisteredMaterials;	// Registered material map.
+  RTShader::ShaderGenerator*	mShaderGenerator;// The shader generator instance.
+  };
 #endif
-  
-#ifdef USE_RTSHADER_SYSTEM
-  RTShader::ShaderGenerator* mShaderGenerator; // The Shader generator instance.
-  ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener; // Material manager listener.	
-  virtual bool initializeShaderGenerator(SceneManager* sceneMgr);
-  virtual void finalizeShaderGenerator();
-#endif
+//!***********************************************************************************************
+//!************************************************************************************************/
 
- private:
-  //These may be canned later if not needed.
-  Network* network;
-  Graphics* graphics;
-  ActionPump* actions;
-};
-*/
+
+
+
+
+
+
+
+
+
 #endif
