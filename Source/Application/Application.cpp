@@ -37,7 +37,7 @@ Application::Application()
   ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
   // Create the scene
-  Graphics::instance()->render();
+  Graphics::instance()->setup();
 }
 
 Application::~Application()

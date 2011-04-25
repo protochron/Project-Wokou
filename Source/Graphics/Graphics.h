@@ -106,9 +106,14 @@ class Graphics {
   void destroyEntity( String name );
 
   /**
+   * 
+   */
+  void setAspectRatio( double x, double y );
+  
+  /**
    * Renders everything to the screen.
    */
-  void render();
+  void setup();
   
   //! This is used within the Application class to set up a scene.
   Ogre::Camera* camera() const
@@ -125,17 +130,8 @@ class Graphics {
   Ogre::Camera* camera_;
   
   std::vector<Ogre::Light*> lights;
-  
-  double camerax;
-  double cameray;
-  double cameraz;
-  
-  double rotx; //Horizontal angle in radians. ( 0 ... 2PI )
+ 
   double roty; //Vertical angle in radians ( -PI/2 ... PI/2 )
-  
-  double normalx;
-  double normaly;
-  double normalz;
 };
 
 #endif

@@ -46,18 +46,13 @@ void Graphics::setSceneManager( Ogre::SceneManager* sceneMgr ){
 void Graphics::constructCamera()
 {
   camera_ = sceneMgr_->createCamera("Camera");
+
+  roty = 0;
+
+  camera_->setPosition( Vector3( 0, 0, 20 ) );
+  camera_->lookAt( Vector3( 0, 0, 0 ) );
   
-  camerax = 0;
-  cameray = 0;
-  cameraz = 500;
-  normalx = 0;
-  normaly = 0;
-  normalz = -1;
-
-  camera_->setPosition( Vector3(camerax,cameray,cameraz) );
-  camera_->lookAt( Vector3(normalx,normaly,normalz) );
-
-  camera_->setNearClipDistance(5);
+  camera_->setNearClipDistance(1);
 }
 
 void Graphics::moveCamera( double dx, double dy, double dz ){
@@ -65,17 +60,42 @@ void Graphics::moveCamera( double dx, double dy, double dz ){
 }
 
 void Graphics::warpCamera( double x, double y, double z ){
-  camera_->moveRelative( Vector3(x-camerax, y-cameray, z-cameraz) );
+  camera_->setPosition( Vector3(x, y, z) );
 }
 
 void Graphics::rotateCamera( double dx, double dy ){
-  camera_->rotate(Ogre::Vector3(0,1,0), Ogre::Radian(dx));
-  camera_->rotate(Ogre::Vector3(1,0,0), Ogre::Radian(dy));
+  double PI = 3.1415926535;
+
+  roty = roty + dy;
+  
+  Ogre::Vector3 temp = camera_->getDirection();
+  //
+  
+  if( roty <= -PI / 2 ){
+    roty = -PI/2;
+    dy = -1 - temp.y;  
+  }
+  if( roty >= PI / 2 ){
+    roty = PI/2;  
+    dy = 1 - temp.y;
+  }
+ 
+  camera_->yaw(Ogre::Radian(dx));
+  camera_->pitch(Ogre::Radian(dy));
+  
+  temp = camera_->getDirection();
+  std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;  
+  
+  
+
+  
+  
+  
 }
 
 
 void Graphics::zoomCamera( double distance ){
-  camera_->moveRelative( Vector3(distance*normalx, distance*normaly, distance*normalz) );
+  //camera_->moveRelative( Vector3(distance*normalx, distance*normaly, distance*normalz) );
 }
 
 bool Graphics::createLight( String name, double x, double y, double z ){
@@ -120,11 +140,14 @@ void Graphics::destroyEntity( String name ){
   }
 }
 
-void Graphics::render(){
+void Graphics::setAspectRatio(double x, double y){
+  if( y != 0 ){
+    camera_->setAspectRatio( x/y );
+  }
+}
+
+void Graphics::setup(){
   createLight( "MainLight", 20, 80, 50 );
-  
-  camera_->setPosition(Vector3(camerax, cameray, cameraz));
-  camera_->lookAt(Vector3(normalx, normaly, normalz));
   
   createEntity( "Ogre", "Sinbad.mesh", 10, 0, 0 );
   createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
