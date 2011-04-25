@@ -15,27 +15,6 @@
 #include <OGRE/ExampleFrameListener.h>
 using namespace std;
 
-class Example : public ExampleApplication {
-public:
-	
-  void createScene()
-  {
-    Ogre::Entity* cube = mSceneMgr->createEntity("Cube", "penguin.mesh");
-    
-    mSceneMgr->getRootSceneNode()->attachObject(cube);
-    Ogre::SceneNode* headNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-        
-    // Set ambient light
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-    
-    // Create a light
-    Ogre::Light* l = mSceneMgr->createLight("MainLight");
-    l->setPosition(20,80,50);
-  }
-protected:
-private:
-};
-
 int main(int argc, char **argv)
 {
   /*Network* x = Network::instance();
