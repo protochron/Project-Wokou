@@ -47,6 +47,8 @@ if (UNIX AND NOT APPLE)
   include_directories("/usr/local/include/OGRE/Paging")
   include_directories("/usr/local/include/OGRE/Threading")
   include_directories("$ENV{OGRE_SDK}/boost_1_42")
+
+  set(BULLET_ROOT "/usr/local")
 endif()
 
 if (APPLE)
@@ -59,7 +61,6 @@ if (APPLE)
 endif(APPLE)
  
 include_directories("${CMAKE_SOURCE_DIR}/Include")
-include_directories("${CMAKE_SOURCE_DIR}/Include/bullet")
  
 if(UNIX AND NOT APPLE)
 	set(CMAKE_MODULE_PATH "CMake/")
@@ -108,12 +109,24 @@ if (Boost_FOUND)
   #link_libraries(${Boost_LIBRARIES})
 endif(Boost_FOUND)
  
+# #############################################################################
+# Find Bullet
+# #############################################################################
+
+find_package(Bullet COMPONENTS Dynamics REQUIRED )
+
+if (BULLET_FOUND)
+  include_directories("${BULLET_INCLUDE_DIRS}")
+endif(BULLET_FOUND)
+ 
+
+ 
 set(HDRS
 	Source/Actions/Action.h
 	Source/Actions/ActionPump.h
 	Source/Common/Common.h
 	Source/Networking/Network.h
-    Source/Terrain/Terrain.h
+  Source/Terrain/Terrain.h
 )
  
 set(SRCS
@@ -133,6 +146,7 @@ set(SRCS
 include_directories( ${OIS_INCLUDE_DIRS}
 	${OGRE_INCLUDE_DIRS}
 	${OGRE_SAMPLES_INCLUDEPATH}
+	${BULLET_INCLUDE_DIRS}
 )
  
 
@@ -141,7 +155,7 @@ add_executable(${APP_NAME} ${HDRS} ${SRCS})
 
 #set_target_properties(${APP_NAME} PROPERTIES DEBUG_POSTFIX _d)
  
-target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Terrain_LIBRARIES})
+target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Terrain_LIBRARIES} ${BULLET_LIBRARIES})
 
 if (Boost_FOUND)
 #  link_directories( ${Boost_LIBRARY_DIRS} )
