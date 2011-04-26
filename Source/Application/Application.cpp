@@ -1,11 +1,32 @@
+/* Copyright (c) 2011 Cody Miller, Daniel Norris, Brett Hitchcock.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *****************************************************************************/
+
 #include "Application.h"
+#include "Gui/Gui.h"
+
 
 Application::Application() 
-
-{
-  resource_path_ = getResourcePath();
-  config_path_ = getConfigPath();
-  
+  : resource_path_ (getResourcePath()),
+    config_path_ (getConfigPath())
+{  
   // Initialize the root system
   root_.reset(initializeRoot(resource_path_, config_path_, resource_path_));
   
@@ -38,6 +59,12 @@ Application::Application()
 
   // Create the scene
   Graphics::instance()->setup();
+  
+  // Add event listeners
+  root_->addFrameListener(Gui::instance());
+  
+  // Initialize the GUI system
+  Gui::instance()->initialize();
 }
 
 Application::~Application()
@@ -52,11 +79,6 @@ void Application::go()
 
   // clean up
   //destroyScene();
-  
-  /*#ifdef USE_RTSHADER_SYSTEM
-    // Finalize shader generator.
-    finalizeShaderGenerator();
-  #endif*/
 }
 
 Ogre::Root* Application::initializeRoot(const Ogre::String& plugin, 
@@ -79,8 +101,9 @@ Ogre::RenderWindow* Application::initializeWindow()
   if (root_->showConfigDialog())
     win = root_->initialise(true);
 
-  if (win == 0)
-    throw "Could not initialize the window!";
+  // The case that the user didn't want to configure/wanted to quit
+  if (win == 0) 
+    exit(1);
 
   return win;
 }
@@ -143,6 +166,9 @@ void Application::initializeViewport()
 
   // Alter the camera aspect ratio to match the viewport
   Graphics::instance()->camera()->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+  
+  // Set the viewport for the GUI class
+  Gui::instance()->setViewport(vp);
 }
 
 Ogre::String Application::getResourcePath()
@@ -159,65 +185,3 @@ Ogre::String Application::getConfigPath()
 {
   return getResourcePath();
 }
-
-
-
-
-/*
-
-//!*********************************HERE BE DRAGONS****************************************
-//!****************************************************************************************
-//!****************************************************************************************
-//!****************************************************************************************
-#ifdef USE_RTSHADER_SYSTEM
-bool Application::initializeShaderGenerator(SceneManager* sceneMgr){
-  if (RTShader::ShaderGenerator::initialize()){
-    mShaderGenerator = RTShader::ShaderGenerator::getSingletonPtr();
-
-    // Set the scene manager.
-    mShaderGenerator->setSceneManager(sceneMgr);
-
-    // Setup core libraries and shader cache path.
-    ResourceGroupManager::LocationList resLocationsList = ResourceGroupManager::getSingleton().getResourceLocationList(ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-    ResourceGroupManager::LocationList::iterator it = resLocationsList.begin();
-    ResourceGroupManager::LocationList::iterator itEnd = resLocationsList.end();
-    String shaderCoreLibsPath;
-    String shaderCachePath;
-
-    // Default cache path is current directory;
-    shaderCachePath = "./";
-
-    // Try to find the location of the core shader lib functions and use it
-    // as shader cache path as well - this will reduce the number of generated files
-    // when running from different directories.
-    for (; it != itEnd; ++it){
-      if ((*it)->archive->getName().find("RTShaderLib") != String::npos){
-	shaderCoreLibsPath = (*it)->archive->getName() + "/";
-	shaderCachePath    = shaderCoreLibsPath;
-	break;
-      }
-    }
-    // Core shader libs not found -> shader generating will fail.
-    if (shaderCoreLibsPath.empty())			
-      return false;			
-    // Add resource location for the core shader libs. 
-    ResourceGroupManager::getSingleton().addResourceLocation(shaderCoreLibsPath , "FileSystem");
-    // Set shader cache path.
-    mShaderGenerator->setShaderCachePath(shaderCachePath);		
-  }
-  
-  void Application::finalizeShaderGenerator(){
-    // Unregister the material manager listener.
-    if (mMaterialMgrListener != NULL){			
-      MaterialManager::getSingleton().removeListener(mMaterialMgrListener);
-      delete mMaterialMgrListener;
-      mMaterialMgrListener = NULL;
-    }
-
-    // Finalize CRTShader system.
-    if (mShaderGenerator != NULL){
-      RTShader::ShaderGenerator::finalize();
-      mShaderGenerator = NULL;
-    }
-  }
-#endif*/
