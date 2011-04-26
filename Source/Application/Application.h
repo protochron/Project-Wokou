@@ -1,5 +1,26 @@
-#ifndef __APPLICATION_H__
-#define __APPLICATION_H__
+/* Copyright (c) 2011 Cody Miller, Daniel Norris, Brett Hitchcock.
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *****************************************************************************/
+
+#ifndef _PIRATE_APPLICATION_H_
+#define _PIRATE_APPLICATION_H_
 
 #include <OGRE/Ogre.h>
 #include <OGRE/OgreConfigFile.h>
@@ -14,36 +35,9 @@
 #include <boost/shared_ptr.hpp>
 
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE || OGRE_PLATFORM == OGRE_PLATFORM_IPHONE
-#   include "macUtils.h"
+#if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
+  #include "macUtils.h"
 #endif
-
-
-/*#ifdef OGRE_STATIC_LIB
-#  define OGRE_STATIC_GL
-#  if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-#    define OGRE_STATIC_Direct3D9
-     // dx10 will only work on vista, so be careful about statically linking
-#    if OGRE_USE_D3D10
-#      define OGRE_STATIC_Direct3D10
-#    endif
-#    if OGRE_USE_D3D11
-#      define OGRE_STATIC_Direct3D11
-#    endif
-#  endif
-#  define OGRE_STATIC_BSPSceneManager
-#  define OGRE_STATIC_ParticleFX
-#  define OGRE_STATIC_CgProgramManager
-#  ifdef OGRE_USE_PCZ
-#    define OGRE_STATIC_PCZSceneManager
-#    define OGRE_STATIC_OctreeZone
-#  else
-#    define OGRE_STATIC_OctreeSceneManager
-#  endif
-#  include "OgreStaticPluginLoader.h"
-#endif*/
-
-
 
 
 using namespace Ogre;
@@ -85,16 +79,6 @@ private:
   //! Initializes the input subsystem
   Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
   
-  /*
-  #ifdef USE_RTSHADER_SYSTEM
-    RTShader::ShaderGenerator* mShaderGenerator; // The Shader generator instance.
-    ShaderGeneratorTechniqueResolverListener* mMaterialMgrListener; // Material manager listener.	
-    virtual bool initializeShaderGenerator(SceneManager* sceneMgr);
-    virtual void finalizeShaderGenerator();
-  #endif*/
-  
-  
-  
 private:
   boost::shared_ptr<Ogre::Root> root_;
   boost::shared_ptr<Input> input_system_;
@@ -106,54 +90,5 @@ private:
   Ogre::String config_path_;
   
 };
-
-
-
-
-//!*************************************HERE BE DRAGONS*******************************************
-//!***********************************************************************************************
-/*#ifdef USE_RTSHADER_SYSTEM
-class ShaderGeneratorTechniqueResolverListener : public MaterialManager::Listener {
- public:
-  ShaderGeneratorTechniqueResolverListener(RTShader::ShaderGenerator* pShaderGenerator) {
-    mShaderGenerator = pShaderGenerator;
-  }
-  virtual Technique* handleSchemeNotFound(unsigned short schemeIndex, const String& schemeName, 
-					  Material* originalMaterial, unsigned short lodIndex, 
-					  const Renderable* rend)	{		
-    // Case this is the default shader generator scheme.
-    if (schemeName == RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME){
-      MaterialRegisterIterator itFind = mRegisteredMaterials.find(originalMaterial);
-      bool techniqueCreated = false;
-      // This material was not registered before.
-      if (itFind == mRegisteredMaterials.end()){
-	techniqueCreated = mShaderGenerator->
-	  createShaderBasedTechnique(originalMaterial->getName(),
-				     MaterialManager::DEFAULT_SCHEME_NAME, 
-				     schemeName);				
-      }
-      mRegisteredMaterials[originalMaterial] = techniqueCreated;
-    }
-    return NULL;
-  }
- protected:
-  typedef std::map<Material*, bool>		MaterialRegisterMap;
-  typedef MaterialRegisterMap::iterator	MaterialRegisterIterator;
- protected:
-  MaterialRegisterMap	mRegisteredMaterials;	// Registered material map.
-  RTShader::ShaderGenerator*	mShaderGenerator;// The shader generator instance.
-  };
-#endif
-//!***********************************************************************************************
-//!************************************************************************************************/
-
-
-
-
-
-
-
-
-
 
 #endif

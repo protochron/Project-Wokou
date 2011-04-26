@@ -127,6 +127,9 @@ set(HDRS
 	Source/Common/Common.h
 	Source/Networking/Network.h
   Source/Terrain/Terrain.h
+  
+  Source/Gui/Gorilla.h
+  Source/Gui/Gui.h
 )
  
 set(SRCS
@@ -140,6 +143,8 @@ set(SRCS
   Source/Networking/Network.cpp
   Source/Terrain/Terrain.cpp
   
+  Source/Gui/Gorilla.cpp
+  Source/Gui/Gui.cpp
   
 )
  

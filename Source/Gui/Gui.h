@@ -19,19 +19,54 @@
  * THE SOFTWARE.
  *****************************************************************************/
 
-#include "Engine.h"
+#ifndef _PIRATE_GUI_H_
+#define _PIRATE_GUI_H_
 
-boost::shared_ptr<Engine> Engine::instance_;
+#include <OGRE/OgreFrameListener.h>
+#include <OGRE/OgreViewport.h>
+#include <boost/shared_ptr.hpp>
+#include "Gui/Gorilla.h"
 
-Engine::Engine(){
+
+class Gui : public Ogre::FrameListener {
+public:
+
+  static Gui* instance();
+
+  //! Called when a frame is about to begin rendering.
+  bool frameStarted(const Ogre::FrameEvent& event);
   
-}
+  //! Called after all render targets have had their rendering commands issued,
+  //! but before render windows have been asked to flip their buffers over. 
+  bool frameRenderingQueued(const Ogre::FrameEvent& event);
 
-Engine* Engine::instance(){
-  if (instance_)
-    return instance_.get();
-  else {
-    instance_.reset(new Engine);
-    return instance_.get();
-  }
-}
+  //! Called just after a frame has been rendered. 
+  bool frameEnded(const Ogre::FrameEvent& event);
+
+  //! Sets the viewport for the GUI (this must be set)
+  void setViewport(Ogre::Viewport* viewport);
+
+  //! Initializes the GUI system. setViewport needs to have been called
+  void initialize();
+
+protected:
+  
+  // Do not allow construction of this class. It's a Singleton!
+  Gui();
+
+
+private:
+  static boost::shared_ptr<Gui> instance_;
+  
+  Ogre::Viewport* viewport_;
+  Gorilla::Silverback* gorilla_;
+  Gorilla::Screen* screen_;
+
+};
+
+
+
+
+
+
+#endif

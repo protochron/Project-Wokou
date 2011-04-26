@@ -19,19 +19,69 @@
  * THE SOFTWARE.
  *****************************************************************************/
 
-#include "Engine.h"
+#include "Gui.h"
 
-boost::shared_ptr<Engine> Engine::instance_;
+#include <iostream>
 
-Engine::Engine(){
-  
+
+boost::shared_ptr<Gui> Gui::instance_;
+
+Gui::Gui()
+  : gorilla_ (new Gorilla::Silverback()),
+    viewport_ (NULL),
+    screen_ (NULL)
+{
+
 }
 
-Engine* Engine::instance(){
+
+Gui* Gui::instance() 
+{
   if (instance_)
     return instance_.get();
   else {
-    instance_.reset(new Engine);
+    instance_.reset(new Gui);
     return instance_.get();
   }
 }
+
+void Gui::setViewport(Ogre::Viewport* viewport)
+{
+  viewport_ = viewport;
+}
+
+void Gui::initialize()
+{
+  if (viewport_ == NULL)
+    return;
+  
+  gorilla_->loadAtlas("dejavu");
+  screen_ = gorilla_->createScreen(viewport_, "dejavu");
+  //screen_->setOrientation(Ogre::OrientationMode::OR_DEGREE_270);
+  
+  Gorilla::Layer *layer = screen_->createLayer(0);
+  Gorilla::Rectangle* rect = layer->createRectangle(0, 0, 300, 20);
+  rect->background_gradient(Gorilla::Gradient_Diagonal, Gorilla::rgb(98, 0, 63), Gorilla::rgb(255, 180, 174));
+  Gorilla::MarkupText* markup;
+  
+  markup = layer->createMarkupText(14, 0, 0, "HUD!");
+
+  
+}
+
+
+bool Gui::frameStarted(const Ogre::FrameEvent& event)
+{
+
+}
+
+bool Gui::frameRenderingQueued(const Ogre::FrameEvent& event)
+{
+
+}
+
+bool Gui::frameEnded(const Ogre::FrameEvent& event)
+{
+
+}
+
