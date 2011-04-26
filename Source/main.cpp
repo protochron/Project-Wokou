@@ -13,10 +13,19 @@
 #include <fstream>
 #include <OGRE/ExampleApplication.h>
 #include <OGRE/ExampleFrameListener.h>
+
+
+
+#include <btBulletDynamicsCommon.h>
+
+
 using namespace std;
 
 int main(int argc, char **argv)
 {
+   btBroadphaseInterface* broadphase = new btDbvtBroadphase();
+
+
   /*Network* x = Network::instance();
   x->connect("127.0.0.1");
 
@@ -28,8 +37,8 @@ int main(int argc, char **argv)
   a["target"] = 300;
   Network::instance()->send(a, UNKNOWN);
 
-  t.join();
-  */
+  t.join();*/
+  
   //Example app;
   Application app2;
   try {
@@ -40,7 +49,6 @@ int main(int argc, char **argv)
     std::cerr << "An exception has occured: " << e.getFullDescription().c_str() << std::endl;
   }
 
-  
   
   return 0;
 }
