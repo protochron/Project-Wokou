@@ -162,4 +162,19 @@ void Graphics::setup(){
         
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
+  
+  
+  Ogre::Plane oceanSurface;
+  oceanSurface.normal = Ogre::Vector3::UNIT_Y;
+  oceanSurface.d = 20;
+  Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
+     Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+     oceanSurface,
+     1000, 1000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+
+  Entity* mOceanSurfaceEnt = sceneMgr_->createEntity( "OceanSurface", "OceanSurface" );
+  sceneMgr_->getRootSceneNode()->createChildSceneNode()->attachObject(mOceanSurfaceEnt);
+  mOceanSurfaceEnt->setMaterialName("Ocean2_HLSL_GLSL");
+  
+  
 }
