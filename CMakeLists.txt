@@ -120,6 +120,16 @@ if (BULLET_FOUND)
 endif(BULLET_FOUND)
  
 
+# #############################################################################
+# Find CEGUI
+# #############################################################################
+
+find_package(CEGUI REQUIRED)
+
+if (CEGUI_FOUND)
+  message(STATUS ">>>>>>> ${CEGUI_INCLUDE_DIR}")
+  include_directories("${CEGUI_INCLUDE_DIR}")
+endif(CEGUI_FOUND)
  
 set(HDRS
 	Source/Actions/Action.h
@@ -127,9 +137,6 @@ set(HDRS
 	Source/Common/Common.h
 	Source/Networking/Network.h
   Source/Terrain/Terrain.h
-  
-  Source/Gui/Gorilla.h
-  Source/Gui/Gui.h
 )
  
 set(SRCS
@@ -142,10 +149,6 @@ set(SRCS
   Source/Graphics/Graphics.cpp  
   Source/Networking/Network.cpp
   Source/Terrain/Terrain.cpp
-  
-  Source/Gui/Gorilla.cpp
-  Source/Gui/Gui.cpp
-  
 )
  
 include_directories( ${OIS_INCLUDE_DIRS}
@@ -160,7 +163,10 @@ add_executable(${APP_NAME} ${HDRS} ${SRCS})
 
 #set_target_properties(${APP_NAME} PROPERTIES DEBUG_POSTFIX _d)
  
-target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} ${OGRE_Terrain_LIBRARIES} ${BULLET_LIBRARIES})
+target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} 
+                                  ${OGRE_Terrain_LIBRARIES} ${BULLET_LIBRARIES}
+                                  ${CEGUI_LIBRARY}
+                                  )
 
 if (Boost_FOUND)
 #  link_directories( ${Boost_LIBRARY_DIRS} )
