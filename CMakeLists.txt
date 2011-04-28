@@ -165,7 +165,7 @@ add_executable(${APP_NAME} ${HDRS} ${SRCS})
  
 target_link_libraries(${APP_NAME} ${OGRE_LIBRARIES} ${OIS_LIBRARIES} 
                                   ${OGRE_Terrain_LIBRARIES} ${BULLET_LIBRARIES}
-                                  ${CEGUI_LIBRARY}
+                                    ${CEGUI_LIBRARIES} ${CEGUI_OGRE_LIBRARIES}
                                   )
 
 if (Boost_FOUND)
