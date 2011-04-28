@@ -154,7 +154,7 @@ void Graphics::setup(){
   destroyEntity( "Ogre" );
   createEntity( "Peng", "Ship.mesh", 0, 10, 0 );
   
-  Ogre::Entity* cube = sceneMgr_->createEntity("Cube", "Ship.mesh");
+  Ogre::Entity* cube = sceneMgr_->createEntity("Cube", "Penguin.mesh");
   sceneMgr_->getRootSceneNode()->attachObject(cube);
 
   

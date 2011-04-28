@@ -20,8 +20,9 @@
  *****************************************************************************/
 
 #include "Application.h"
-#include "Gui/Gui.h"
 
+#include <CEGUI.h>
+#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 
 Application::Application() 
   : resource_path_ (getResourcePath()),
@@ -61,10 +62,14 @@ Application::Application()
   Graphics::instance()->setup();
   
   // Add event listeners
-  root_->addFrameListener(Gui::instance());
+//  root_->addFrameListener(Gui::instance());
   
   // Initialize the GUI system
-  Gui::instance()->initialize();
+  //Gui::instance()->initialize();
+  
+  
+  //CEGUI::OgreRenderer& myRenderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);//new CEGUI::OgreRenderer(*window_);
+  
 }
 
 Application::~Application()
@@ -168,7 +173,7 @@ void Application::initializeViewport()
   Graphics::instance()->camera()->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
   
   // Set the viewport for the GUI class
-  Gui::instance()->setViewport(vp);
+//  Gui::instance()->setViewport(vp);
 }
 
 Ogre::String Application::getResourcePath()
