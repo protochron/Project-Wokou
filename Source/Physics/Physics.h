@@ -31,7 +31,8 @@
 class GamePhysics
 {
     //Constants
-    const btVector3 gravity; 
+    const btVector3 gravity_; 
+    const double worldSize_;
     
     static boost::shared_ptr<GamePhysics> instance_;
 
@@ -41,6 +42,9 @@ class GamePhysics
     btCollisionDispatcher *dispatcher_;
     btSequentialImpulseConstraintSolver *solver_;
     btDiscreteDynamicsWorld *dynamicsWorld_;
+    btCollisionShape *ground_;
+    btDefaultMotionState *groundMotionState_;
+    btRigidBody *groundBody_;
     std::vector<btCollisionShape *> collisionShapes_; //store collision shapes in this vector for easy access
 
     //Ensure that nothing else is able to instantiate a new GamePhysics object
