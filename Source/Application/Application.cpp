@@ -22,7 +22,13 @@
 #include "Application.h"
 
 #include <CEGUI.h>
+#include "Application/NullLogger.h"
+
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+
+
+
+
 
 Application::Application() 
   : resource_path_ (getResourcePath()),
@@ -62,14 +68,12 @@ Application::Application()
   Graphics::instance()->setup();
   
   // Add event listeners
-//  root_->addFrameListener(Gui::instance());
   
-  // Initialize the GUI system
-  //Gui::instance()->initialize();
+  // Prevent a nasty Mac OS X bug with setLogFilename.
+  new NullLogger;
   
-  
-  //CEGUI::OgreRenderer& myRenderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);//new CEGUI::OgreRenderer(*window_);
-  
+  // Initialize the GUI system.
+  CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
 }
 
 Application::~Application()
