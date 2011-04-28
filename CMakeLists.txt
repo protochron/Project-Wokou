@@ -136,7 +136,8 @@ set(HDRS
 	Source/Actions/ActionPump.h
 	Source/Common/Common.h
 	Source/Networking/Network.h
-  Source/Terrain/Terrain.h
+    Source/Terrain/Terrain.h
+    Source/Physics/Physics.h
 )
  
 set(SRCS
@@ -149,6 +150,7 @@ set(SRCS
   Source/Graphics/Graphics.cpp  
   Source/Networking/Network.cpp
   Source/Terrain/Terrain.cpp
+  Source/Physics/Physics.cpp
 )
  
 include_directories( ${OIS_INCLUDE_DIRS}

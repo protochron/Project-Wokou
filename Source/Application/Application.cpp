@@ -21,10 +21,15 @@
 
 #include "Application.h"
 
+
 #include <CEGUI.h>
 #include "Application/NullLogger.h"
 
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
+
 
 
 
