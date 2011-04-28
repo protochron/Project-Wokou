@@ -1,1 +1,19 @@
-Requires OGRE.
+
+
+Dependencies
+===============================================================================
+
+This application depends on several libraries:
+
+OGRE
+Bullet
+Boost
+
+
+
+Build Information
+===============================================================================
+
+To get the dependencies required for CEGUI:
+
+http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=4894
