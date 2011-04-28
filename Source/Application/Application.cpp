@@ -21,8 +21,8 @@
 
 #include "Application.h"
 
-#include <CEGUI.h>
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+#include <CEGUI/CEGUI.h>
+#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
 
 Application::Application() 
   : resource_path_ (getResourcePath()),
