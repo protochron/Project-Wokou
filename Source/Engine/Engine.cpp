@@ -27,6 +27,25 @@ Engine::Engine(){
   
 }
 
+bool Engine::moveShip( double x, double y, double z ){
+  //MUST contact Physics for confirmation/reduction of values.
+  Graphics::instance()->moveEntity( ship_, x, y, z );
+  //MUST inform Network of change.
+  
+  
+  return 0;
+}
+
+bool Engine::rotateShip( double roty ){
+  
+  //Probably shouldn't need to check with Physics first.
+  Graphics::instance()->rotateEntity( ship_, roty );
+  
+  //MUST inform Network of change.
+
+  return 0;
+}
+
 Engine* Engine::instance(){
   if (instance_)
     return instance_.get();

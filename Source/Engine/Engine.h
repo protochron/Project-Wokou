@@ -22,6 +22,9 @@
 #ifndef _PIRATE_ENGINE_H_
 #define _PIRATE_ENGINE_H_
 
+#include "Physics/Physics.h"
+#include "Graphics/Graphics.h"
+#include "Networking/Network.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 
@@ -29,12 +32,19 @@ class Engine {
  public:
   static Engine* instance();
   
+  void setEntity( String ship ){ ship_ = ship; }
+  
+  bool moveShip( double x, double y, double z ); //These are still iffy.
+  bool rotateShip( double roty );                //
+  
  protected:
   Engine();
   
  private:
   static boost::shared_ptr<Engine> instance_;
   
+  GamePhysics* physics; //May be canned if this is a singleton.
+  String ship_; //The name of the controlled entity.
 };
 
 #endif
