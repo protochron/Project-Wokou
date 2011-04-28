@@ -45,7 +45,6 @@ MACRO(FIND_CEGUI_LIBRARIES MYLIBRARIES MYLIBRARIESNAMES)
         ~/LIBRARIES/Frameworks
         /LIBRARIES/Frameworks
         /usr/local/lib
-        /usr/lib
         /usr/local/lib/CEGUI
         /usr/lib/cegui-0.7.1
         /sw/lib
