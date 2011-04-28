@@ -16,18 +16,40 @@
  * =====================================================================================
  */
 
-#ifndef __PHYSICS_H
-#define __PHYSICS_H
+#ifndef _GAME_PHYSICS_H
+#define _GAME_PHYSICS_H
 
 #include <BulletDynamics/btBulletDynamicsCommon.h>
 #include <BulletCollision/btBulletCollisionCommon.h>
+#include <boost/shared_ptr.hpp>
+#include <vector>
 
+/*************************************************************************/
+/* Define a singleton class to drive our physics simulation for the game.
+ * This way it is accessible by any game object as needed.
+ *************************************************************************/
 class GamePhysics
 {
-    private:
-    public:
-        GamePhysics()
-        {}
-};
+    //Constants
+    const btVector3 gravity; 
+    
+    static boost::shared_ptr<GamePhysics> instance_;
 
+    //Member vars
+    btBroadphaseInterface *broadphase_;
+    btDefaultCollisionConfiguration *collisionConfig_;
+    btCollisionDispatcher *dispatcher_;
+    btSequentialImpulseConstraintSolver *solver_;
+    btDiscreteDynamicsWorld *dynamicsWorld_;
+    std::vector<btCollisionShape *> collisionShapes_; //store collision shapes in this vector for easy access
+
+    //Ensure that nothing else is able to instantiate a new GamePhysics object
+    protected:
+        GamePhysics();
+
+    public:
+        //Generate our publicly accessible pointer
+        static GamePhysics *instance();
+        ~GamePhysics();
+};
 #endif

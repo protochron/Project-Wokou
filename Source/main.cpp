@@ -14,18 +14,10 @@
 #include <OGRE/ExampleApplication.h>
 #include <OGRE/ExampleFrameListener.h>
 
-
-
-#include <btBulletDynamicsCommon.h>
-
-
 using namespace std;
 
 int main(int argc, char **argv)
 {
-   btBroadphaseInterface* broadphase = new btDbvtBroadphase();
-
-
   /*Network* x = Network::instance();
   x->connect("127.0.0.1");
 
