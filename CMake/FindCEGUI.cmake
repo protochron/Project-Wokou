@@ -47,6 +47,7 @@ MACRO(FIND_CEGUI_LIBRARIES MYLIBRARIES MYLIBRARIESNAMES)
         /usr/local/lib
         /usr/lib
         /usr/lib/CEGUI
+        /usr/local/lib/CEGUI
         /usr/lib/cegui-0.7.1
         /sw/lib
         /opt/local/lib
@@ -93,6 +94,7 @@ find_path(CEGUI_INCLUDE_DIR NAMES CEGUI.h
   /usr/local/include
   /usr/local/include/CEGUI
   /usr/include
+  /usr/include/CEGUI
   /sw/include
   /opt/local/include
   /opt/csw/include
