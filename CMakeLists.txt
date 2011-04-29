@@ -233,6 +233,14 @@ if(UNIX AND NOT APPLE)
     file(COPY ${plugin} DESTINATION "${BUNDLE_PLUGINS}")
   endforeach(plugin)
 
+  # Copy all in the local Plugins folder into the bundle
+  file(GLOB ps "$ENV{CMAKE_CURRENT_BINARY_DIR}/Plugins")
+  
+  foreach(p ${ps})
+    file(COPY ${p} DESTINATION "${BUNDLE_PLUGINS}")
+  endforeach(p)
+
+
 endif()
 
 
@@ -287,4 +295,11 @@ if(APPLE)
     file(COPY ${lib} DESTINATION "${BUNDLE_COMPONENTS}")
   endforeach(lib)
 
+  # Copy all in the local Plugins folder into the bundle
+  file(GLOB ps "$ENV{CMAKE_CURRENT_BINARY_DIR}Plugins/*")
+  
+  foreach(p ${ps})
+    file(COPY ${p} DESTINATION "${BUNDLE_PLUGINS}")
+  endforeach(p)
+  
 endif(APPLE)
