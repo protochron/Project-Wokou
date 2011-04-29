@@ -25,6 +25,9 @@
 #include <OGRE/Ogre.h>
 #include <OGRE/OgreRenderWindow.h>
 #include <OGRE/OgreFrameListener.h>
+#include "Actions/ActionPump.h"
+#include "Actions/Action.h"
+
 #include "OgreStringConverter.h"
 #include "OgreException.h"
 

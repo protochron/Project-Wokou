@@ -32,7 +32,9 @@
 
 /** Represents the possible values that can be stored in an Action. */
 typedef boost::variant< float,
-                        std::string
+                        std::string,
+                        Ogre::Vector3,
+                        Ogre::Radian
                       > value_t;
 
 
