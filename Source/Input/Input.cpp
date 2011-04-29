@@ -25,7 +25,7 @@
 #include <sstream>
 
 #include "Graphics/Graphics.h"
-
+#include <CEGUI.h>
 
 Input::Input(Ogre::RenderWindow* window)
   : window_ (window), continue_ (true), mouse_ (0), keyboard_ (0)
@@ -162,18 +162,22 @@ bool Input::mouseMoved(const OIS::MouseEvent& event)
   if (state.Z.abs != 0)
     Graphics::instance()->zoomCamera(state.Z.abs / 500.0);
 
-  Graphics::instance()->rotateCamera(-state.X.rel * 0.013, -state.Y.rel * 0.013);
+  CEGUI::System::getSingleton().injectMouseMove(state.X.rel, state.Y.rel);
+  //Graphics::instance()->rotateCamera(-state.X.rel * 0.013, -state.Y.rel * 0.013);
   
   return true;
 }
 
 bool Input::mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id)
 {
+  CEGUI::System::getSingleton().injectMouseButtonDown((CEGUI::MouseButton)id);
+  
   return true;
 }
 
 bool Input::mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id)
 {
+  CEGUI::System::getSingleton().injectMouseButtonUp((CEGUI::MouseButton) id);
   return true;
 }
 

@@ -27,8 +27,7 @@
 
 #include "RendererModules/Ogre/CEGUIOgreRenderer.h"
 
-#include <CEGUI/CEGUI.h>
-#include <CEGUI/RendererModules/Ogre/CEGUIOgreRenderer.h>
+#include <RendererModules/Ogre/CEGUIOgreRenderer.h>
 
 
 
@@ -79,6 +78,29 @@ Application::Application()
   
   // Initialize the GUI system.
   CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
+  
+  CEGUI::SchemeManager::getSingleton().create("WindowsLook.scheme");
+  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
+  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+  CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
+  
+  CEGUI::System::getSingleton().setGUISheet(root);
+  /*
+  CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
+  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
+  CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+  
+  CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
+  
+  CEGUI::Window* myRoot = wmgr.createWindow("DefaultWindow", "root");
+  CEGUI::System::getSingleton().setGUISheet(myRoot);
+  
+  CEGUI::FrameWindow* wind = static_cast<CEGUI::FrameWindow*>(wmgr.createWindow("TaharezLook/FrameWindow", "testWindow"));
+  myRoot->addChildWindow(wind);
+  wind->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0), CEGUI::UDim(0.25f, 0)));
+  wind->setSize(CEGUI::UVector2(CEGUI::UDim(0.5f, 0), CEGUI::UDim(0.5f, 0)));
+  wind->setText("Hello World!");*/
+  
 }
 
 Application::~Application()
