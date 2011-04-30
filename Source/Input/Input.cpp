@@ -125,25 +125,25 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   
   if( keys_[OIS::KC_UP] ){
     Action a;
-    a["type"] = "Engine::moveShip";
+    a["type"] = "moveShip";
     a["data"] = Ogre::Vector3( 1, 0, 0 );
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_DOWN] ){
     Action a;
-    a["type"] = "Engine::moveShip";
+    a["type"] = "moveShip";
     a["data"] = Ogre::Vector3( -1, 0, 0 );
     ActionPump::instance()->push_back( a );
   }
   if( keys_[OIS::KC_LEFT] ){
     Action a;
-    a["type"] = "Engine::rotateShip";
+    a["type"] = "rotateShip";
     a["data"] = Ogre::Radian( 0.25 );
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_RIGHT] ){
     Action a;
-    a["type"] = "Engine::rotateShip";
+    a["type"] = "rotateShip";
     a["data"] = Ogre::Radian( -0.25 );
     ActionPump::instance()->push_back( a );
   }
