@@ -24,8 +24,50 @@
 boost::shared_ptr<Engine> Engine::instance_;
 
 Engine::Engine(){
-  
+  FPS = 30;
 }
+
+bool Engine::moveShip( double x, double y, double z ){
+  //MUST contact Physics for confirmation/reduction of values.
+  Graphics::instance()->moveEntity( ship_, x, y, z );
+  //MUST inform Network of change.
+  
+  
+  return 0;
+}
+
+bool Engine::rotateShip( double roty ){
+  
+  //Probably shouldn't need to check with Physics first.
+  Graphics::instance()->rotateEntity( ship_, roty );
+  
+  //MUST inform Network of change.
+
+  return 0;
+}
+
+bool Engine::frameStarted(const Ogre::FrameEvent& event){
+  timer.reset();
+  return 1;
+}
+
+bool Engine::frameEnded(const Ogre::FrameEvent& event){
+  unsigned long time = timer.getMilliseconds();
+  //std::cout << time << std::endl;
+
+  //This currently pumps out ALL the actions.
+  while( !ActionPump::instance()->queue().empty() ){
+    Action a = ActionPump::instance()->front();
+    ActionPump::instance()->pop();
+    std::cout << "Pumping action: " << std::endl;
+    
+  }
+  
+  return 1;
+}
+
+
+
 
 Engine* Engine::instance(){
   if (instance_)

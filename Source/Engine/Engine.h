@@ -22,12 +22,29 @@
 #ifndef _PIRATE_ENGINE_H_
 #define _PIRATE_ENGINE_H_
 
+#include "Actions/Action.h"
+#include "Actions/ActionPump.h"
+#include "Physics/Physics.h"
+#include "Graphics/Graphics.h"
+#include "Networking/Network.h"
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
 
-class Engine {
+class Engine : public FrameListener {
  public:
   static Engine* instance();
+  
+  void setEntity( String ship ){ ship_ = ship; } //This must be called before use.
+  void setWindow( Ogre::RenderWindow* window ){ window_ = window; }
+  
+  bool moveShip( double x, double y, double z ); //These are still iffy.
+  bool rotateShip( double roty );                //
+  
+  bool frameStarted(const Ogre::FrameEvent& event);
+  bool frameEnded(const Ogre::FrameEvent& event);
+  bool doAction();
+  
+  
   
  protected:
   Engine();
@@ -35,6 +52,12 @@ class Engine {
  private:
   static boost::shared_ptr<Engine> instance_;
   
+  int FPS; //Defaults to 30. Set in the constructor.
+  
+  GamePhysics* physics; //May be canned if this is a singleton.
+  String ship_; //The name of the controlled entity.
+  Ogre::RenderWindow* window_;
+  Ogre::Timer timer;
 };
 
 #endif

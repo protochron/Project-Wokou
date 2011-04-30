@@ -131,6 +131,26 @@ bool Graphics::createEntity( String name, String mesh, double x, double y, doubl
   return 0;
 }
 
+bool Graphics::moveEntity( String name, double dx, double dy, double dz ){
+  if( sceneMgr_->hasEntity( name ) == false ){
+    return 1; //The entity does not exist. Flee!
+  }
+  Ogre::Entity* temp = sceneMgr_->getEntity( name );
+  Ogre::SceneNode* tempNode = temp->getParentSceneNode();
+  tempNode->translate( Vector3( dx, dy, dz ) );
+  return 0;
+}
+
+bool Graphics::rotateEntity( String name, double yrot ){
+  if( sceneMgr_->hasEntity( name ) == false ){
+    return 1; //The entity does not exist. Flee!
+  }
+  Ogre::Entity* temp = sceneMgr_->getEntity( name );
+  Ogre::SceneNode* tempNode = temp->getParentSceneNode();
+  tempNode->yaw( Radian( yrot ) );
+  return 0;
+}
+
 void Graphics::destroyEntity( String name ){
   if( sceneMgr_->hasEntity( name ) == true ){
     Ogre::Entity* temp = sceneMgr_->getEntity( name );
@@ -152,17 +172,20 @@ void Graphics::setup(){
   createEntity( "Ogre", "Sinbad.mesh", 10, 0, 0 );
   createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
   destroyEntity( "Ogre" );
-  createEntity( "Peng", "Ship.mesh", 0, 10, 0 );
   
-  Ogre::Entity* cube = sceneMgr_->createEntity("Cube", "penguin.mesh");
-  sceneMgr_->getRootSceneNode()->attachObject(cube);
-
+  createEntity( "Player 1", "Ship.mesh", 0, 0, 0 );
+  createEntity( "Player 2", "Ship.mesh", 0, 0, 0 );
+  createEntity( "Player 3", "Ship.mesh", 0, 0, 0 );
+  createEntity( "Player 4", "Ship.mesh", 0, 0, 0 );
+  moveEntity( "Player 2", 10, 0, 10 );
+  moveEntity( "Player 3", 10, 0, 10 );
+  moveEntity( "Player 4", 10, 0, 10 );
+  rotateEntity( "Player 3", .5 );
+  rotateEntity( "Player 4", .5 );
+  moveEntity( "Player 4", -10, 0, 0 );
   
-  Ogre::SceneNode* headNode = sceneMgr_->getRootSceneNode()->createChildSceneNode();
-        
   // Set ambient light
-  sceneMgr_->setAmbientLight(Ogre::ColourValue(0.1, 0.1, 0.1));
-  
+  sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
   
   Ogre::Plane oceanSurface;
   oceanSurface.normal = Ogre::Vector3::UNIT_Y;

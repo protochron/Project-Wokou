@@ -99,6 +99,17 @@ class Graphics {
   bool createEntity( String name, String mesh, double x, double y, double z );
   
   /**
+   * Moves the SceneNode of the named entity by a delta of dx, dy, dz.
+   */
+  bool moveEntity( String name, double dx, double dy, double dz );
+  
+  /**
+   * Rotates the SceneNode of the named entity by yrot radians.
+   * The rotation will be done about the y (UP and DOWN) axis.
+   */
+  bool rotateEntity( String name, double yrot );
+  
+  /**
    * The entity with the appropriate name will be deleted.
    *
    * Its SceneNode will also be deleted from sceneMgr_.

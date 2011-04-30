@@ -72,6 +72,8 @@ Application::Application()
   Graphics::instance()->setup();
   
   // Add event listeners
+  Engine::instance()->setWindow( window_ );
+  root_->addFrameListener(Engine::instance());
   
   // Prevent a nasty Mac OS X bug with setLogFilename.
   new NullLogger;
