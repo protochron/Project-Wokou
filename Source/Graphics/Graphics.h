@@ -107,7 +107,7 @@ class Graphics {
    * Rotates the SceneNode of the named entity by yrot radians.
    * The rotation will be done about the y (UP and DOWN) axis.
    */
-  bool rotateEntity( String name, double yrot );
+  bool rotateEntity( String name, Radian yrot );
   
   /**
    * The entity with the appropriate name will be deleted.

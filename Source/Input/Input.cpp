@@ -125,25 +125,25 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   
   if( keys_[OIS::KC_UP] ){
     Action a;
-    a["type"] = "moveShip";
+    a["type"] = "LocalMovePlayer";
     a["data"] = Ogre::Vector3( 1, 0, 0 );
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_DOWN] ){
     Action a;
-    a["type"] = "moveShip";
+    a["type"] = "LocalMovePlayer";
     a["data"] = Ogre::Vector3( -1, 0, 0 );
     ActionPump::instance()->push_back( a );
   }
   if( keys_[OIS::KC_LEFT] ){
     Action a;
-    a["type"] = "rotateShip";
+    a["type"] = "LocalRotatePlayer";
     a["data"] = Ogre::Radian( 0.25 );
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_RIGHT] ){
     Action a;
-    a["type"] = "rotateShip";
+    a["type"] = "LocalRotatePlayer";
     a["data"] = Ogre::Radian( -0.25 );
     ActionPump::instance()->push_back( a );
   }
