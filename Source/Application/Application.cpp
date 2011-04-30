@@ -72,7 +72,7 @@ Application::Application()
   // Add event listeners
   Engine::instance()->setWindow( window_ );
   root_->addFrameListener(Engine::instance());
-  
+  /*
   // Prevent a nasty Mac OS X bug with setLogFilename.
   new NullLogger;
   
@@ -88,7 +88,7 @@ Application::Application()
 
   CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
   quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
-
+*/
   // Add event handling functions
   handler_mappings["MovePlayer"] = &Engine::handlePlayerMove;
 
