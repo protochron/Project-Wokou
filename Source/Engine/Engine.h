@@ -42,7 +42,11 @@ class Engine : public FrameListener {
   
   bool frameStarted(const Ogre::FrameEvent& event);
   bool frameEnded(const Ogre::FrameEvent& event);
-  bool doAction( Action a );
+  bool doAction(Action a);
+  
+  
+  //! Handles the PlayerMove action
+  void handlePlayerMove(const Action& a);
   
   
   

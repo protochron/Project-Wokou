@@ -23,6 +23,8 @@
 
 boost::shared_ptr<Engine> Engine::instance_;
 
+extern std::map<std::string, handler_t> handler_mappings;
+
 Engine::Engine(){
   FPS = 30;
 }
@@ -65,14 +67,28 @@ bool Engine::frameEnded(const Ogre::FrameEvent& event){
   return 1;
 }
 
-bool doAction( Action a ){
+bool Engine::doAction(Action a)
+{
   
+  std::string* type = boost::get<std::string>(&a["type"]);
+  
+  if (type == NULL)
+    return false;
 
-
-
-
-  return 0;
+  if (handler_mappings.find(*type) != handler_mappings.end()) {
+    handler_mappings[*type](Engine::instance(), a);
+    return true;
+  }
+  
+  return false;
 }
+
+void Engine::handlePlayerMove(const Action& a)
+{
+
+}
+
+
 
 Engine* Engine::instance(){
   if (instance_)

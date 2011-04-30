@@ -30,7 +30,7 @@
 #include "Common/Common.h"
 #include "Actions/Action.h"
 
-class Application;
+class Engine;
 
 
 /** Represents the possible values that can be stored in an Action. */
@@ -60,7 +60,7 @@ typedef std::map<std::string, value_t> Action;
  * Actions are handled by methods called "handlers". A pointer to a handler
  * function is captured in the handler_t type.
  */
-typedef boost::function<void (Application*, const Action& a)> handler_t;
+typedef boost::function<void (Engine*, const Action& a)> handler_t;
 
 
 /**
@@ -73,10 +73,6 @@ typedef boost::function<void (Application*, const Action& a)> handler_t;
 
 extern std::map<std::string, handler_t> handler_mappings;
 
-//handler_mappings["WarpPlayer"] = ;
-
-
-
 
 
 
@@ -87,14 +83,5 @@ extern std::map<std::string, handler_t> handler_mappings;
  */
  
 std::string toNetworkFormat(const Action& a);
-
-
-/**
- * Determines which handler function to call based on the type of the Action.
- *
- */
-
-handler_t handlerFunction(const Action& a);
-
 
 #endif

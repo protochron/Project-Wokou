@@ -26,8 +26,6 @@
 
 std::map<std::string, handler_t> handler_mappings;
 
-
-
 std::string toNetworkFormat(const Action& a)
 {
   std::string converted;
@@ -49,12 +47,4 @@ std::string toNetworkFormat(const Action& a)
   
   // Remove the trailing ", " on the string and add a closing brace
   return converted.substr(0, converted.length()-2) + "}";
-}
-
-
-
-handler_t handlerFunction(const Action& a)
-{
-  
-  
 }

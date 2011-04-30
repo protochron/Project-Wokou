@@ -85,18 +85,7 @@ private:
   Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
   
   bool handleQuit(const CEGUI::EventArgs& args);
-  
-  
-  ////////
-  // This is an example
-  ///////
-  
-  void handlePlayerMove(const Action& a)
-  {
     
-  }
-  
-  
 private:
   boost::shared_ptr<Ogre::Root> root_;
   boost::shared_ptr<Input> input_system_;
