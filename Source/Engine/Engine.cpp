@@ -59,15 +59,20 @@ bool Engine::frameEnded(const Ogre::FrameEvent& event){
   while( !ActionPump::instance()->queue().empty() ){
     Action a = ActionPump::instance()->front();
     ActionPump::instance()->pop();
-    std::cout << "Pumping action: " << std::endl;
-    
+    std::cout << "Pumping action: " << a["type"] << " " << a["data"] << std::endl;
   }
   
   return 1;
 }
 
+bool doAction( Action a ){
+  
 
 
+
+
+  return 0;
+}
 
 Engine* Engine::instance(){
   if (instance_)
