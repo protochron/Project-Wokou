@@ -72,27 +72,12 @@ Application::Application()
   // Add event listeners
   Engine::instance()->setWindow( window_ );
   root_->addFrameListener(Engine::instance());
-  /*
-  // Prevent a nasty Mac OS X bug with setLogFilename.
-  new NullLogger;
-  
-  // Initialize the GUI system.
-  CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
-  
-  CEGUI::SchemeManager::getSingleton().create("WindowsLook.scheme");
-  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
-  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
-  CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
-  
-  CEGUI::System::getSingleton().setGUISheet(root);
-
-  CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
-  quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
-*/
+ 
+  // Initialize the user interface
+  initializeInterface();
+ 
   // Add event handling functions
   handler_mappings["MovePlayer"] = &Engine::handlePlayerMove;
-
-
 }
 
 Application::~Application()
@@ -103,7 +88,7 @@ Application::~Application()
 
 bool Application::handleQuit(const CEGUI::EventArgs& args)
 {
-  Graphics::instance()->rotateCamera(0.01, 0.0);
+//  Graphics::instance()->rotateCamera(0.01, 0.0);
 }
 
 
@@ -216,3 +201,24 @@ Ogre::String Application::getConfigPath()
 {
   return getResourcePath();
 }
+
+void Application::initializeInterface()
+{
+  // Prevent a nasty Mac OS X bug with setLogFilename.
+  new NullLogger;
+
+  // Initialize the GUI system.
+  CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
+
+  CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
+  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
+  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+  CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
+
+  CEGUI::System::getSingleton().setGUISheet(root);
+
+  CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
+  quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
+}
+
+
