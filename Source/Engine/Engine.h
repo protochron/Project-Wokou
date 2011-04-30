@@ -37,18 +37,17 @@ class Engine : public FrameListener {
   void setEntity( String ship ){ ship_ = ship; } //This must be called before use.
   void setWindow( Ogre::RenderWindow* window ){ window_ = window; }
   
-  bool moveShip( double x, double y, double z ); //These are still iffy.
-  bool rotateShip( double roty );                //
-  
   bool frameStarted(const Ogre::FrameEvent& event);
   bool frameEnded(const Ogre::FrameEvent& event);
   bool doAction(Action a);
   
+  //! Handles the Local actions (Input)
+  void handleLocalMovePlayer(Action a);
+  void handleLocalRotatePlayer(Action a);
   
-  //! Handles the PlayerMove action
-  void handlePlayerMove(const Action& a);
-  
-  
+  //! Handles the actions from Network
+  void handleNetworkMovePlayer(Action a);
+  void handleNetworkRotatePlayer(Action a);
   
  protected:
   Engine();

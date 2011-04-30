@@ -78,6 +78,10 @@ Application::Application()
  
   // Add event handling functions
   handler_mappings["MovePlayer"] = &Engine::handlePlayerMove;
+  handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
+  handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
+  handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
+  handler_mappings["NetworkRotatePlayer"] = &Engine::handleNetworkMovePlayer;
 }
 
 Application::~Application()

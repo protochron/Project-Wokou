@@ -84,7 +84,17 @@ private:
   //! Initializes the input subsystem
   Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
   
+  //! Constructs the user interface
+  void initializeInterface();
+  
+  /* **************************************************************************
+   * GUI event handling methods
+   * *************************************************************************/
+    
   bool handleQuit(const CEGUI::EventArgs& args);
+  
+  
+  
     
 private:
   boost::shared_ptr<Ogre::Root> root_;

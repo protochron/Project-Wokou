@@ -141,13 +141,13 @@ bool Graphics::moveEntity( String name, double dx, double dy, double dz ){
   return 0;
 }
 
-bool Graphics::rotateEntity( String name, double yrot ){
+bool Graphics::rotateEntity( String name, Radian yrot ){
   if( sceneMgr_->hasEntity( name ) == false ){
     return 1; //The entity does not exist. Flee!
   }
   Ogre::Entity* temp = sceneMgr_->getEntity( name );
   Ogre::SceneNode* tempNode = temp->getParentSceneNode();
-  tempNode->yaw( Radian( yrot ) );
+  tempNode->yaw( yrot );
   return 0;
 }
 
@@ -180,8 +180,8 @@ void Graphics::setup(){
   moveEntity( "Player 2", 10, 0, 10 );
   moveEntity( "Player 3", 10, 0, 10 );
   moveEntity( "Player 4", 10, 0, 10 );
-  rotateEntity( "Player 3", .5 );
-  rotateEntity( "Player 4", .5 );
+  rotateEntity( "Player 3", Ogre::Radian(.5) );
+  rotateEntity( "Player 4", Ogre::Radian(.5) );
   moveEntity( "Player 4", -10, 0, 0 );
   
   // Set ambient light
