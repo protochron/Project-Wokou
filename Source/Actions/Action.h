@@ -30,6 +30,9 @@
 #include "Common/Common.h"
 #include "Actions/Action.h"
 
+class Application;
+
+
 /** Represents the possible values that can be stored in an Action. */
 typedef boost::variant< float,
                         std::string,
@@ -57,7 +60,7 @@ typedef std::map<std::string, value_t> Action;
  * Actions are handled by methods called "handlers". A pointer to a handler
  * function is captured in the handler_t type.
  */
-typedef boost::function<bool (const Action& a)> handler_t;
+typedef boost::function<void (Application*, const Action& a)> handler_t;
 
 
 /**
@@ -68,8 +71,8 @@ typedef boost::function<bool (const Action& a)> handler_t;
  * The type of an Action is set in the Action object under the key of "type".
  */
 
+extern std::map<std::string, handler_t> handler_mappings;
 
-//handler_mappings["MovePlayer"] = ;
 //handler_mappings["WarpPlayer"] = ;
 
 

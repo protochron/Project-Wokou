@@ -34,7 +34,11 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <CEGUI.h>
+#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX
+  #include <CEGUI/CEGUI.h>
+#else
+  #include <CEGUI.h>
+#endif
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
   #include "macUtils.h"
@@ -81,6 +85,17 @@ private:
   Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
   
   bool handleQuit(const CEGUI::EventArgs& args);
+  
+  
+  ////////
+  // This is an example
+  ///////
+  
+  void handlePlayerMove(const Action& a)
+  {
+    
+  }
+  
   
 private:
   boost::shared_ptr<Ogre::Root> root_;

@@ -25,8 +25,6 @@
 #include <CEGUI.h>
 #include "Application/NullLogger.h"
 
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
-
 #include <RendererModules/Ogre/CEGUIOgreRenderer.h>
 
 
@@ -90,6 +88,8 @@ Application::Application()
 
   CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
   quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
+  
+  handler_mappings["MovePlayer"] = &Application::handlePlayerMove;
 }
 
 Application::~Application()
