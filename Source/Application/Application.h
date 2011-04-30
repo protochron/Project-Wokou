@@ -34,6 +34,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <CEGUI.h>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
   #include "macUtils.h"
@@ -78,6 +79,8 @@ private:
   
   //! Initializes the input subsystem
   Input* initializeInput(Ogre::Root* root, Ogre::RenderWindow* window);
+  
+  bool handleQuit(const CEGUI::EventArgs& args);
   
 private:
   boost::shared_ptr<Ogre::Root> root_;

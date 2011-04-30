@@ -85,27 +85,20 @@ Application::Application()
   CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
   
   CEGUI::System::getSingleton().setGUISheet(root);
-  /*
-  CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
-  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
-  CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
-  
-  CEGUI::WindowManager &wmgr = CEGUI::WindowManager::getSingleton();
-  
-  CEGUI::Window* myRoot = wmgr.createWindow("DefaultWindow", "root");
-  CEGUI::System::getSingleton().setGUISheet(myRoot);
-  
-  CEGUI::FrameWindow* wind = static_cast<CEGUI::FrameWindow*>(wmgr.createWindow("TaharezLook/FrameWindow", "testWindow"));
-  myRoot->addChildWindow(wind);
-  wind->setPosition(CEGUI::UVector2(CEGUI::UDim(0.25f, 0), CEGUI::UDim(0.25f, 0)));
-  wind->setSize(CEGUI::UVector2(CEGUI::UDim(0.5f, 0), CEGUI::UDim(0.5f, 0)));
-  wind->setText("Hello World!");*/
-  
+
+  CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
+  quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
 }
 
 Application::~Application()
 {
   // The boost::shared_ptrs free what needs to be freed here.
+}
+
+
+bool Application::handleQuit(const CEGUI::EventArgs& args)
+{
+  Graphics::instance()->rotateCamera(0.01, 0.0);
 }
 
 
@@ -202,9 +195,6 @@ void Application::initializeViewport()
 
   // Alter the camera aspect ratio to match the viewport
   Graphics::instance()->camera()->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
-  
-  // Set the viewport for the GUI class
-//  Gui::instance()->setViewport(vp);
 }
 
 Ogre::String Application::getResourcePath()
