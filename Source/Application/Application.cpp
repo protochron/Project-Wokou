@@ -74,10 +74,9 @@ Application::Application()
   root_->addFrameListener(Engine::instance());
  
   // Initialize the user interface
-  initializeInterface();
+  //initializeInterface();
  
   // Add event handling functions
-  handler_mappings["MovePlayer"] = &Engine::handlePlayerMove;
   handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
   handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
