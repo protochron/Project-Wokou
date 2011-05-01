@@ -36,6 +36,7 @@ class Engine : public FrameListener {
   
   void setEntity( String ship ){ ship_ = ship; } //This must be called before use.
   void setWindow( Ogre::RenderWindow* window ){ window_ = window; }
+  void setSceneManager( SceneManager* sceneMgr ){ sceneMgr_ = sceneMgr; }
   
   bool frameStarted(const Ogre::FrameEvent& event);
   bool frameEnded(const Ogre::FrameEvent& event);
@@ -48,6 +49,10 @@ class Engine : public FrameListener {
   //! Handles the actions from Network
   void handleNetworkMovePlayer(Action a);
   void handleNetworkRotatePlayer(Action a);
+  void handleNetworkCreateEntity( Action a );
+  void handleNetworkDestroyEntity( Action a );
+  
+  void handleNetworkSetAmbient( Action a );
   
  protected:
   Engine();
@@ -57,8 +62,9 @@ class Engine : public FrameListener {
   
   int FPS; //Defaults to 30. Set in the constructor.
   
-  GamePhysics* physics; //May be canned if this is a singleton.
+  SceneManager* sceneMgr_;
   String ship_; //The name of the controlled entity.
+  Radian angle_;//The angle of the ship. Maintained for efficiency.
   Ogre::RenderWindow* window_;
   Ogre::Timer timer;
 };

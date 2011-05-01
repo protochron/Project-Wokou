@@ -28,6 +28,16 @@ extern std::map<std::string, handler_t> handler_mappings;
 Engine::Engine(){
   FPS = 30;
   ship_ = "Player 1";
+  angle_= 0;
+}
+
+Engine* Engine::instance(){
+  if (instance_)
+    return instance_.get();
+  else {
+    instance_.reset(new Engine);
+    return instance_.get();
+  }
 }
 
 bool Engine::frameStarted(const Ogre::FrameEvent& event){
@@ -65,18 +75,23 @@ bool Engine::doAction(Action a)
   return false;
 }
 
-void Engine::handleLocalMovePlayer(Action a)
-{
-  //if( physics allows it ){
-  Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
-  Graphics::instance()->moveEntity( ship_, data->x, data->y, data->z );
+void Engine::handleLocalMovePlayer(Action a){
+  float* distance = boost::get<float>(&a["distance"]);
+  float* height =   boost::get<float>(&a["height"]);
+  double dx = *distance * -Math::Cos( angle_ );
+  double dy = *height; 
+  double dz = *distance * Math::Sin( angle_ ); 
+  //Get updated coordinates from Physics
+  Graphics::instance()->moveEntity( ship_, dx, dy, dz );
   //Network::instance()->update
-  //}
 }
 
 void Engine::handleLocalRotatePlayer(Action a){
-  //if( physics allows it ){
+  //Physics doesn't care.
   Ogre::Radian* data = boost::get<Ogre::Radian>(&a["data"]);
+  angle_ = angle_ + *data;
+  if( angle_ > Radian(Math::PI) ) angle_ = angle_ - Radian(Math::TWO_PI);
+  if( angle_ < -Radian(Math::PI)) angle_ = angle_ + Radian(Math::TWO_PI);
   Graphics::instance()->rotateEntity( ship_, *data );
   //Network::instance()->update
   //}
@@ -87,20 +102,32 @@ void Engine::handleNetworkMovePlayer( Action a ){
   std::string* name = boost::get<std::string>(&a["name"]);
   Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
   Graphics::instance()->moveEntity( *name, data->x, data->y, data->z );
+  //Update Physics.
 }
 
 void Engine::handleNetworkRotatePlayer( Action a ){
   //This is from the network; do not need to check Physics or update Network.
   std::string* name = boost::get<std::string>(&a["name"]);
   Ogre::Radian* data = boost::get<Ogre::Radian>(&a["data"]);
-  Graphics::instance()->rotateEntity( "Player 1", *data );
+  Graphics::instance()->rotateEntity( *name, *data );
+  //Update Physics (if it cares about angles)
 }
 
-Engine* Engine::instance(){
-  if (instance_)
-    return instance_.get();
-  else {
-    instance_.reset(new Engine);
-    return instance_.get();
-  }
+void Engine::handleNetworkCreateEntity( Action a ){
+  std::string* name = boost::get<std::string>(&a["name"]);
+  std::string* mesh = boost::get<std::string>(&a["mesh"]);
+  Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
+  Graphics::instance()->createEntity( *name, *mesh, data->x, data->y, data->z );
+  //Update Physics.
+}
+
+void Engine::handleNetworkDestroyEntity( Action a ){
+  std::string* name = boost::get<std::string>(&a["name"]);
+  Graphics::instance()->destroyEntity( *name );
+  //Update Physics.
+}
+
+void Engine::handleNetworkSetAmbient( Action a ){
+  Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
+  Graphics::instance()->setAmbient( data->x, data->y, data->z );
 }
