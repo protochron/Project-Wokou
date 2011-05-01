@@ -98,6 +98,10 @@ void Graphics::zoomCamera( double distance ){
   //camera_->moveRelative( Vector3(distance*normalx, distance*normaly, distance*normalz) );
 }
 
+void Graphics::setAmbient( double r, double g, double b ){
+  sceneMgr_->setAmbientLight(Ogre::ColourValue(r, g, b));
+}
+
 bool Graphics::createLight( String name, double x, double y, double z ){
   for( unsigned int i = 0; i < lights.size(); i++ ){
     if( name == lights[i]->getName() )
@@ -137,6 +141,7 @@ bool Graphics::moveEntity( String name, double dx, double dy, double dz ){
   }
   Ogre::Entity* temp = sceneMgr_->getEntity( name );
   Ogre::SceneNode* tempNode = temp->getParentSceneNode();
+  
   tempNode->translate( Vector3( dx, dy, dz ) );
   return 0;
 }

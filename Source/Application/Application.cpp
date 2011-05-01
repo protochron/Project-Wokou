@@ -94,6 +94,9 @@ Application::Application()
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
   handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
   handler_mappings["NetworkRotatePlayer"] = &Engine::handleNetworkMovePlayer;
+  handler_mappings["NetworkCreateEntity"] = &Engine::handleNetworkCreateEntity;
+  handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
+  handler_mappings["NetworkSetAmbient"] = &Engine::handleNetworkSetAmbient;
 }
 
 Application::~Application()
@@ -188,6 +191,7 @@ Ogre::SceneManager* Application::initializeSceneManager()
 {
   Ogre::SceneManager *mgr = root_->createSceneManager(ST_GENERIC, "ExampleSMInstance");
   Graphics::instance()->setSceneManager(mgr);
+  Engine::instance()->setSceneManager(mgr);
   
   return mgr;
 }

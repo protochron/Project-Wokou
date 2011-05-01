@@ -126,13 +126,15 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   if( keys_[OIS::KC_UP] ){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["data"] = Ogre::Vector3( 1, 0, 0 );
+    a["distance"] = 1;
+    a["height"] = 0;
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_DOWN] ){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["data"] = Ogre::Vector3( -1, 0, 0 );
+    a["distance"] = -1;
+    a["height"] = 0;
     ActionPump::instance()->push_back( a );
   }
   if( keys_[OIS::KC_LEFT] ){

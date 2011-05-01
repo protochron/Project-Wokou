@@ -81,6 +81,11 @@ class Graphics {
   void zoomCamera(double distance);
   
   /**
+   * Changes the ambient lighting level. Will usually only be done by Network.
+   */
+  void setAmbient( double r, double g, double b );
+
+  /**
    * Creates a light named str at coordinates (x, y, z).
    * If there is another light of the same name, this will fail and return 1.
    */
