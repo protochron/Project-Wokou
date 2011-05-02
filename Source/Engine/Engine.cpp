@@ -40,6 +40,13 @@ Engine* Engine::instance(){
   }
 }
 
+void Engine::bindCamera( bool type ){
+  Ogre::Camera* camera = sceneMgr_->getCamera("Camera");
+  Ogre::Entity* player = sceneMgr_->getEntity(ship_);
+  Ogre::SceneNode* node = player->getParentSceneNode();
+  node->attachObject(camera);
+}
+
 bool Engine::frameStarted(const Ogre::FrameEvent& event){
   timer.reset();
   return 1;
@@ -82,19 +89,46 @@ void Engine::handleLocalMovePlayer(Action a){
   double dy = *height; 
   double dz = *distance * Math::Sin( angle_ ); 
   //Get updated coordinates from Physics
-  Graphics::instance()->moveEntity( ship_, dx, dy, dz );
+  
+  Ogre::SceneNode* temp = sceneMgr_->getEntity( ship_ )->getParentSceneNode();
+  temp->translate( dx, dy, dz );
+  //Graphics::instance()->moveEntity( ship_, dx, dy, dz );
+  //Graphics::instance()->moveCamera( dx, dy, dz );
+  
   //Network::instance()->update
 }
 
 void Engine::handleLocalRotatePlayer(Action a){
-  //Physics doesn't care.
+  //Update Physics if it cares about angles.
   Ogre::Radian* data = boost::get<Ogre::Radian>(&a["data"]);
   angle_ = angle_ + *data;
   if( angle_ > Radian(Math::PI) ) angle_ = angle_ - Radian(Math::TWO_PI);
   if( angle_ < -Radian(Math::PI)) angle_ = angle_ + Radian(Math::TWO_PI);
-  Graphics::instance()->rotateEntity( ship_, *data );
+  Graphics::instance()->rotateEntity( ship_, *data, false );
   //Network::instance()->update
   //}
+}
+
+void Engine::handleLocalUDCamera(Action a){ //DEFUNCT
+  /*  Ogre::Camera* camera = sceneMgr_->getCamera("Camera");
+  float* data = boost::get<float>(&a["data"]);
+  Ogre::Vector3 temp = camera->getPosition();
+  camera->moveRelative( Ogre::Vector3( 0, *data, 0 ) );
+  camera->setDirection( -temp.x, -temp.y, -temp.z );*/
+}
+
+void Engine::handleLocalLRCamera(Action a){ //DEFUNCT
+  /*  Ogre::Camera* camera = sceneMgr_->getCamera("Camera");
+  Ogre::Radian* data = boost::get<Ogre::Radian>(&a["data"]);
+  Ogre::Vector3 temp = camera->getPosition();
+  //std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;
+  camera->moveRelative( Ogre::Vector3( 1, 0, 0 ) );
+  camera->setDirection( -temp.x, -temp.y, -temp.z );*/
+}
+
+void Engine::handleLocalZoomCamera(Action a){
+  Ogre::Camera* camera = sceneMgr_->getCamera("Camera");
+  
 }
 
 void Engine::handleNetworkMovePlayer( Action a ){

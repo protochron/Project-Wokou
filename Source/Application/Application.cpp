@@ -50,6 +50,7 @@ Application::Application()
   
   // Create a new camera
   Graphics::instance()->constructCamera();
+
   
   // Constructs the viewports
   initializeViewport();
@@ -72,6 +73,7 @@ Application::Application()
   // Add event listeners
   Engine::instance()->setWindow( window_ );
   root_->addFrameListener(Engine::instance());
+  Engine::instance()->bindCamera( false ); //Active camera.
   /*
   // Prevent a nasty Mac OS X bug with setLogFilename.
   new NullLogger;
@@ -92,11 +94,15 @@ Application::Application()
   // Add event handling functions
   handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
+  handler_mappings["LocalUDCamera"] = &Engine::handleLocalUDCamera;
+  handler_mappings["LocalLRCamera"] = &Engine::handleLocalLRCamera;
+  handler_mappings["LocalZoomCamera"] = &Engine::handleLocalZoomCamera;
   handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
   handler_mappings["NetworkRotatePlayer"] = &Engine::handleNetworkMovePlayer;
   handler_mappings["NetworkCreateEntity"] = &Engine::handleNetworkCreateEntity;
   handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
   handler_mappings["NetworkSetAmbient"] = &Engine::handleNetworkSetAmbient;
+
 }
 
 Application::~Application()
