@@ -33,6 +33,7 @@ class GamePhysics
     //Constants
     const btVector3 gravity_; 
     const double worldSize_;
+    const btScalar shipMass_;
     
     static boost::shared_ptr<GamePhysics> instance_;
 
@@ -45,7 +46,12 @@ class GamePhysics
     btCollisionShape *ground_;
     btDefaultMotionState *groundMotionState_;
     btRigidBody *groundBody_;
+
+    btTransform worldTransform_;
+
     std::vector<btCollisionShape *> collisionShapes_; //store collision shapes in this vector for easy access
+
+
 
     //Ensure that nothing else is able to instantiate a new GamePhysics object
     protected:
@@ -55,5 +61,9 @@ class GamePhysics
         //Generate our publicly accessible pointer
         static GamePhysics *instance();
         ~GamePhysics();
+
+        //Accessors
+        btTransform &getWorldTransform()
+        { return worldTransform_; }
 };
 #endif

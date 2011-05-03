@@ -25,36 +25,37 @@
 class ObjectMotionState : public btMotionState
 {
     protected:
-        Ogre::SceneNode *mVisibleobj;
-        btTransform mPosl;
+        Ogre::SceneNode *visibleObj_;
+        btTransform pos_;
     public:
         ObjectMotionState(const btTransform &initial_pos, Ogre::SceneNode *node)
         {
-            mVisibleobj = node;
-            mPosl = initialpos;
+            visibleObj_ = node;
+            pos_ = initial_pos;
         }
 
         virtual ~ObjectMotionState()
         {}
 
-        void setNode(Ogre::SceneNode *node) const
+        void setNode(Ogre::SceneNode *node)
         {
-            mVisibleobj = node
+            visibleObj_ = node;
         }
 
+        //Modify the worldTrans to reflect our position
         virtual void getWorldTransform(btTransform &worldTrans) const
         {
-            worldTrans = mPosl;
+            worldTrans = pos_;
         }
 
         virtual void setWorldTransform(const btTransform &worldTrans)
         {
-            if(mVisibleobj == NULL)
+            if(visibleObj_ == NULL)
                 return; //return before we set a node
             btQuaternion rot = worldTrans.getRotation();
-            mVisibleobj->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
+            visibleObj_->setOrientation(rot.w(), rot.x(), rot.y(), rot.z());
             btVector3 pos = worldTrans.getOrigin();
-            mVisibleobj->setPosition(pos.x(), pos.y(), pos.z());
+            visibleObj_->setPosition(pos.x(), pos.y(), pos.z());
         }
 
 };

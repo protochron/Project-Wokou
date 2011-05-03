@@ -30,6 +30,8 @@
 #include <OgreCamera.h>
 
 #include "ExampleFrameListener.h"
+#include "../Physics/Physics.h"
+#include "../Physics/MotionState.h"
 
 using std::vector;
 
@@ -112,7 +114,7 @@ class Graphics {
    * Rotates the SceneNode of the named entity by yrot radians.
    * The rotation will be done about the y (UP and DOWN) axis.
    */
-  bool rotateEntity( String name, Radian yrot );
+  bool rotateEntity( String name, Radian yrot, bool scene = false );
   
   /**
    * The entity with the appropriate name will be deleted.
@@ -125,6 +127,9 @@ class Graphics {
    * 
    */
   void setAspectRatio( double x, double y );
+
+  //Gets a pointer to the current scene manager
+  Ogre::SceneManager *getSceneManager();
   
   /**
    * Renders everything to the screen.
@@ -148,6 +153,8 @@ class Graphics {
   std::vector<Ogre::Light*> lights;
  
   double roty; //Vertical angle in radians ( -PI/2 ... PI/2 )
+
+  GamePhysics *gamePhysics_;
 };
 
 #endif

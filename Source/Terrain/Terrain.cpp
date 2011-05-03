@@ -20,7 +20,7 @@
 
 void TerrainGen::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
 {
-  img.load("terrain.png", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+  img.load("test1.png", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
   if (flipX)
     img.flipAroundY();
   if (flipY)
@@ -29,17 +29,17 @@ void TerrainGen::getTerrainImage(bool flipX, bool flipY, Ogre::Image& img)
 
 void TerrainGen::defineTerrain(long x, long y)
 {
-  Ogre::String filename = mTerrainGroup->generateFilename(x, y);
-  if (Ogre::ResourceGroupManager::getSingleton().resourceExists(mTerrainGroup->getResourceGroup(), filename))
+  Ogre::String filename = terrainGroup_->generateFilename(x, y);
+  if (Ogre::ResourceGroupManager::getSingleton().resourceExists(terrainGroup_->getResourceGroup(), filename))
   {
-    mTerrainGroup->defineTerrain(x, y);
+    terrainGroup_->defineTerrain(x, y);
   }
   else
   {
     Ogre::Image img;
     getTerrainImage(x % 2 != 0, y % 2 != 0, img);
-    mTerrainGroup->defineTerrain(x, y, &img);
-    mTerrainsImported = true;
+    terrainGroup_->defineTerrain(x, y, &img);
+    terrainsImported_ = true;
   }
 }
 
@@ -77,31 +77,31 @@ void TerrainGen::initBlendMaps(Ogre::Terrain *terrain)
 void TerrainGen::configureTerrainDefaults(Ogre::Light *light)
 {
   // Configure global
-  mTerrainGlobals->setMaxPixelError(8);
+  terrainGlobals_->setMaxPixelError(8);
   // testing composite map
-  mTerrainGlobals->setCompositeMapDistance(3000);
+  terrainGlobals_->setCompositeMapDistance(3000);
 
   // Important to set these so that the terrain knows what to use for derived (non-realtime) data
-  mTerrainGlobals->setLightMapDirection(light->getDerivedDirection());
-  mTerrainGlobals->setCompositeMapAmbient(mSceneMgr->getAmbientLight());
-  mTerrainGlobals->setCompositeMapDiffuse(light->getDiffuseColour());
+  terrainGlobals_->setLightMapDirection(light->getDerivedDirection());
+  terrainGlobals_->setCompositeMapAmbient(Graphics::instance()->getSceneManager()->getAmbientLight());
+  terrainGlobals_->setCompositeMapDiffuse(light->getDiffuseColour());
 
   // Configure default import settings for if we use imported image
-  Ogre::Terrain::ImportData& defaultimp = mTerrainGroup->getDefaultImportSettings();
-  defaultimp.terrainSize = 513;
+  Ogre::Terrain::ImportData& defaultimp = terrainGroup_->getDefaultImportSettings();
+  defaultimp.terrainSize = 256;
   defaultimp.worldSize = 12000.0f;
   defaultimp.inputScale = 600;
   defaultimp.minBatchSize = 33;
   defaultimp.maxBatchSize = 65;
   // textures
-  defaultimp.layerList.resize(3);
-  defaultimp.layerList[0].worldSize = 100;
-  defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
-  defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
-  defaultimp.layerList[1].worldSize = 30;
-  defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
-  defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
-  defaultimp.layerList[2].worldSize = 200;
-  defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
-  defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
+  //defaultimp.layerList.resize(3);
+  //defaultimp.layerList[0].worldSize = 100;
+  //defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
+  //defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
+  //defaultimp.layerList[1].worldSize = 30;
+  //defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
+  //defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
+  //defaultimp.layerList[2].worldSize = 200;
+  //defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
+  //defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
 }

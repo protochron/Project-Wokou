@@ -21,7 +21,7 @@
 boost::shared_ptr<GamePhysics> GamePhysics::instance_;
 
 //Mostly sets up defaults
-GamePhysics::GamePhysics() : gravity_(btVector3(0, -10, 0)), worldSize_(10.0)
+GamePhysics::GamePhysics() : gravity_(btVector3(0, -10, 0)), worldSize_(10.0), shipMass_(10)
 {
     broadphase_ = new btDbvtBroadphase();
     collisionConfig_ = new btDefaultCollisionConfiguration();
@@ -30,8 +30,12 @@ GamePhysics::GamePhysics() : gravity_(btVector3(0, -10, 0)), worldSize_(10.0)
     dynamicsWorld_ = new btDiscreteDynamicsWorld(dispatcher_, broadphase_, solver_, collisionConfig_);
     dynamicsWorld_->setGravity(gravity_);
 
+    worldTransform_ = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0));
+
+    //Sets up a ground
+    // May get rid of this later
     ground_ = new btStaticPlaneShape(btVector3(0, 0, 0), 0);
-    groundMotionState_ = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0)));
+    groundMotionState_ = new btDefaultMotionState(worldTransform_);
     btRigidBody::btRigidBodyConstructionInfo
         groundRigidBodyCI(0, groundMotionState_, ground_, btVector3(0,0,0));
    groundBody_ = new btRigidBody(groundRigidBodyCI);

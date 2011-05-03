@@ -50,6 +50,7 @@ Application::Application()
   
   // Create a new camera
   Graphics::instance()->constructCamera();
+
   
   // Constructs the viewports
   initializeViewport();
@@ -72,18 +73,38 @@ Application::Application()
   // Add event listeners
   Engine::instance()->setWindow( window_ );
   root_->addFrameListener(Engine::instance());
- 
-  // Initialize the user interface
-  //initializeInterface();
- 
+
+  Engine::instance()->bindCamera( false ); //Active camera.
+  /*
+  // Prevent a nasty Mac OS X bug with setLogFilename.
+  new NullLogger;
+  
+  // Initialize the GUI system.
+  CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
+  
+  CEGUI::SchemeManager::getSingleton().create("WindowsLook.scheme");
+  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
+  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+  CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
+  
+  CEGUI::System::getSingleton().setGUISheet(root);
+
+  CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
+  quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
+*/
+>>>>>>> e8fdfd7c4831103e606408c37baf8953f2bb5f75
   // Add event handling functions
   handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
+  handler_mappings["LocalUDCamera"] = &Engine::handleLocalUDCamera;
+  handler_mappings["LocalLRCamera"] = &Engine::handleLocalLRCamera;
+  handler_mappings["LocalZoomCamera"] = &Engine::handleLocalZoomCamera;
   handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
   handler_mappings["NetworkRotatePlayer"] = &Engine::handleNetworkMovePlayer;
   handler_mappings["NetworkCreateEntity"] = &Engine::handleNetworkCreateEntity;
   handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
   handler_mappings["NetworkSetAmbient"] = &Engine::handleNetworkSetAmbient;
+
 }
 
 Application::~Application()
