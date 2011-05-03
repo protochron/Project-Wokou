@@ -125,6 +125,9 @@ class Graphics {
    * 
    */
   void setAspectRatio( double x, double y );
+
+  //Gets a pointer to the current scene manager
+  Ogre::SceneManager *getSceneManager();
   
   /**
    * Renders everything to the screen.

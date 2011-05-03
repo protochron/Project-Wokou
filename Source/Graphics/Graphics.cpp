@@ -171,6 +171,11 @@ void Graphics::setAspectRatio(double x, double y){
   }
 }
 
+Ogre::SceneManager *Graphics::getSceneManager()
+{
+    return sceneMgr_;
+}
+
 void Graphics::setup(){
   createLight( "MainLight", 20, 80, 50 );
   
