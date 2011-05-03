@@ -49,7 +49,7 @@ void Graphics::constructCamera()
 
   roty = 0;
 
-  camera_->setPosition( Vector3( 0, 0, 20 ) );
+  camera_->setPosition( Vector3( 40, 20, 0 ) );
   camera_->lookAt( Vector3( 0, 0, 0 ) );
   
   camera_->setNearClipDistance(1);
@@ -84,13 +84,7 @@ void Graphics::rotateCamera( double dx, double dy ){
   camera_->pitch(Ogre::Radian(dy));
   
   temp = camera_->getDirection();
-  std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;  
-  
-  
-
-  
-  
-  
+  //std::cout << temp.x << " " << temp.y << " " << temp.z << std::endl;  
 }
 
 
@@ -129,7 +123,6 @@ bool Graphics::createEntity( String name, String mesh, double x, double y, doubl
   }
   Ogre::Entity* temp = sceneMgr_->createEntity( name, mesh );
   Ogre::SceneNode* tempNode = sceneMgr_->getRootSceneNode()->createChildSceneNode();
-  
   tempNode->setPosition( x, y, z );
   tempNode->attachObject( temp );
   return 0;
@@ -141,18 +134,18 @@ bool Graphics::moveEntity( String name, double dx, double dy, double dz ){
   }
   Ogre::Entity* temp = sceneMgr_->getEntity( name );
   Ogre::SceneNode* tempNode = temp->getParentSceneNode();
-  
   tempNode->translate( Vector3( dx, dy, dz ) );
   return 0;
 }
 
-bool Graphics::rotateEntity( String name, Radian yrot ){
+bool Graphics::rotateEntity( String name, Radian yrot, bool scene ){
   if( sceneMgr_->hasEntity( name ) == false ){
     return 1; //The entity does not exist. Flee!
   }
-  Ogre::Entity* temp = sceneMgr_->getEntity( name );
-  Ogre::SceneNode* tempNode = temp->getParentSceneNode();
-  tempNode->yaw( yrot );
+  Ogre::Entity* ship = sceneMgr_->getEntity( name );
+  Ogre::SceneNode* shipNode = ship->getParentSceneNode();
+  shipNode->yaw( yrot );
+  
   return 0;
 }
 
@@ -196,7 +189,8 @@ void Graphics::setup(){
   
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
-  
+
+
   Ogre::Plane oceanSurface;
   oceanSurface.normal = Ogre::Vector3::UNIT_Y;
   oceanSurface.d = 20;

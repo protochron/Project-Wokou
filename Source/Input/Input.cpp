@@ -110,47 +110,57 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   // Capture the mouse and keyboard with each rendered frame
   keyboard_->capture();
   mouse_->capture();
-  
-  if (keys_[OIS::KC_W])
-    Graphics::instance()->moveCamera(0, 0, -0.2);
-  
-  if (keys_[OIS::KC_S])
-    Graphics::instance()->moveCamera(0, 0, 0.2);
-  
-  if (keys_[OIS::KC_D])
-    Graphics::instance()->moveCamera(0.2, 0, 0);
-    
-  if (keys_[OIS::KC_A])
-    Graphics::instance()->moveCamera(-0.2, 0, 0);
-  
-  if( keys_[OIS::KC_UP] ){
+
+  if( keys_[OIS::KC_UP] || keys_[OIS::KC_W] ){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["distance"] = 1;
+    a["distance"] = 0.1;
     a["height"] = 0;
     ActionPump::instance()->push_back( a ); 
   }  
-  if( keys_[OIS::KC_DOWN] ){
+  if( keys_[OIS::KC_DOWN] || keys_[OIS::KC_S]){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["distance"] = -1;
+    a["distance"] = -0.1;
     a["height"] = 0;
     ActionPump::instance()->push_back( a );
   }
-  if( keys_[OIS::KC_LEFT] ){
+  if( keys_[OIS::KC_LEFT] || keys_[OIS::KC_A]){
     Action a;
     a["type"] = "LocalRotatePlayer";
-    a["data"] = Ogre::Radian( 0.25 );
+    a["data"] = Ogre::Radian( 0.02 );
     ActionPump::instance()->push_back( a ); 
   }  
-  if( keys_[OIS::KC_RIGHT] ){
+  if( keys_[OIS::KC_RIGHT] || keys_[OIS::KC_D]){
     Action a;
     a["type"] = "LocalRotatePlayer";
-    a["data"] = Ogre::Radian( -0.25 );
+    a["data"] = Ogre::Radian( -0.02 );
     ActionPump::instance()->push_back( a );
   }
-
-
+  if( keys_[OIS::KC_I] ){
+    Action a;
+    a["type"] = "LocalUDCamera";
+    a["data"] = 0.2;
+    ActionPump::instance()->push_back( a );
+  }
+  if( keys_[OIS::KC_K] ){
+    Action a;
+    a["type"] = "LocalUDCamera";
+    a["data"] = -0.2;
+    ActionPump::instance()->push_back( a );
+  }
+  if( keys_[OIS::KC_J] ){
+    Action a;
+    a["type"] = "LocalLRCamera";
+    a["data"] = Ogre::Radian(0.1);
+    ActionPump::instance()->push_back( a );
+  }
+  if( keys_[OIS::KC_L] ){
+    Action a;
+    a["type"] = "LocalLRCamera";
+    a["data"] = -Ogre::Radian(0.1);
+    ActionPump::instance()->push_back( a );
+  }
 
   
   return continue_;

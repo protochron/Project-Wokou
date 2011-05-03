@@ -38,6 +38,8 @@ class Engine : public FrameListener {
   void setWindow( Ogre::RenderWindow* window ){ window_ = window; }
   void setSceneManager( SceneManager* sceneMgr ){ sceneMgr_ = sceneMgr; }
   
+  void bindCamera(bool type); //0 - Passive (controlled)   1 - Active (follows Player)
+  
   bool frameStarted(const Ogre::FrameEvent& event);
   bool frameEnded(const Ogre::FrameEvent& event);
   bool doAction(Action a);
@@ -45,14 +47,17 @@ class Engine : public FrameListener {
   //! Handles the Local actions (Input)
   void handleLocalMovePlayer(Action a);
   void handleLocalRotatePlayer(Action a);
+  void handleLocalUDCamera(Action a);
+  void handleLocalLRCamera(Action a);
+  void handleLocalZoomCamera(Action a);
   
   //! Handles the actions from Network
   void handleNetworkMovePlayer(Action a);
   void handleNetworkRotatePlayer(Action a);
-  void handleNetworkCreateEntity( Action a );
-  void handleNetworkDestroyEntity( Action a );
+  void handleNetworkCreateEntity(Action a);
+  void handleNetworkDestroyEntity(Action a);
   
-  void handleNetworkSetAmbient( Action a );
+  void handleNetworkSetAmbient(Action a);
   
  protected:
   Engine();
