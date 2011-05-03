@@ -30,6 +30,8 @@
 #include <OgreCamera.h>
 
 #include "ExampleFrameListener.h"
+#include "../Physics/Physics.h"
+#include "../Physics/MotionState.h"
 
 using std::vector;
 
@@ -151,6 +153,8 @@ class Graphics {
   std::vector<Ogre::Light*> lights;
  
   double roty; //Vertical angle in radians ( -PI/2 ... PI/2 )
+
+  GamePhysics *gamePhysics_;
 };
 
 #endif

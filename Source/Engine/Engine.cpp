@@ -20,6 +20,7 @@
  *****************************************************************************/
 
 #include "Engine.h"
+#include "../Physics/MotionState.h"
 
 boost::shared_ptr<Engine> Engine::instance_;
 
@@ -29,6 +30,7 @@ Engine::Engine(){
   FPS = 30;
   ship_ = "Player 1";
   angle_= 0;
+  gamePhysics_ = GamePhysics::instance(); //get an instance of our physics object
 }
 
 Engine* Engine::instance(){

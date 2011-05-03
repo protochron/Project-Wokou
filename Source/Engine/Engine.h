@@ -66,6 +66,8 @@ class Engine : public FrameListener {
   static boost::shared_ptr<Engine> instance_;
   
   int FPS; //Defaults to 30. Set in the constructor.
+
+  GamePhysics *gamePhysics_;
   
   SceneManager* sceneMgr_;
   String ship_; //The name of the controlled entity.

@@ -23,7 +23,7 @@
 
 boost::shared_ptr<Graphics> Graphics::instance_;
 
-Graphics::Graphics()
+Graphics::Graphics() : gamePhysics_(GamePhysics::instance())
 {
 
 }
@@ -186,6 +186,10 @@ void Graphics::setup(){
   rotateEntity( "Player 3", Ogre::Radian(.5) );
   rotateEntity( "Player 4", Ogre::Radian(.5) );
   moveEntity( "Player 4", -10, 0, 0 );
+
+  //Set up motion state callbacks
+  ObjectMotionState *NPCState = new ObjectMotionState(gamePhysics_->getWorldTransform(), sceneMgr_->getEntity("Player 2")->getParentSceneNode());
+  ObjectMotionState *playerState = new ObjectMotionState(gamePhysics_->getWorldTransform(), sceneMgr_->getEntity("Player 1")->getParentSceneNode());
   
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
