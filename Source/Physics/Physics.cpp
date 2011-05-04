@@ -30,7 +30,7 @@ GamePhysics::GamePhysics() : gravity_(btVector3(0, -10, 0)), worldSize_(10.0), s
     dynamicsWorld_ = new btDiscreteDynamicsWorld(dispatcher_, broadphase_, solver_, collisionConfig_);
     dynamicsWorld_->setGravity(gravity_);
 
-    worldTransform_ = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0));
+    worldTransform_ = btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0)); //shared world transform that all motion states will need
 
     //Sets up a ground
     // May get rid of this later
@@ -40,7 +40,6 @@ GamePhysics::GamePhysics() : gravity_(btVector3(0, -10, 0)), worldSize_(10.0), s
         groundRigidBodyCI(0, groundMotionState_, ground_, btVector3(0,0,0));
    groundBody_ = new btRigidBody(groundRigidBodyCI);
    dynamicsWorld_->addRigidBody(groundBody_);
-
 }
 
 //Delete all allocated space.
@@ -68,4 +67,13 @@ GamePhysics* GamePhysics::instance()
     instance_.reset(new GamePhysics);
     return instance_.get();
   }
+}
+
+void GamePhysics::setupRigidDynamicsBody(Ogre::SceneNode *node)
+{
+    ObjectMotionState::ObjectMotionState *state = new ObjectMotionState(worldTransform_, node); 
+   btVector3 localInertia = btVector3(0,0,0);
+   btRigidBody::btRigidBodyConstructionInfo rbInfo(shipMass_, state, ground_, localInertia);
+   btRigidBody *body = new btRigidBody(rbInfo);
+   dynamicsWorld_->addRigidBody(body);
 }

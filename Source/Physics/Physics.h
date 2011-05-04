@@ -23,6 +23,8 @@
 #include <BulletCollision/btBulletCollisionCommon.h>
 #include <boost/shared_ptr.hpp>
 #include <vector>
+#include <Ogre.h>
+#include "MotionState.h"
 
 /*************************************************************************/
 /* Define a singleton class to drive our physics simulation for the game.
@@ -38,20 +40,20 @@ class GamePhysics
     static boost::shared_ptr<GamePhysics> instance_;
 
     //Member vars
-    btBroadphaseInterface *broadphase_;
+    btBroadphaseInterface *broadphase_; //for collisions
     btDefaultCollisionConfiguration *collisionConfig_;
     btCollisionDispatcher *dispatcher_;
     btSequentialImpulseConstraintSolver *solver_;
-    btDiscreteDynamicsWorld *dynamicsWorld_;
+    btDiscreteDynamicsWorld *dynamicsWorld_; //world simulation
+
+    //Ground vars
     btCollisionShape *ground_;
     btDefaultMotionState *groundMotionState_;
     btRigidBody *groundBody_;
 
-    btTransform worldTransform_;
+    btTransform worldTransform_; //transform defining the world
 
-    std::vector<btCollisionShape *> collisionShapes_; //store collision shapes in this vector for easy access
-
-
+    btAlignedObjectArray<btCollisionShape *> collisionShapes_; //store collision shapes in this vector for easy access
 
     //Ensure that nothing else is able to instantiate a new GamePhysics object
     protected:
@@ -62,8 +64,13 @@ class GamePhysics
         static GamePhysics *instance();
         ~GamePhysics();
 
+        void setupRigidDynamicsBody(Ogre::SceneNode *node);
+
         //Accessors
         btTransform &getWorldTransform()
         { return worldTransform_; }
+
+        btDiscreteDynamicsWorld *getDynamicsWorld()
+        { return dynamicsWorld_; }
 };
 #endif
