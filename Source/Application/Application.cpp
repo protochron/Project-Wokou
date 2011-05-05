@@ -92,7 +92,7 @@ Application::Application()
   CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
   quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
 */
->>>>>>> e8fdfd7c4831103e606408c37baf8953f2bb5f75
+
   // Add event handling functions
   handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;

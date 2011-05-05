@@ -21,6 +21,8 @@
 
 #include "Graphics.h"
 
+#include "Terrain/Terrain.h"
+
 boost::shared_ptr<Graphics> Graphics::instance_;
 
 Graphics::Graphics() : gamePhysics_(GamePhysics::instance())
@@ -194,10 +196,14 @@ void Graphics::setup(){
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
 
+  // Add a sky dome to the game
+  //sceneMgr_->setSkyDome(true, "Examples/CloudySky", 5, 8);
 
+  // Create the ocean
   Ogre::Plane oceanSurface;
   oceanSurface.normal = Ogre::Vector3::UNIT_Y;
   oceanSurface.d = 20;
+  
   Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
      Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
      oceanSurface,
@@ -207,5 +213,5 @@ void Graphics::setup(){
   sceneMgr_->getRootSceneNode()->createChildSceneNode()->attachObject(mOceanSurfaceEnt);
   mOceanSurfaceEnt->setMaterialName("Ocean2_HLSL_GLSL");
   
-  
+  TerrainGenerator terr(sceneMgr_);
 }

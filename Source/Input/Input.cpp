@@ -111,6 +111,10 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   keyboard_->capture();
   mouse_->capture();
 
+  if (keys_[OIS::KC_Z]) {
+    Graphics::instance()->moveCamera(0, 0, 1);
+  }
+
   if( keys_[OIS::KC_UP] || keys_[OIS::KC_W] ){
     Action a;
     a["type"] = "LocalMovePlayer";
@@ -202,7 +206,7 @@ bool Input::mouseMoved(const OIS::MouseEvent& event)
   if (state.Z.abs != 0)
     Graphics::instance()->zoomCamera(state.Z.abs / 500.0);
 
-  CEGUI::System::getSingleton().injectMouseMove(state.X.rel, state.Y.rel);
+  //CEGUI::System::getSingleton().injectMouseMove(state.X.rel, state.Y.rel);
   //Graphics::instance()->rotateCamera(-state.X.rel * 0.013, -state.Y.rel * 0.013);
   
   return true;
@@ -210,14 +214,14 @@ bool Input::mouseMoved(const OIS::MouseEvent& event)
 
 bool Input::mousePressed(const OIS::MouseEvent& event, OIS::MouseButtonID id)
 {
-  CEGUI::System::getSingleton().injectMouseButtonDown((CEGUI::MouseButton)id);
+  //CEGUI::System::getSingleton().injectMouseButtonDown((CEGUI::MouseButton)id);
   
   return true;
 }
 
 bool Input::mouseReleased(const OIS::MouseEvent& event, OIS::MouseButtonID id)
 {
-  CEGUI::System::getSingleton().injectMouseButtonUp((CEGUI::MouseButton) id);
+  //CEGUI::System::getSingleton().injectMouseButtonUp((CEGUI::MouseButton) id);
   return true;
 }
 
