@@ -62,7 +62,7 @@ TerrainGenerator::TerrainGenerator(Ogre::SceneManager *scene)
       while(ti.hasMoreElements())
       {
           Ogre::Terrain* t = ti.getNext()->instance;
-          t->setPosition(Ogre::Vector3::ZERO);
+          t->setPosition(Ogre::Vector3(0, -305, 0));
           initBlendMaps(t);
       }
   }
