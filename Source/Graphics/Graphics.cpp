@@ -190,8 +190,8 @@ void Graphics::setup(){
   moveEntity( "Player 4", -10, 0, 0 );
 
   //Set up motion state callbacks
-  ObjectMotionState *NPCState = new ObjectMotionState(gamePhysics_->getWorldTransform(), sceneMgr_->getEntity("Player 2")->getParentSceneNode());
-  ObjectMotionState *playerState = new ObjectMotionState(gamePhysics_->getWorldTransform(), sceneMgr_->getEntity("Player 1")->getParentSceneNode());
+  GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 1")->getParentSceneNode());
+  GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 2")->getParentSceneNode());
   
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));

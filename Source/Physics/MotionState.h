@@ -19,8 +19,9 @@
 #ifndef CUST_MOTION_STATE_H
 #define CUST_MOTION_STATE_H
 
-#include "Physics.h"
 #include <Ogre.h>
+#include <BulletDynamics/btBulletDynamicsCommon.h>
+#include <BulletCollision/btBulletCollisionCommon.h>
 
 class ObjectMotionState : public btMotionState
 {
