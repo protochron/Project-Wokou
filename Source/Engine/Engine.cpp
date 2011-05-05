@@ -52,6 +52,7 @@ void Engine::bindCamera( bool type ){
 bool Engine::frameStarted(const Ogre::FrameEvent& event){
   timer.reset();
   GamePhysics::instance()->getDynamicsWorld()->stepSimulation(1/60.f, 10);
+  //GamePhysics::instance()->getDynamicsWorld()->debugDrawWorld();
   return 1;
 }
 

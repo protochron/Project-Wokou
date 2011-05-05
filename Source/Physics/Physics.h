@@ -64,7 +64,12 @@ class GamePhysics
         static GamePhysics *instance();
         ~GamePhysics();
 
+        //Register a rigid dynamics body using a scene node
         void setupRigidDynamicsBody(Ogre::SceneNode *node);
+
+        //Should be called after stepSimulation has been run
+        void performCollisionDetection();
+
 
         //Accessors
         btTransform &getWorldTransform()

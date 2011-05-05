@@ -72,8 +72,36 @@ GamePhysics* GamePhysics::instance()
 void GamePhysics::setupRigidDynamicsBody(Ogre::SceneNode *node)
 {
     ObjectMotionState::ObjectMotionState *state = new ObjectMotionState(worldTransform_, node); 
-   btVector3 localInertia = btVector3(0,0,0);
-   btRigidBody::btRigidBodyConstructionInfo rbInfo(shipMass_, state, ground_, localInertia);
-   btRigidBody *body = new btRigidBody(rbInfo);
-   dynamicsWorld_->addRigidBody(body);
+    btVector3 localInertia = btVector3(0,0,0);
+    btRigidBody::btRigidBodyConstructionInfo rbInfo(shipMass_, state, ground_, localInertia);
+    btRigidBody *body = new btRigidBody(rbInfo);
+
+    //dynamicsWorld_->debugDrawObject(worldTransform_, OGRE_NEW btCylinderShape(btVector3(0.5f, 15.0f, 0.0f)), btVector3(1.0f, 1.0f, 1.0f));
+    dynamicsWorld_->addRigidBody(body);
+}
+
+void GamePhysics::performCollisionDetection()
+{
+    int numManifolds = dynamicsWorld_->getDispatcher()->getNumManifolds();
+
+    for(int i = 0; i < numManifolds; i++)
+    {
+        btPersistentManifold *contactManifold = dynamicsWorld_->getDispatcher()->getManifoldByIndexInternal(i);
+        btCollisionObject *a = static_cast<btCollisionObject*>(contactManifold->getBody0());
+        btCollisionObject *b = static_cast<btCollisionObject*>(contactManifold->getBody1());
+
+        int numContacts = contactManifold->getNumContacts();
+
+        for(int j = 0; j < numContacts; j++)
+        {
+            btManifoldPoint &pt = contactManifold->getContactPoint(j);
+            if(pt.getDistance() < 0.f)
+            {
+                const btVector3 &ptA = pt.getPositionWorldOnA();
+                const btVector3 &ptB = pt.getPositionWorldOnB();
+                const btVector3 &normalOnB = pt.m_normalWorldOnB;
+            }
+        }
+
+    }
 }
