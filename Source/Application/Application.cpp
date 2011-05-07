@@ -71,28 +71,16 @@ Application::Application()
   Graphics::instance()->setup();
   
   // Add event listeners
-  Engine::instance()->setWindow( window_ );
   root_->addFrameListener(Engine::instance());
 
+  // Give the Engine what it needs to function
+  Engine::instance()->setWindow( window_ );
   Engine::instance()->bindCamera( false ); //Active camera.
-  /*
-  // Prevent a nasty Mac OS X bug with setLogFilename.
-  new NullLogger;
   
-  // Initialize the GUI system.
-  CEGUI::OgreRenderer &renderer = CEGUI::OgreRenderer::bootstrapSystem(*window_);
+  // Initialize the user interface
+  initializeInterface();
   
-  CEGUI::SchemeManager::getSingleton().create("WindowsLook.scheme");
-  CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
-  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
-  CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
   
-  CEGUI::System::getSingleton().setGUISheet(root);
-
-  CEGUI::Window *quitButton = CEGUI::WindowManager::getSingleton().getWindow("quitButton");
-  quitButton->subscribeEvent(CEGUI::PushButton::EventClicked, CEGUI::Event::Subscriber(&Application::handleQuit, this));
-*/
-
   // Add event handling functions
   handler_mappings["LocalMovePlayer"] = &Engine::handleLocalMovePlayer;
   handler_mappings["LocalRotatePlayer"] = &Engine::handleLocalRotatePlayer;
@@ -240,7 +228,7 @@ void Application::initializeInterface()
 
   CEGUI::SchemeManager::getSingleton().create("TaharezLook.scheme");
   CEGUI::FontManager::getSingleton().create("DejaVuSans-10.font");
-  CEGUI::System::getSingleton().setDefaultMouseCursor("WindowsLook", "MouseArrow");
+  CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
   CEGUI::Window *root = CEGUI::WindowManager::getSingleton().loadWindowLayout("gui/test.layout");
 
   CEGUI::System::getSingleton().setGUISheet(root);

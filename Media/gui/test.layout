@@ -2,8 +2,15 @@
 <GUILayout>
     <Window Type="DefaultWindow" Name="root">
         <Window Type="TaharezLook/Button" Name="quitButton">
-            <Property Name="UnifiedAreaRect" Value="{{0.00534809,0},{0.0131038,0},{0.249636,0},{0.162443,0}}" />
-
+            <Property Name="UnifiedAreaRect" Value="{{0.004617,0},{0.001,0},{0.2,0},{0.07,0}}" />
+            <Window Type="TaharezLook/StaticText" Name="MenuButton/" >
+                <Property Name="Text" Value="Menu" />
+                <Property Name="HorzExtent" Value="48" />
+                <Property Name="VertExtent" Value="19.8618" />
+                <Property Name="HorzFormatting" Value="HorzCentred" />
+                <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Property Name="HorizontalAlignment" Value="Centre" />
+            </Window>
         </Window>
     </Window>
 </GUILayout>

@@ -87,6 +87,7 @@ private:
   //! Constructs the user interface
   void initializeInterface();
   
+  
   /* **************************************************************************
    * GUI event handling methods
    * *************************************************************************/

@@ -178,10 +178,10 @@ void Graphics::setup(){
   createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
   destroyEntity( "Ogre" );
   
-  createEntity( "Player 1", "Ship.mesh", 0, 0, 0 );
-  createEntity( "Player 2", "Ship.mesh", 0, 0, 0 );
-  createEntity( "Player 3", "Ship.mesh", 0, 0, 0 );
-  createEntity( "Player 4", "Ship.mesh", 0, 0, 0 );
+  createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
+  createEntity( "Player 2", "BetterShip.mesh", 0, 0, 0 );
+  createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
+  createEntity( "Player 4", "BetterShip.mesh", 0, 0, 0 );
   moveEntity( "Player 2", 10, 0, 10 );
   moveEntity( "Player 3", 10, 0, 10 );
   moveEntity( "Player 4", 10, 0, 10 );
