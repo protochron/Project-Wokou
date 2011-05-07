@@ -1,0 +1,347 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 07.05.2011 03:41:57
+
+newmtl Water_1
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1791 0.0654 0.0654
+	Kd 0.5373 0.1961 0.1961
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\OPOCEAN2.JPG
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\OPOCEAN2.JPG
+	map_bump -bm 0.1500 Map__2_Noise.tga
+
+newmtl water_oben
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\FROST.JPG
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\FROST.JPG
+	map_d Map__6_Noise.tga
+	map_refl C:\Program Files\Autodesk\3ds Max 2011\maps\Skies\SKYSUN2.JPG
+
+newmtl Material__104
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+
+newmtl 24___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\flagge-Rot-1.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\flagge-Rot-1.jpg
+
+newmtl Fabric_Tan_Carpet
+	Ns 25.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.8000 0.7686 0.7059
+	Kd 0.8000 0.7686 0.7059
+	Ks 0.0450 0.0450 0.0450
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Fabric\Carpttan.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Fabric\Carpttan.jpg
+	map_bump C:\Program Files\Autodesk\3ds Max 2011\maps\Fabric\Carpttan.jpg
+	bump C:\Program Files\Autodesk\3ds Max 2011\maps\Fabric\Carpttan.jpg
+
+newmtl Wood_Grey_Plank
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1961 0.4510 0.5333
+	Kd 0.1961 0.4510 0.5333
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\Gryplank.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\Gryplank.jpg
+	map_bump C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\Gryplank.jpg
+	bump C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\Gryplank.jpg
+
+newmtl Material__65
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl 12___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+
+newmtl 11___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+
+newmtl 5___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl 18___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+
+newmtl 2___Default
+	Ns 100.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+	map_refl C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\RUG-N.JPG
+
+newmtl Material__78
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+
+newmtl 1___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__105
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\DKBRONZE.jpg
+
+newmtl Material__106
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+
+newmtl Material__107
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_Kd C:\Program Files\Autodesk\3ds Max 2011\maps\Wood\OLDWOOD.jpg
+	map_d C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\seile.jpg
+
+newmtl Material__108
+	Ns 2.0625
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1621 0.2039 0.3268
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.2250 0.2250 0.2250
+	Ke 0.0000 0.0000 0.0000
+
+newmtl VMtl12
+	Ns 2.0625
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1621 0.2039 0.3268
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.2250 0.2250 0.2250
+	Ke 0.0000 0.0000 0.0000
+
+newmtl VMtl15
+	Ns 2.0625
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1621 0.2039 0.3268
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.2250 0.2250 0.2250
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Material__110
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\Door.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\Door.jpg
+
+newmtl Wolken_2
+	Ns 0.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.1791 0.0654 0.0654
+	Kd 0.5373 0.1961 0.1961
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\RUG-N.JPG
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\RUG-N.JPG
+	map_d Map__1_Gradient_Ramp.tga
+	map_bump -bm 0.1500 Map__2_Noise.tga
+
+newmtl 7___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\WHTTILE.JPG
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\WHTTILE.JPG
+
+newmtl Material__109
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\flagge.jpg
+	map_Kd C:\Documents and Settings\Administrator\Desktop\sailing-boat\texturen\flagge.jpg
+
+newmtl wire_026177148
+	Ns 32
+	d 1
+	Tr 0
+	Tf 1 1 1
+	illum 2
+	Ka 0.1020 0.6941 0.5804
+	Kd 0.1020 0.6941 0.5804
+	Ks 0.3500 0.3500 0.3500
