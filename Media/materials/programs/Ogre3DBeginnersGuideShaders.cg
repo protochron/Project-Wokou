@@ -1,0 +1,24 @@
+
+struct C2Elv_Output {
+  float4 position : POSITION;
+  float4 color    : COLOR;
+};d
+
+void MyFragmentShader1( float2 uv : TEXCOORD0,
+                        out float4 color: COLOR,
+                        uniform sampler2D texture))
+{
+  color = tex2D(texture, uv);
+
+}
+
+
+void MyVertexShader1(float4 position : POSITION,
+                    out float4 oPosition : POSITION,
+                    float2 uv : TEXCOORD0,
+                    out float2 oUv : TEXCOORD0,
+                    uniform float4x4 worldViewMatrix)
+{
+  oPosition = mul(worldViewMatrix, position);
+  oUv = uv;
+}
