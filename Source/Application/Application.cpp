@@ -78,7 +78,7 @@ Application::Application()
   Engine::instance()->bindCamera( false ); //Active camera.
   
   // Initialize the user interface
-  initializeInterface();
+  //initializeInterface();
   
   
   // Add event handling functions
