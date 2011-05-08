@@ -27,7 +27,8 @@
 
 #include <RendererModules/Ogre/CEGUIOgreRenderer.h>
 
-
+#include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
 
 
@@ -79,6 +80,10 @@ Application::Application()
   
   // Initialize the user interface
   //initializeInterface();
+
+  // Connect to the remote server if we're able to
+  initializeNetwork();
+  
   
   
   // Add event handling functions
@@ -104,6 +109,7 @@ Application::~Application()
 
 bool Application::handleQuit(const CEGUI::EventArgs& args)
 {
+  exit(1);
 //  Graphics::instance()->rotateCamera(0.01, 0.0);
 }
 
@@ -128,6 +134,21 @@ Ogre::Root* Application::initializeRoot(const Ogre::String& plugin,
   return r;
 }
 
+void Application::initializeNetwork()
+{
+  Ogre::ConfigFile *network_config = new Ogre::ConfigFile;
+  
+  network_config->load(getConfigPath() + "network.cfg");
+  const Ogre::String address = network_config->getSetting("Address");
+  const Ogre::String port = network_config->getSetting("Port");
+
+  Network::instance()->connect(address.c_str(), port.c_str());
+  
+  // This is necessary to have the networking branch off on its own thread.
+  thread_ = boost::thread(boost::bind(&asio::io_service::run, &Network::service()));
+}
+
+
 
 Ogre::RenderWindow* Application::initializeWindow()
 {
@@ -138,10 +159,17 @@ Ogre::RenderWindow* Application::initializeWindow()
 
   // The case that the user didn't want to configure/wanted to quit
   if (win == 0) 
-    exit(1);
+    closeApplication();
 
   return win;
 }
+
+void Application::closeApplication()
+{
+  Network::instance()->disconnect();
+}
+
+
 
 void Application::initializeResources()
 {

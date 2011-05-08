@@ -32,6 +32,7 @@
 #include "Graphics/Graphics.h"
 #include "Physics/Physics.h"
 
+#include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_LINUX
@@ -55,6 +56,11 @@ public:
   
   //! Tells the Application to begin its event loop
   void go();
+  
+public:
+  
+  //! Cleans up the system and exits the program
+  void closeApplication();
   
 private:
   
@@ -87,6 +93,9 @@ private:
   //! Constructs the user interface
   void initializeInterface();
   
+  //! Initializes the networking system
+  void initializeNetwork();
+  
   
   /* **************************************************************************
    * GUI event handling methods
@@ -106,6 +115,8 @@ private:
   
   Ogre::String resource_path_;
   Ogre::String config_path_;
+public:
+  boost::thread thread_;
   
 };
 

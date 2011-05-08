@@ -14,7 +14,7 @@ end
 
 EventMachine::run do
   host = '0.0.0.0'
-  post = 8080
+  post = 8885
   EventMachine::start_server host, post, EchoServer
   puts "Started EchoServer on #{host}:#{post}..."
 

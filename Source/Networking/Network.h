@@ -58,7 +58,7 @@ public:
   static Network* instance();
   
   //! Connect to a remote server, given by an IP or address.
-  void connect(const std::string& addr);
+  void connect(const char* addr, const char* port);
   
   //! Disconnects from the remote server
   void disconnect();

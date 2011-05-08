@@ -52,10 +52,10 @@ asio::io_service& Network::service()
   return io_;
 }
 
-void Network::connect(const std::string& addr)
+void Network::connect(const char* addr, const char* port)
 {
   tcp::resolver resolver(io_);
-  tcp::resolver::query query(addr.c_str(), "8080");
+  tcp::resolver::query query(addr, port);
   tcp::resolver::iterator endpoints = resolver.resolve(query);
   
   tcp::endpoint endpoint = *endpoints;

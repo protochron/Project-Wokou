@@ -22,7 +22,6 @@
 #ifndef _PIRATE_COMMON_H_
 #define _PIRATE_COMMON_H_
 
-
 //! Every player is assigned a unique integer ID ranging from 1 to 9999999
 typedef unsigned int player_id;
 
@@ -68,10 +67,6 @@ enum action_t {
   WARP_PLAYER,
   ATTACK_PLAYER
 };
-
-
-
-
 
 
 #endif
