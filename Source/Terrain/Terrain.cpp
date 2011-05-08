@@ -161,8 +161,10 @@ void TerrainGenerator::configureTerrainDefaults(Ogre::Light *light)
   defaultimp.layerList[1].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
   defaultimp.layerList[1].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
   defaultimp.layerList[0].worldSize = 100;
-  defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
-  defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
+  //defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
+  //defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
+  defaultimp.layerList[0].textureNames.push_back("sand.dds");
+  defaultimp.layerList[0].textureNames.push_back("sand.dds");
   defaultimp.layerList[2].worldSize = 30;
   defaultimp.layerList[2].textureNames.push_back("grass_green-01_diffusespecular.dds");
   defaultimp.layerList[2].textureNames.push_back("grass_green-01_normalheight.dds");

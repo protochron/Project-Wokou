@@ -50,12 +50,13 @@ class Engine : public FrameListener {
   void handleLocalUDCamera(Action a);
   void handleLocalLRCamera(Action a);
   void handleLocalZoomCamera(Action a);
+  void handleLocalFireCannon(Action a);
   
   //! Handles the actions from Network
-  void handleNetworkMovePlayer(Action a);
-  void handleNetworkRotatePlayer(Action a);
   void handleNetworkCreateEntity(Action a);
   void handleNetworkDestroyEntity(Action a);
+  void handleNetworkMoveEntity(Action a);
+  void handleNetworkRotateEntity(Action a);
   
   void handleNetworkSetAmbient(Action a);
   
@@ -72,6 +73,9 @@ class Engine : public FrameListener {
   SceneManager* sceneMgr_;
   String ship_; //The name of the controlled entity.
   Radian angle_;//The angle of the ship. Maintained for efficiency.
+  int health_;
+  int atk_;
+  int def_;
   Ogre::RenderWindow* window_;
   Ogre::Timer timer;
 };

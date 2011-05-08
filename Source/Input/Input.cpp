@@ -112,9 +112,26 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   mouse_->capture();
 
   if (keys_[OIS::KC_Z]) {
-    Graphics::instance()->moveCamera(0, 0, 10);
+     Graphics::instance()->moveCamera(0, 0, 3);
   }
-
+  if (keys_[OIS::KC_Q]){
+     Graphics::instance()->setAmbient( .3, .3, .3 );
+  }
+  if (keys_[OIS::KC_E]){
+     Graphics::instance()->setAmbient( .9, .9, .9 );
+  }
+  if (keys_[OIS::KC_F]){ //CODY.
+     Action a;
+     a["type"] = "LocalFireCannon";
+     a["direction"] = Ogre::Vector3( 0, 0, 5 );
+     ActionPump::instance()->push_back( a );
+  }
+  if( keys_[OIS::KC_G]){
+     Action a;
+     a["type"] = "NetworkDestroyEntity";
+     a["name"] = "Player 1 CBall";
+     ActionPump::instance()->push_back( a );
+  }
   if( keys_[OIS::KC_UP] || keys_[OIS::KC_W] ){
     Action a;
     a["type"] = "LocalMovePlayer";

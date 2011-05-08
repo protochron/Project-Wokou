@@ -87,10 +87,11 @@ Application::Application()
   handler_mappings["LocalUDCamera"] = &Engine::handleLocalUDCamera;
   handler_mappings["LocalLRCamera"] = &Engine::handleLocalLRCamera;
   handler_mappings["LocalZoomCamera"] = &Engine::handleLocalZoomCamera;
-  handler_mappings["NetworkMovePlayer"] = &Engine::handleNetworkMovePlayer;
-  handler_mappings["NetworkRotatePlayer"] = &Engine::handleNetworkMovePlayer;
+  handler_mappings["LocalFireCannon"] = &Engine::handleLocalFireCannon;
   handler_mappings["NetworkCreateEntity"] = &Engine::handleNetworkCreateEntity;
   handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
+  handler_mappings["NetworkMoveEntity"] = &Engine::handleNetworkMoveEntity;
+  handler_mappings["NetworkRotateEntity"] = &Engine::handleNetworkRotateEntity;
   handler_mappings["NetworkSetAmbient"] = &Engine::handleNetworkSetAmbient;
 
 }

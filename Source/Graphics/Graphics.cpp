@@ -173,7 +173,7 @@ Ogre::SceneManager *Graphics::getSceneManager()
 }
 
 void Graphics::setup(){
-  createLight( "MainLight", 20, 80, 50 );
+   createLight( "MainLight", 20, 80, 50 );
   
   createEntity( "Ogre", "Sinbad.mesh", 10, 0, 0 );
   createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
