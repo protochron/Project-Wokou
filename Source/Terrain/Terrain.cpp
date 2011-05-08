@@ -62,7 +62,7 @@ TerrainGenerator::TerrainGenerator(Ogre::SceneManager *scene)
       while(ti.hasMoreElements())
       {
           Ogre::Terrain* t = ti.getNext()->instance;
-          t->setPosition(Ogre::Vector3(0, -305, 0));
+          t->setPosition(Ogre::Vector3(0, -315, 0));
           initBlendMaps(t);
       }
   }
@@ -109,10 +109,10 @@ void TerrainGenerator::initBlendMaps(Ogre::Terrain *terrain)
 {
   Ogre::TerrainLayerBlendMap* blendMap0 = terrain->getLayerBlendMap(1);
   Ogre::TerrainLayerBlendMap* blendMap1 = terrain->getLayerBlendMap(2);
-  Ogre::Real minHeight0 = 70;
+  Ogre::Real minHeight0 = 70; //Doesn't matter, apparently.
   Ogre::Real fadeDist0 = 40;
-  Ogre::Real minHeight1 = 70;
-  Ogre::Real fadeDist1 = 15;
+  Ogre::Real minHeight1 = 295;
+  Ogre::Real fadeDist1 = 20;
   float* pBlend1 = blendMap1->getBlendPointer();
   for (Ogre::uint16 y = 0; y < terrain->getLayerBlendMapSize(); ++y)
   {
@@ -157,13 +157,13 @@ void TerrainGenerator::configureTerrainDefaults(Ogre::Light *light)
   defaultimp.maxBatchSize = 65;
   // textures
   defaultimp.layerList.resize(3);
+  defaultimp.layerList[1].worldSize = 200;
+  defaultimp.layerList[1].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
+  defaultimp.layerList[1].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
   defaultimp.layerList[0].worldSize = 100;
   defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
   defaultimp.layerList[0].textureNames.push_back("dirt_grayrocky_normalheight.dds");
-  defaultimp.layerList[1].worldSize = 30;
-  defaultimp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
-  defaultimp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
-  defaultimp.layerList[2].worldSize = 200;
-  defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
-  defaultimp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
+  defaultimp.layerList[2].worldSize = 30;
+  defaultimp.layerList[2].textureNames.push_back("grass_green-01_diffusespecular.dds");
+  defaultimp.layerList[2].textureNames.push_back("grass_green-01_normalheight.dds");
 }

@@ -108,7 +108,7 @@ void Engine::handleLocalRotatePlayer(Action a){
   angle_ = angle_ + *data;
   if( angle_ > Radian(Math::PI) ) angle_ = angle_ - Radian(Math::TWO_PI);
   if( angle_ < -Radian(Math::PI)) angle_ = angle_ + Radian(Math::TWO_PI);
-  Graphics::instance()->rotateEntity( ship_, *data, false );
+  Graphics::instance()->rotateEntity( ship_, *data, true );
   //Network::instance()->update
   //}
 }

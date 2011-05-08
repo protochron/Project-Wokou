@@ -50,7 +50,9 @@ void Graphics::constructCamera()
   camera_ = sceneMgr_->createCamera("Camera");
 
   roty = 0;
-
+  
+  float angle = 1.40;
+  
   camera_->setPosition( Vector3( 40, 20, 0 ) );
   camera_->lookAt( Vector3( 0, 0, 0 ) );
   
@@ -147,7 +149,6 @@ bool Graphics::rotateEntity( String name, Radian yrot, bool scene ){
   Ogre::Entity* ship = sceneMgr_->getEntity( name );
   Ogre::SceneNode* shipNode = ship->getParentSceneNode();
   shipNode->yaw( yrot );
-  
   return 0;
 }
 
@@ -179,15 +180,17 @@ void Graphics::setup(){
   destroyEntity( "Ogre" );
   
   createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
-  createEntity( "Player 2", "BetterShip.mesh", 0, 0, 0 );
-  createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
+  sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
+  createEntity( "Player 2", "penguin.mesh", 0, 0, 0 );
+  //rotateEntity( "Player 2", Ogre::Radian(1.4) );
+  /*createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
   createEntity( "Player 4", "BetterShip.mesh", 0, 0, 0 );
   moveEntity( "Player 2", 10, 0, 10 );
   moveEntity( "Player 3", 10, 0, 10 );
   moveEntity( "Player 4", 10, 0, 10 );
   rotateEntity( "Player 3", Ogre::Radian(.5) );
   rotateEntity( "Player 4", Ogre::Radian(.5) );
-  moveEntity( "Player 4", -10, 0, 0 );
+  moveEntity( "Player 4", -10, 0, 0 );*/
 
   //Set up motion state callbacks
   GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 1")->getParentSceneNode());
@@ -207,7 +210,7 @@ void Graphics::setup(){
   Ogre::MeshManager::getSingleton().createPlane("OceanSurface",
      Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
      oceanSurface,
-     10000, 10000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
+     11000, 11000, 50, 50, true, 1, 1, 1, Ogre::Vector3::UNIT_Z);
 
   Entity* mOceanSurfaceEnt = sceneMgr_->createEntity( "OceanSurface", "OceanSurface" );
   sceneMgr_->getRootSceneNode()->createChildSceneNode()->attachObject(mOceanSurfaceEnt);
