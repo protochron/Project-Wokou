@@ -191,6 +191,10 @@ void Engine::handleNetworkCreateEntity( Action a ){
 
 void Engine::handleNetworkDestroyEntity( Action a ){
    std::string* name = boost::get<std::string>(&a["name"]);
+   
+   if (!name)
+     std::cout << "ERROR IN HANDLENETWORKDESTROYENTITY: " << name << std::endl;
+   
    Graphics::instance()->destroyEntity( *name );
    //Update Physics.
 }
@@ -198,8 +202,17 @@ void Engine::handleNetworkDestroyEntity( Action a ){
 void Engine::handleNetworkMoveEntity( Action a ){
    //This is from the network; do not need to check Physics or update Network.
    std::string* name = boost::get<std::string>(&a["name"]);
-   Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
-   Graphics::instance()->moveEntity( *name, data->x, data->y, data->z );
+   float* x = boost::get<float>(&a["x"]);
+   float* y = boost::get<float>(&a["y"]);
+   float* z = boost::get<float>(&a["z"]);
+   
+   if (!name || !x || !y || !z) {
+     std::cout << "ERROR IN HANDLENETWORKMOVEENTITY: " << name << " ";
+     std::cout << x << " " << y << " " << z << std::endl;
+   }
+   
+   //Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
+   Graphics::instance()->moveEntity(*name, *x, *y, *z);
    //Update Physics.
 }
 
