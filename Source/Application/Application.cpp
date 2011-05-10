@@ -76,7 +76,7 @@ Application::Application()
 
   // Give the Engine what it needs to function
   Engine::instance()->setWindow( window_ );
-  Engine::instance()->bindCamera( false ); //Active camera.
+  //Engine::instance()->bindCamera( false ); //Active camera.
   
   // Initialize the user interface
   //initializeInterface();
@@ -93,6 +93,7 @@ Application::Application()
   handler_mappings["LocalLRCamera"] = &Engine::handleLocalLRCamera;
   handler_mappings["LocalZoomCamera"] = &Engine::handleLocalZoomCamera;
   handler_mappings["LocalFireCannon"] = &Engine::handleLocalFireCannon;
+  handler_mappings["NetworkCreateYourself"] = &Engine::handleNetworkCreateYourself;
   handler_mappings["NetworkCreateEntity"] = &Engine::handleNetworkCreateEntity;
   handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
   handler_mappings["NetworkMoveEntity"] = &Engine::handleNetworkMoveEntity;
