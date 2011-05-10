@@ -82,7 +82,7 @@ Application::Application()
   //initializeInterface();
 
   // Connect to the remote server if we're able to
-  initializeNetwork();
+  //initializeNetwork();
   
   
   
@@ -97,6 +97,7 @@ Application::Application()
   handler_mappings["NetworkDestroyEntity"]= &Engine::handleNetworkDestroyEntity;
   handler_mappings["NetworkMoveEntity"] = &Engine::handleNetworkMoveEntity;
   handler_mappings["NetworkRotateEntity"] = &Engine::handleNetworkRotateEntity;
+  handler_mappings["NetworkDamagePlayer"] = &Engine::handleNetworkDamagePlayer;
   handler_mappings["NetworkSetAmbient"] = &Engine::handleNetworkSetAmbient;
 
 }
