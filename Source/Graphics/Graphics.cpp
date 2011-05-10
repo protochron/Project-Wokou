@@ -179,8 +179,8 @@ void Graphics::setup(){
   createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
   destroyEntity( "Ogre" );
   
-  createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
-  sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
+  //createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
+  //sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
   createEntity( "Player 2", "penguin.mesh", 0, 0, 0 );
   //rotateEntity( "Player 2", Ogre::Radian(1.4) );
   /*createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
@@ -193,8 +193,8 @@ void Graphics::setup(){
   moveEntity( "Player 4", -10, 0, 0 );*/
 
   //Set up motion state callbacks
-  GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 1")->getParentSceneNode());
-  GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 2")->getParentSceneNode());
+  //GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 1")->getParentSceneNode());
+  //GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 2")->getParentSceneNode());
   
   // Set ambient light
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
@@ -217,5 +217,5 @@ void Graphics::setup(){
   //mOceanSurfaceEnt->setMaterialName("Ocean2_HLSL_GLSL");
   mOceanSurfaceEnt->setMaterialName("WOKOU-Ocean");
 
-  TerrainGenerator terr(sceneMgr_);
+  //TerrainGenerator terr(sceneMgr_);
 }

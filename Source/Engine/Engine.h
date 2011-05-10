@@ -53,6 +53,7 @@ class Engine : public FrameListener {
   void handleLocalFireCannon(Action a);
   
   //! Handles the actions from Network
+  void handleNetworkCreateYourself(Action a);
   void handleNetworkCreateEntity(Action a);
   void handleNetworkDestroyEntity(Action a);
   void handleNetworkMoveEntity(Action a);

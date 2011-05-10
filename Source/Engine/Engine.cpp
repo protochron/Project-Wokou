@@ -21,6 +21,7 @@
 
 #include "Engine.h"
 #include "../Physics/MotionState.h"
+#include <iostream>
 
 boost::shared_ptr<Engine> Engine::instance_;
 
@@ -28,7 +29,6 @@ extern std::map<std::string, handler_t> handler_mappings;
 
 Engine::Engine(){
    FPS = 30;
-   ship_ = "Player 1";
    angle_= 0;
    health_ = 100;
    atk_ = 1;
@@ -77,7 +77,7 @@ bool Engine::frameEnded(const Ogre::FrameEvent& event){
 bool Engine::doAction(Action a)
 {
    std::string* type = boost::get<std::string>(&a["type"]);
-  
+
    if (type == NULL)
       return false;
 
@@ -150,11 +150,42 @@ void Engine::handleLocalFireCannon(Action a){
    }
 }
 
+void Engine::handleNetworkCreateYourself(Action a)
+{
+  std::string* name = boost::get<std::string>(&a["name"]);
+  std::string* mesh = boost::get<std::string>(&a["mesh"]);
+  float* x = boost::get<float>(&a["x"]);
+  float* y = boost::get<float>(&a["y"]);
+  float* z = boost::get<float>(&a["z"]);
+  
+  if (!name || !mesh || !x || !y || !z) {
+    std::cout << "ERROR IN HANDLENETWORKCREATEYOURSELF: " << name << " ";
+    std::cout << mesh << " " << x << " " << y << " " << z << std::endl;
+  }
+
+  setEntity(*name);
+  
+  Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
+  bindCamera(false);
+}
+
+
 void Engine::handleNetworkCreateEntity( Action a ){
    std::string* name = boost::get<std::string>(&a["name"]);
    std::string* mesh = boost::get<std::string>(&a["mesh"]);
-   Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
-   Graphics::instance()->createEntity( *name, *mesh, data->x, data->y, data->z );
+   float* x = boost::get<float>(&a["x"]);
+   float* y = boost::get<float>(&a["y"]);
+   float* z = boost::get<float>(&a["z"]);
+
+   if (!name || !mesh || !x || !y || !z) {
+     std::cout << "ERROR IN HANDLENETWORKCREATEENTITY: " << name << " ";
+     std::cout << mesh << " " << x << " " << y << " " << z << std::endl;
+   }
+   
+   Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
+   
+   //Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
+   //Graphics::instance()->createEntity( *name, *mesh, data->x, data->y, data->z );
    //Update Physics.
 }
 
