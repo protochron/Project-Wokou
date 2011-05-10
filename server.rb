@@ -24,7 +24,7 @@ module Server
   
   def send_new_entity(client)
     action =  { :type => "NetworkCreateEntity", 
-                :name => "Player #{$pc}", :mesh => "BetterShip.mesh",
+                :name => "Player #{$pc}", :mesh => "AwesomeBoat.mesh",
                 :x => 0, :y => 0, :z => 0 
               }
          
@@ -35,7 +35,7 @@ module Server
   
   def send_create_yourself
     action =  { :type => "NetworkCreateYourself", 
-                :name => "Player #{$pc}", :mesh => "BetterShip.mesh",
+                :name => "Player #{$pc}", :mesh => "AwesomeBoat.mesh",
                 :x => 0, :y => 0, :z => 0 
               }
          
@@ -59,6 +59,7 @@ module Server
   
   # Called when a client connects
   def post_init
+    puts "Client connected!"
     $clients_list ||= {}
     
     # Remember the connection
