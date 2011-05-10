@@ -59,6 +59,8 @@ class Engine : public FrameListener {
   void handleNetworkMoveEntity(Action a);
   void handleNetworkRotateEntity(Action a);
   
+  void handleNetworkDamagePlayer(Action a);
+  
   void handleNetworkSetAmbient(Action a);
   
  protected:

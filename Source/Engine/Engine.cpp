@@ -224,6 +224,10 @@ void Engine::handleNetworkRotateEntity( Action a ){
    //Update Physics (if it cares about angles)
 }
 
+void Engine::handleNetworkDamagePlayer(Action a){
+   
+}
+
 void Engine::handleNetworkSetAmbient( Action a ){
    Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
    Graphics::instance()->setAmbient( data->x, data->y, data->z );
