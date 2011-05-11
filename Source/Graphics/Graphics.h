@@ -139,7 +139,10 @@ class Graphics {
   //! This is used within the Application class to set up a scene.
   Ogre::Camera* camera() const
     { return camera_; }
-    
+  
+  
+  Ogre::SceneManager* manager()
+    { return sceneMgr_; }
     
  protected:
   Graphics();

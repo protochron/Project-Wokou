@@ -183,7 +183,7 @@ void Engine::handleNetworkCreateEntity( Action a ){
    }
    
    Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
-   
+   Graphics::instance()->manager()->getEntity(*name)->getParentSceneNode()->scale(0.1, 0.1, 0.1);
    //Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
    //Graphics::instance()->createEntity( *name, *mesh, data->x, data->y, data->z );
    //Update Physics.
