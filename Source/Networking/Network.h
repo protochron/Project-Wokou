@@ -54,6 +54,8 @@ public:
   
 public:
   
+  ~Network();
+  
   //! Retrieves the network instance or creates it if it hasn't been.
   static Network* instance();
   

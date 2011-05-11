@@ -82,7 +82,7 @@ Application::Application()
   //initializeInterface();
 
   // Connect to the remote server if we're able to
-  //initializeNetwork();
+  initializeNetwork();
   
   
   
@@ -106,6 +106,15 @@ Application::Application()
 Application::~Application()
 {
   // The boost::shared_ptrs free what needs to be freed here.
+  
+  cleanupNetwork();
+}
+
+
+void Application::cleanupNetwork()
+{
+  Network::instance()->service().stop();
+  thread_.join();
 }
 
 

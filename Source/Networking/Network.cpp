@@ -35,6 +35,9 @@ Network::Network()
   : socket_(io_)
 { }
 
+Network::~Network()
+{ }
+
 
 Network* Network::instance()
 {
@@ -67,6 +70,8 @@ void Network::connect(const char* addr, const char* port)
 
 void Network::disconnect()
 {
+  boost::system::error_code error;
+  socket_.shutdown(boost::asio::ip::tcp::socket::shutdown_both, error);
   socket_.close();
 }
 

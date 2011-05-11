@@ -173,15 +173,10 @@ Ogre::SceneManager *Graphics::getSceneManager()
 }
 
 void Graphics::setup(){
-   createLight( "MainLight", 20, 80, 50 );
-  
-  createEntity( "Ogre", "Sinbad.mesh", 10, 0, 0 );
-  createEntity( "Ogre", "Sinbad.mesh", 20, 0, 0 );
-  destroyEntity( "Ogre" );
+  createLight( "MainLight", 20, 80, 50 );
   
   //createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
   //sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
-  createEntity( "Player 2", "penguin.mesh", 0, 0, 0 );
   //rotateEntity( "Player 2", Ogre::Radian(1.4) );
   /*createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
   createEntity( "Player 4", "BetterShip.mesh", 0, 0, 0 );

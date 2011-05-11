@@ -96,6 +96,9 @@ private:
   //! Initializes the networking system
   void initializeNetwork();
   
+  //! Cleans up after the networking system
+  void cleanupNetwork();
+  
   
   /* **************************************************************************
    * GUI event handling methods

@@ -162,7 +162,7 @@ void Engine::handleNetworkCreateYourself(Action a)
     std::cout << "ERROR IN HANDLENETWORKCREATEYOURSELF: " << name << " ";
     std::cout << mesh << " " << x << " " << y << " " << z << std::endl;
   }
-
+  
   setEntity(*name);
   
   Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
