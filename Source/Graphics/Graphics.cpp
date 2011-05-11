@@ -53,7 +53,7 @@ void Graphics::constructCamera()
   
   float angle = 1.40;
   
-  camera_->setPosition( Vector3( 40, 20, 0 ) );
+  camera_->setPosition( Vector3( 0, 20, -40 ) );
   camera_->lookAt( Vector3( 0, 0, 0 ) );
   
   camera_->setNearClipDistance(1);

@@ -29,7 +29,7 @@ extern std::map<std::string, handler_t> handler_mappings;
 
 Engine::Engine(){
    FPS = 30;
-   angle_= 0;
+   angle_= Ogre::Math::HALF_PI;
    health_ = 100;
    atk_ = 1;
    def_ = 1;
