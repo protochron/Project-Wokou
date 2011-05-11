@@ -79,6 +79,9 @@ class Engine : public FrameListener {
   int health_;
   int atk_;
   int def_;
+  float nx;
+  float nz;
+  float height;
   Ogre::RenderWindow* window_;
   Ogre::Timer timer;
 };

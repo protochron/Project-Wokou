@@ -37,7 +37,7 @@ TerrainGenerator::TerrainGenerator(Ogre::SceneManager *scene)
   light->setDiffuseColour(Ogre::ColourValue::White);
   light->setSpecularColour(Ogre::ColourValue(1, 1, 1));
 
-  scene_manager_->setAmbientLight(Ogre::ColourValue(1.0, 1.0, 1.0));
+  scene_manager_->setAmbientLight(Ogre::ColourValue(0.9, 0.9, 0.9));
   light->setAttenuation(100000, 1, 1, 1);
   terrain_globals_ = OGRE_NEW Ogre::TerrainGlobalOptions();
 

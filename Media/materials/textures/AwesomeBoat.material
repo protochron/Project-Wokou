@@ -1,70 +1,75 @@
-material _5___Default
+
+material AwesomeBoat/w__derevo_mebel
 {
-	receive_shadows on
 	technique
 	{
 		pass
 		{
-			ambient 1.000000 1.000000 1.000000 1.000000
-			diffuse 0.467451 0.467451 0.467451 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
+			ambient 0 0 0 1
+			diffuse 0.737255 0.678431 0.501961 1
 		}
+
 	}
+
 }
-material _9___Default
+
+material AwesomeBoat/01_-_yjDefault
 {
-	receive_shadows on
 	technique
 	{
 		pass
 		{
-			ambient 1.000000 1.000000 1.000000 1.000000
-			diffuse 0.467451 0.467451 0.467451 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
+			cull_hardware none
 		}
+
 	}
+
 }
-material _0___Default
+
+material AwesomeBoat/chrome08
 {
-	receive_shadows on
 	technique
 	{
 		pass
 		{
-			ambient 1.000000 1.000000 1.000000 1.000000
-			diffuse 0.467451 0.467451 0.467451 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
 		}
+
 	}
+
 }
-material _3___Default
+
+material AwesomeBoat/,Black_
 {
-	receive_shadows on
 	technique
 	{
 		pass
 		{
-			ambient 1.000000 1.000000 1.000000 1.000000
-			diffuse 0.467451 0.467451 0.467451 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
+			ambient 0 0 0 1
+			diffuse 0.00784314 0.00784314 0.00784314 1
 		}
+
 	}
+
 }
-material Material__24
+
+material AwesomeBoat/02_j-_Default
 {
-	receive_shadows on
 	technique
 	{
 		pass
 		{
-			ambient 1.000000 1.000000 1.000000 1.000000
-			diffuse 0.608627 0.655686 0.793726 1.000000
-			specular 0.500000 0.500000 0.500000 1.000000 12.500000
-			emissive 0.000000 0.000000 0.000000 1.000000
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture OAKQRTRT.TGA
+			}
 		}
+
 	}
+
 }

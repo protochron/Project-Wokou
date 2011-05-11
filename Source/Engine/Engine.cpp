@@ -70,7 +70,16 @@ bool Engine::frameEnded(const Ogre::FrameEvent& event){
       std::cout << "Pumping action: " << a["type"] << " " << a["data"] << std::endl;
       doAction( a );
    }
-  
+   if( sceneMgr_->hasEntity( ship_+" CBall" ) == true ){
+      if( height > 0 ){
+         Graphics::instance()->moveEntity(ship_+" CBall", 3*nx, -.2, 3*nz );
+         height = height - .2;
+      }
+      else {
+         Graphics::instance()->destroyEntity(ship_+" CBall");
+      }
+   }
+   
    return 1;
 }
 
@@ -96,7 +105,6 @@ void Engine::handleLocalMovePlayer(Action a){
    double dy = *height; 
    double dz = *distance * Math::Sin( angle_ ); 
    //Get updated coordinates from Physics
-  
    Ogre::SceneNode* temp = sceneMgr_->getEntity( ship_ )->getParentSceneNode();
    temp->translate( dx, dy, dz );
    //Graphics::instance()->moveEntity( ship_, dx, dy, dz );
@@ -139,14 +147,19 @@ void Engine::handleLocalZoomCamera(Action a){
 }
 
 void Engine::handleLocalFireCannon(Action a){
-   Ogre::Vector3* direction = boost::get<Ogre::Vector3>(&a["direction"]);
+   float* direction = boost::get<float>(&a["dir"]);
    Ogre::Vector3 position = sceneMgr_->getEntity( ship_ )->getParentSceneNode()->getPosition();
    if( sceneMgr_->hasEntity( ship_ + " CBall" ) == false ){
       //The entity does not exist. Create it.
-      Graphics::instance()->createEntity( ship_ + " CBall", "penguin.mesh", position.x, position.y, position.z);
+      
+      Graphics::instance()->createEntity( ship_ + " CBall", "sphere.mesh", position.x, 10, position.z);
+      sceneMgr_->getEntity(ship_+" CBall")->getParentSceneNode()->scale( .02, .02, .02);
+      nx = Math::Sin(angle_) * *direction;
+      nz = Math::Cos(angle_) * *direction;
+      height = 10;
    }
    else{
-      Graphics::instance()->moveEntity( ship_ + " CBall", direction->x, direction->y, direction->z );
+      //Graphics::instance()->moveEntity( ship_ + " CBall", 0, 0, 1 );
    }
 }
 
@@ -165,7 +178,8 @@ void Engine::handleNetworkCreateYourself(Action a)
   
   setEntity(*name);
   
-  Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
+  Graphics::instance()->createEntity(*name, *mesh, *x, *y - 20, *z);
+  sceneMgr_->getEntity(*name)->getParentSceneNode()->scale( .005, .005, .005);
   bindCamera(false);
 }
 
@@ -183,7 +197,8 @@ void Engine::handleNetworkCreateEntity( Action a ){
    }
    
    Graphics::instance()->createEntity(*name, *mesh, *x, *y, *z);
-   Graphics::instance()->manager()->getEntity(*name)->getParentSceneNode()->scale(0.1, 0.1, 0.1);
+   sceneMgr_->getEntity(*name)->getParentSceneNode()->scale( .005, .005, .005);
+   //Graphics::instance()->manager()->getEntity(*name)->getParentSceneNode()->scale(0.1, 0.1, 0.1);
    //Ogre::Vector3* data = boost::get<Ogre::Vector3>(&a["data"]);
    //Graphics::instance()->createEntity( *name, *mesh, data->x, data->y, data->z );
    //Update Physics.

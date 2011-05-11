@@ -1,0 +1,75 @@
+
+material AwesomeBoat/w__derevo_mebel
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.737255 0.678431 0.501961 1
+		}
+
+	}
+
+}
+
+material AwesomeBoat/01_-_yjDefault
+{
+	technique
+	{
+		pass
+		{
+			cull_hardware none
+		}
+
+	}
+
+}
+
+material AwesomeBoat/chrome08
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0 0 0 1
+		}
+
+	}
+
+}
+
+material AwesomeBoat/,Black_
+{
+	technique
+	{
+		pass
+		{
+			ambient 0 0 0 1
+			diffuse 0.00784314 0.00784314 0.00784314 1
+		}
+
+	}
+
+}
+
+material AwesomeBoat/02_j-_Default
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588235 0.588235 0.588235 1
+			diffuse 0.588235 0.588235 0.588235 1
+
+			texture_unit
+			{
+				texture_alias 0
+				texture OAKQRTRT.TGA
+			}
+		}
+
+	}
+
+}

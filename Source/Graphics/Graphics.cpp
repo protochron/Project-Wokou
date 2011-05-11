@@ -53,7 +53,7 @@ void Graphics::constructCamera()
   
   float angle = 1.40;
   
-  camera_->setPosition( Vector3( 0, 20, -40 ) );
+  camera_->setPosition( Vector3( 0, 200, -400 ) );
   camera_->lookAt( Vector3( 0, 0, 0 ) );
   
   camera_->setNearClipDistance(1);
@@ -173,19 +173,29 @@ Ogre::SceneManager *Graphics::getSceneManager()
 }
 
 void Graphics::setup(){
-  createLight( "MainLight", 20, 80, 50 );
-  
-  //createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
-  //sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
-  //rotateEntity( "Player 2", Ogre::Radian(1.4) );
-  /*createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
-  createEntity( "Player 4", "BetterShip.mesh", 0, 0, 0 );
-  moveEntity( "Player 2", 10, 0, 10 );
-  moveEntity( "Player 3", 10, 0, 10 );
-  moveEntity( "Player 4", 10, 0, 10 );
-  rotateEntity( "Player 3", Ogre::Radian(.5) );
-  rotateEntity( "Player 4", Ogre::Radian(.5) );
-  moveEntity( "Player 4", -10, 0, 0 );*/
+   createLight( "MainLight", 5000, 200, 0 );
+   sceneMgr_->getLight("MainLight")->setDiffuseColour(Ogre::ColourValue( 0.8, 0.8, 0.8 ) );
+   sceneMgr_->getLight("MainLight")->setAttenuation(100000, 1, 0, 0);
+   createLight( "MainLight2", 0, 200, 5000 );
+   sceneMgr_->getLight("MainLight2")->setDiffuseColour(Ogre::ColourValue( 0.8, 0.8, 0.8 ) );
+   sceneMgr_->getLight("MainLight2")->setAttenuation(100000, 1, 0, 0);
+   createLight( "MainLight3", -5000, 200, 0 );
+   sceneMgr_->getLight("MainLight3")->setDiffuseColour(Ogre::ColourValue( 0.8, 0.8, 0.8 ) );
+   sceneMgr_->getLight("MainLight3")->setAttenuation(100000, 1, 0, 0);
+   createLight( "MainLight4", 0, 200, -5000 );
+   sceneMgr_->getLight("MainLight4")->setDiffuseColour(Ogre::ColourValue( 0.8, 0.8, 0.8 ) );
+   sceneMgr_->getLight("MainLight4")->setAttenuation(100000, 1, 0, 0);
+   //createEntity( "Player 1", "BetterShip.mesh", 0, 0, 0 );
+   //sceneMgr_->getEntity("Player 1")->getParentSceneNode()->scale( .1, .1, .1);
+   //rotateEntity( "Player 2", Ogre::Radian(1.4) );
+   /*createEntity( "Player 3", "BetterShip.mesh", 0, 0, 0 );
+     createEntity( "Player 4", "BetterShip.mesh", 0, 0, 0 );
+     moveEntity( "Player 2", 10, 0, 10 );
+     moveEntity( "Player 3", 10, 0, 10 );
+     moveEntity( "Player 4", 10, 0, 10 );
+     rotateEntity( "Player 3", Ogre::Radian(.5) );
+     rotateEntity( "Player 4", Ogre::Radian(.5) );
+     moveEntity( "Player 4", -10, 0, 0 );*/
 
   //Set up motion state callbacks
   //GamePhysics::instance()->setupRigidDynamicsBody(sceneMgr_->getEntity("Player 1")->getParentSceneNode());
@@ -195,7 +205,7 @@ void Graphics::setup(){
   sceneMgr_->setAmbientLight(Ogre::ColourValue(0.4, 0.4, 0.4));
 
   // Add a sky dome to the game
-  //sceneMgr_->setSkyDome(true, "Examples/CloudySky", 5, 8);
+  sceneMgr_->setSkyDome(true, "Examples/CloudySky", 5, 8);
 
   // Create the ocean
   Ogre::Plane oceanSurface;
@@ -212,5 +222,5 @@ void Graphics::setup(){
   //mOceanSurfaceEnt->setMaterialName("Ocean2_HLSL_GLSL");
   mOceanSurfaceEnt->setMaterialName("WOKOU-Ocean");
 
-  //TerrainGenerator terr(sceneMgr_);
+  TerrainGenerator terr(sceneMgr_);
 }

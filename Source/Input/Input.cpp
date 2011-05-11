@@ -111,7 +111,7 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   keyboard_->capture();
   mouse_->capture();
 
-  if (keys_[OIS::KC_Z]) {
+  /*if (keys_[OIS::KC_Z]) {
      Graphics::instance()->moveCamera(0, 0, 3);
   }
   if (keys_[OIS::KC_Q]){
@@ -119,46 +119,46 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
   }
   if (keys_[OIS::KC_E]){
      Graphics::instance()->setAmbient( .9, .9, .9 );
-  }
-  if (keys_[OIS::KC_F]){ //CODY.
+     }*/
+  if (keys_[OIS::KC_N]){
      Action a;
      a["type"] = "LocalFireCannon";
-     a["direction"] = Ogre::Vector3( 0, 0, 5 );
+     a["dir"] = 1; //Left
      ActionPump::instance()->push_back( a );
   }
-  if( keys_[OIS::KC_G]){
+  if (keys_[OIS::KC_M]){
      Action a;
-     a["type"] = "NetworkDestroyEntity";
-     a["name"] = "Player 1 CBall";
+     a["type"] = "LocalFireCannon";
+     a["dir"] = -1; //Right
      ActionPump::instance()->push_back( a );
   }
   if( keys_[OIS::KC_UP] || keys_[OIS::KC_W] ){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["distance"] = 15;
+    a["distance"] = 2;
     a["height"] = 0;
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_DOWN] || keys_[OIS::KC_S]){
     Action a;
     a["type"] = "LocalMovePlayer";
-    a["distance"] = -0.1;
+    a["distance"] = -2;
     a["height"] = 0;
     ActionPump::instance()->push_back( a );
   }
   if( keys_[OIS::KC_LEFT] || keys_[OIS::KC_A]){
     Action a;
     a["type"] = "LocalRotatePlayer";
-    a["data"] = Ogre::Radian( 0.02 );
+    a["data"] = Ogre::Radian( 0.01 );
     ActionPump::instance()->push_back( a ); 
   }  
   if( keys_[OIS::KC_RIGHT] || keys_[OIS::KC_D]){
     Action a;
     a["type"] = "LocalRotatePlayer";
-    a["data"] = Ogre::Radian( -0.02 );
+    a["data"] = Ogre::Radian( -0.01 );
     ActionPump::instance()->push_back( a );
   }
-  if( keys_[OIS::KC_I] ){
+  /*if( keys_[OIS::KC_I] ){
     Action a;
     a["type"] = "LocalUDCamera";
     a["data"] = 0.2;
@@ -181,7 +181,7 @@ bool Input::frameRenderingQueued(const Ogre::FrameEvent& event)
     a["type"] = "LocalLRCamera";
     a["data"] = -Ogre::Radian(0.1);
     ActionPump::instance()->push_back( a );
-  }
+    }*/
 
   
   return continue_;
